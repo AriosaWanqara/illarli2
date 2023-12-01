@@ -49,7 +49,7 @@
   /*General Menu css*/
   .v-list-group__items .v-list-item,
   .v-list-item {
-    border-radius: $border-radius-root;
+    border-radius: 4px;
     padding-inline-start: calc(12px + var(--indent-padding) / 10) !important;
 
     margin: 0 0 2px;
@@ -156,7 +156,8 @@
     }
 
     .leftSidebar:hover {
-      box-shadow: $box-shadow !important;
+      box-shadow: rgba(145 158 171 / 30%) 0px 0px 2px 0px,
+        rgba(145 158 171 / 12%) 0px 12px 24px -4px !important;
 
       .mini-icon {
         display: none;

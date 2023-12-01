@@ -12,6 +12,7 @@
   "dependencies": {
     "@casl/ability": "^6.5.0",
     "@casl/vue": "^2.2.1",
+    "@iconify/vue": "^4.1.1",
     "@tanstack/vue-query": "^5.12.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",

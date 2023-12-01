@@ -12,6 +12,21 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         name: "dashboard-home",
         component: () => import("@dashboard/view/Home.vue"),
       },
+      {
+        path: "home/1",
+        name: "product-list",
+        component: () => import("@dashboard/view/Home.vue"),
+      },
+      {
+        path: "home/2",
+        name: "product-category-list",
+        component: () => import("@dashboard/view/Home.vue"),
+      },
+      {
+        path: "home/3",
+        name: "product-brands-list",
+        component: () => import("@dashboard/view/Home.vue"),
+      },
     ],
   },
 ];
