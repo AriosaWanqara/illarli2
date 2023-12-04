@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import type { Header, Item } from "vue3-easy-data-table";
 import ResumenCard from "../components/ResumenCard.vue";
 import ShortAccess from "../components/ShortAccess.vue";
+import ProductCard from "../components/products/ProductCard.vue";
 import UIScaffold from "../components/shared/UIScaffold.vue";
-import { ref } from "vue";
-
 const headers: Header[] = [
   { text: "primero", value: "f" },
   { text: "primero1", value: "f1" },
@@ -26,9 +26,10 @@ const itemsSelected = ref<Item[]>([]);
 
 <template>
   <div>
+    <br />
     <ResumenCard />
     <br />
-    <ShortAccess />
+    <ProductCard />
     <br />
     <UIScaffold>
       <template #left-action>
@@ -46,6 +47,9 @@ const itemsSelected = ref<Item[]>([]);
         class="customize-table"
       />
     </UIScaffold>
+    <br />
+    <ShortAccess />
+    <br />
   </div>
 </template>
 

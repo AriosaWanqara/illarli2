@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600;900&display=swap");
 html {
   overflow-y: auto !important;
+  font-family: Montserrat !important;
   .bg-success {
     color: white !important;
   }
@@ -34,4 +36,9 @@ html {
 }
 .shadow-none {
   box-shadow: none !important;
+}
+
+.py-0 {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
