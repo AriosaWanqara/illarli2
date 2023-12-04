@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useDisplay } from "vuetify/lib/framework.mjs";
 import useLayoutState from "../../composable/useLayoutState";
+import Profile from "./account/Profile.vue";
+import ThemeSwitcher from "./theme/ThemeSwitcher.vue";
+import Notifications from "./notification/Notifications.vue";
 
 const { layoutState } = useLayoutState();
 const { smAndUp } = useDisplay();
@@ -30,8 +33,10 @@ const { smAndUp } = useDisplay();
         ></VBtn>
         <h1>logo</h1>
       </div>
-      <div class="">
-        <p>account</p>
+      <div class="tw-flex tw-gap-4 tw-items-center">
+        <Notifications />
+        <ThemeSwitcher />
+        <Profile />
       </div>
     </div>
   </v-app-bar>

@@ -7,6 +7,8 @@ import { abilitiesPlugin } from "@casl/vue";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import Vue3EasyDataTable from "vue3-easy-data-table";
 import vuetify from "./plugin/vuetify";
+import VueApexCharts from "vue3-apexcharts";
+import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
 
 import App from "./App.vue";
 import router from "./router";
@@ -16,6 +18,7 @@ const app = createApp(App);
 app.use(abilitiesPlugin, ability, {
   useGlobalProperties: true,
 });
+app.use(VueApexCharts);
 app.use(VueQueryPlugin, {
   queryClientConfig: {
     defaultOptions: {
@@ -30,5 +33,6 @@ app.component("EasyDataTable", Vue3EasyDataTable);
 
 app.use(createPinia());
 app.use(router);
+app.use(autoAnimatePlugin);
 
 app.use(vuetify).mount("#app");

@@ -15,6 +15,7 @@ export interface menu {
 }
 
 const navigationsItems: menu[] = [
+  { header: "home" },
   {
     title: "Productos",
     icon: "material-symbols:production-quantity-limits-outline-rounded",
@@ -37,6 +38,7 @@ const navigationsItems: menu[] = [
       },
     ],
   },
+  { header: " " },
 ];
 
 export default navigationsItems;

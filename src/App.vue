@@ -4,7 +4,7 @@ import { RouterView } from "vue-router";
 
 <template>
   <VLocaleProvider>
-    <VApp theme="INDIGO_THEME">
+    <VApp theme="ORANGE_THEME">
       <RouterView />
     </VApp>
   </VLocaleProvider>

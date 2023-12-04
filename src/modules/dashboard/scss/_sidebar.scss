@@ -1,12 +1,14 @@
 /*This is for the logo*/
 .leftSidebar {
-  box-shadow: 1px 0 20px #00000014 !important;
+  box-shadow: none !important;
   .mini-icon {
     display: none;
   }
 
   .mini-text {
     display: block;
+    color: rgb(var(--v-theme-surface));
+    margin-left: 4px;
   }
   .profile-name {
     background: rgba(0, 0, 0, 0.5);
@@ -55,7 +57,7 @@
     margin: 0 0 2px;
 
     &:hover {
-      color: rgb(var(--v-theme-secondary));
+      color: white;
     }
 
     .v-list-item__prepend {
@@ -81,7 +83,6 @@
 
     > .v-list-item.v-list-item--active,
     .v-list-item--active > .v-list-item__overlay {
-      background: rgb(var(--v-theme-secondary));
       color: white;
     }
 
@@ -90,7 +91,6 @@
 
       > .v-list-item--active,
       > .v-list-item--active:hover {
-        background: rgb(var(--v-theme-secondary));
         color: white;
       }
 
@@ -99,7 +99,10 @@
         .v-list-item.v-list-item--active
         > .v-list-item__overlay {
         background: transparent;
-        color: rgb(var(--v-theme-secondary));
+        color: white;
+        border-left: 2px solid rgb(var(--v-theme-secondary));
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
       }
     }
   }
@@ -142,6 +145,7 @@
 
     .mini-text {
       display: none;
+      color: rgb(var(--v-theme-surface));
     }
 
     .v-list {
@@ -169,6 +173,7 @@
 
       .mini-text {
         display: block;
+        color: rgb(var(--v-theme-surface));
       }
       .profile-logout {
         opacity: 1;

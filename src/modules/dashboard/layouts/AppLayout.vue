@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Customizer from "../components/shared/Customizer.vue";
 import MobileSideBar from "./mobileSidebar/MobileSideBar.vue";
 import SideBar from "./sidebar/SideBar.vue";
 import TopBar from "./topbar/TopBar.vue";
@@ -6,12 +7,15 @@ import "@dashboard/scss/style.scss";
 </script>
 
 <template>
-  <SideBar />
-  <MobileSideBar />
-  <TopBar />
-  <VMain>
-    <RouterView></RouterView>
-  </VMain>
+  <div class="tw-relative">
+    <Customizer />
+    <SideBar />
+    <MobileSideBar />
+    <TopBar />
+    <VMain>
+      <RouterView class="tw-px-3"></RouterView>
+    </VMain>
+  </div>
 </template>
 
 <style lang="scss">

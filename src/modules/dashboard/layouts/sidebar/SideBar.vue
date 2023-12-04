@@ -18,8 +18,9 @@ const sidebarMenu = shallowRef(navigationsItems);
   <VNavigationDrawer
     floating
     :mobile-breakpoint="600"
-    class="tw-p-3"
-    rail-width="80"
+    class="tw-pl-3 tw-py-3 leftSidebar"
+    elevation="0"
+    rail-width="68"
     expand-on-hover
     color="background"
     :rail="mdAndDown || layoutState.isRail"
