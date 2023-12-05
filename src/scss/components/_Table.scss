@@ -6,16 +6,16 @@
 
   --easy-table-header-font-size: 12px;
   --easy-table-header-height: 40px;
-  --easy-table-header-font-color: #6b6b6b;
-  --easy-table-header-background-color: #fff;
+  --easy-table-header-font-color: rgba(var(--v--theme-textPrimary));
+  --easy-table-header-background-color: rgba(var(--v--theme-background));
 
   --easy-table-header-item-padding: 10px 15px;
 
-  --easy-table-body-even-row-font-color: #000;
-  --easy-table-body-even-row-background-color: #fff;
+  --easy-table-body-even-row-font-color: rgba(var(--v--theme-textPrimary));
+  --easy-table-body-even-row-background-color: rgba(var(--v--theme-background));
 
-  --easy-table-body-row-font-color: #000;
-  --easy-table-body-row-background-color: #fff;
+  --easy-table-body-row-font-color: rgba(var(--v--theme-textPrimary));
+  --easy-table-body-row-background-color: rgba(var(--v--theme-background));
   --easy-table-body-row-height: 50px;
   --easy-table-body-row-font-size: 14px;
 
@@ -24,7 +24,7 @@
 
   --easy-table-body-item-padding: 10px 15px;
 
-  --easy-table-footer-background-color: #fff;
+  --easy-table-footer-background-color: rgba(var(--v--theme-background));
   --easy-table-footer-font-color: #c0c7d2;
   --easy-table-footer-font-size: 14px;
   --easy-table-footer-padding: 0px 10px;

@@ -9,6 +9,7 @@ import {
   GREEN_THEME,
   INDIGO_THEME,
   ORANGE_THEME,
+  DARK_BLUE_THEME,
 } from "@/utils/LigthThemes";
 
 export default createVuetify({
@@ -23,6 +24,7 @@ export default createVuetify({
       GREEN_THEME,
       INDIGO_THEME,
       ORANGE_THEME,
+      DARK_BLUE_THEME,
     },
   },
   defaults: {

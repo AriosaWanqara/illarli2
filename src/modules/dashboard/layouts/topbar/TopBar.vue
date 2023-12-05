@@ -20,12 +20,14 @@ const { smAndUp } = useDisplay();
       <div class="tw-flex tw-items-center tw-gap-2">
         <VBtn
           v-if="smAndUp"
+          color="textPrimary"
           icon="mdi-menu"
           @click="layoutState.isRail = !layoutState.isRail"
         ></VBtn>
         <VBtn
           v-else
           icon="mdi-menu"
+          color="textPrimary"
           @click="
             layoutState.isMobileNavDrawerShowing =
               !layoutState.isMobileNavDrawerShowing

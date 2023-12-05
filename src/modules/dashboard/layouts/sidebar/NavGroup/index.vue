@@ -14,7 +14,7 @@ const props = defineProps({ item: Object });
       height="24"
       class="mini-icon tw-absolute tw-right-[29%] tw-text-white"
     /> -->
-    <span class="mini-text">{{ props.item.header }}</span>
+    <span class="mini-text text-white">{{ props.item.header }}</span>
   </v-list-subheader>
   <VDivider v-else></VDivider>
 </template>
