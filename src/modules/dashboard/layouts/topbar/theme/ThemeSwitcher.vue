@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { setDarkTheme } from "@/utils/setDarkTheme";
+import { setLigthTheme } from "@/utils/setLigthTheme";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 
@@ -11,14 +13,22 @@ const onThemeChange = (param: boolean) => {
 
 <template>
   <div v-auto-animate>
-    <div v-if="isDark" class="tw-cursor-pointer" @click="onThemeChange(false)">
+    <div
+      v-if="isDark"
+      class="tw-cursor-pointer"
+      @click="onThemeChange(false), setLigthTheme()"
+    >
       <Icon
         icon="material-symbols:dark-mode-outline-rounded"
-        class="tw-text-gray-400"
+        class="tw-text-gray-200"
         height="24"
       />
     </div>
-    <div v-else class="tw-cursor-pointer" @click="onThemeChange(true)">
+    <div
+      v-else
+      class="tw-cursor-pointer"
+      @click="onThemeChange(true), setDarkTheme()"
+    >
       <Icon
         icon="material-symbols:wb-sunny-outline-rounded"
         class="tw-text-yellow-400"

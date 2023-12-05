@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
+import { usethemeCustomizer } from "./stores/themeCustomizer";
+
+const stores = usethemeCustomizer();
 </script>
 
 <template>
   <VLocaleProvider>
-    <VApp theme="ORANGE_THEME">
+    <VApp :theme="stores.theme ? stores.theme : 'ORANGE_THEME'">
       <RouterView />
     </VApp>
   </VLocaleProvider>
