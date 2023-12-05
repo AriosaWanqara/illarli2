@@ -61,7 +61,7 @@ const chartOptions = computed(() => {
         <div class="tw-bg-blue-300 tw-text-white tw-p-1 tw-rounded-md">
           <Icon icon="material-symbols:account-balance-wallet" />
         </div>
-        <p class="tw-text-gray-500 tw-text-sm">INGRESOS DE HOY</p>
+        <p class="textPrimary tw-text-sm">INGRESOS DE HOY</p>
       </div>
       <div class="tw-flex tw-flex-1">
         <div
