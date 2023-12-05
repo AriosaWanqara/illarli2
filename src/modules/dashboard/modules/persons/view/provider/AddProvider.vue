@@ -83,6 +83,8 @@ watch(saveProviderMutation.isSuccess, () => {
             :items="allCivilStatusEnum"
             label="Civil status"
             v-model="provider.civil_status"
+            item-title="label"
+            item-value="value"
           />
         </VCol>
         <VCol cols="6" class="py-1">

@@ -60,8 +60,8 @@ watch(updateRateMutations.isSuccess, () => {
             mandatory
             density="comfortable"
           >
-            <v-btn value="0" variant="tonal">suma</v-btn>
-            <v-btn value="1" variant="tonal">resta</v-btn>
+            <v-btn value="1" variant="tonal">suma</v-btn>
+            <v-btn value="0" variant="tonal">resta</v-btn>
           </v-btn-toggle>
         </VCol>
         <VCol cols="6">

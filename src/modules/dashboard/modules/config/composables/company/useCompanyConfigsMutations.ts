@@ -6,7 +6,7 @@ const updateCompanyConfigs = async (
   companyConfigs: Partial<CompanyConfigs>
 ): Promise<any> => {
   const { data } = await api.patch(
-    `/settings/${companyConfigs.id}`,
+    `/general/settings/${companyConfigs.id}`,
     companyConfigs
   );
   return data;
@@ -15,7 +15,7 @@ const updateCompanyConfigs = async (
 const updateCompanyConfigsDomain = async (domain: {
   subDomainToVerify: string;
 }): Promise<any> => {
-  const { data } = await api.post(`/change-subdomain`, domain);
+  const { data } = await api.post(`/general/change-subdomain`, domain);
   return data;
 };
 

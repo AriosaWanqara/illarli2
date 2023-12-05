@@ -7,7 +7,7 @@ import type { CompanyConfigs } from "../../models/CompanyConfigs";
 const companyConfigs = ref<CompanyConfigs>({} as CompanyConfigs);
 const staleDomain = ref<string>();
 const fethcCompanyConfigurations = async (): Promise<CompanyConfigs> => {
-  const { data } = await api.get<CompanyApiResponse>("/settings");
+  const { data } = await api.get<CompanyApiResponse>("/general/settings");
   return data.data;
 };
 

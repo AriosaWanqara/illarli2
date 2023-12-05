@@ -3,20 +3,23 @@ import { useMutation } from "@tanstack/vue-query";
 import type { Promotion } from "../../models/Promotion";
 
 const savePromotion = async (promotion: Partial<Promotion>): Promise<any> => {
-  const { data } = await api.post("/promotion_and_discounts", promotion);
+  const { data } = await api.post(
+    "/inventory/promotion_and_discounts",
+    promotion
+  );
   return data;
 };
 
 const updatePromotion = async (promotion: Partial<Promotion>): Promise<any> => {
   const { data } = await api.patch(
-    `/promotion_and_discounts/${promotion.id}`,
+    `/inventory/promotion_and_discounts/${promotion.id}`,
     promotion
   );
   return data;
 };
 
 const deletePromotion = async (id: string): Promise<any> => {
-  const { data } = await api.delete(`/promotion_and_discounts/${id}`);
+  const { data } = await api.delete(`/inventory/promotion_and_discounts/${id}`);
   return data;
 };
 

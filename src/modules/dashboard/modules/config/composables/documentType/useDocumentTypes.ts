@@ -25,8 +25,8 @@ const useDocumentTypes = () => {
       documentTypeDropdown.value = [];
       data.value.map((x) => {
         documentTypeDropdown.value.push({
-          label: x.key,
-          value: x.value,
+          label: x.name,
+          value: x.id,
         });
       });
     }

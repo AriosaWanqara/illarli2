@@ -8,7 +8,7 @@ const promotions = ref<Promotion[]>([]);
 
 const fetchPromotions = async (): Promise<Promotion[]> => {
   const { data } = await api.get<PromotionsApiResponse>(
-    "/promotion_and_discounts"
+    "/inventory/promotion_and_discounts"
   );
   return data.data;
 };

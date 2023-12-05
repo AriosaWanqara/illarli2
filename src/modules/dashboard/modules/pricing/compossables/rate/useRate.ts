@@ -7,7 +7,7 @@ import type { Rate } from "../../models/Rate";
 const rate = ref<Rate>({} as Rate);
 
 const fetchRate = async (id: string): Promise<Rate> => {
-  const { data } = await api.get<RateApiResponse>(`/rates/${id}`);
+  const { data } = await api.get<RateApiResponse>(`/inventory/rates/${id}`);
   return data.data;
 };
 

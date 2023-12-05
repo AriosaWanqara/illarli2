@@ -9,7 +9,7 @@ const promotionToUpdate = ref<Partial<Promotion>>({} as Partial<Promotion>);
 
 const fetchPromotion = async (id: string): Promise<Promotion> => {
   const { data } = await api.get<PromotionApiResponse>(
-    `/promotion_and_discounts/${id}`
+    `/inventory/promotion_and_discounts/${id}`
   );
   return data.data;
 };
