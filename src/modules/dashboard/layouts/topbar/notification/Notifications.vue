@@ -7,7 +7,7 @@ import NotificationsMenu from "./NotificationMenu.vue";
   <VMenu>
     <template v-slot:activator="{ props }">
       <VBadge
-        color="error"
+        color="primary"
         :content="2"
         dot
         class="tw-cursor-pointer"

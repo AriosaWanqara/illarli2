@@ -64,7 +64,6 @@ watch(deleteProductMutation.isSuccess, () => {
       </div>
     </div>
     <v-data-table
-      :headers="headers"
       :items="products"
       :search="search"
       fixed-header
