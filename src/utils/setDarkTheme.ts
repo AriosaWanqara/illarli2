@@ -3,6 +3,7 @@ import { usethemeCustomizer } from "@/stores/themeCustomizer";
 const stores = usethemeCustomizer();
 
 export const setDarkTheme = () => {
+  stores.setDark(true);
   switch (stores.theme) {
     case "ORANGE_THEME":
       stores.setTheme("DARK_ORANGE_THEME");

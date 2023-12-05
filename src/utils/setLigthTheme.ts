@@ -3,6 +3,7 @@ import { usethemeCustomizer } from "@/stores/themeCustomizer";
 const stores = usethemeCustomizer();
 
 export const setLigthTheme = () => {
+  stores.setDark(false);
   switch (stores.theme) {
     case "DARK_ORANGE_THEME":
       stores.setTheme("ORANGE_THEME");

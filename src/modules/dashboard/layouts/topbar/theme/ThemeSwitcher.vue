@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { usethemeCustomizer } from "@/stores/themeCustomizer";
 import { setDarkTheme } from "@/utils/setDarkTheme";
 import { setLigthTheme } from "@/utils/setLigthTheme";
 import { Icon } from "@iconify/vue";
@@ -9,12 +10,14 @@ const isDark = ref(false);
 const onThemeChange = (param: boolean) => {
   isDark.value = param;
 };
+
+const customizer = usethemeCustomizer();
 </script>
 
 <template>
   <div v-auto-animate>
     <div
-      v-if="isDark"
+      v-if="customizer.isDark"
       class="tw-cursor-pointer"
       @click="onThemeChange(false), setLigthTheme()"
     >
