@@ -6,7 +6,7 @@ const showCustomizer = ref(false);
 
 <template>
   <div class="tw-fixed tw-bottom-3 tw-right-2 tw-z-10">
-    <div class="tw-animate-spin">
+    <div class="spin-animation">
       <VBtn
         color="primary"
         icon="mdi-cog"
@@ -23,4 +23,13 @@ const showCustomizer = ref(false);
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin-animation {
+  animation: spin 2s linear infinite;
+}
+</style>
