@@ -1,4 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useUserStore } from "@/stores/userStore";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const { logout } = useUserStore();
+
+const closeSession = () => {
+  logout();
+  router.push({ name: "auth-login" });
+};
+</script>
 
 <template>
   <VCard>
@@ -12,7 +23,7 @@
         <v-divider class="my-3"></v-divider>
         <v-btn rounded variant="text"> Edit Account </v-btn>
         <v-divider class="my-3"></v-divider>
-        <v-btn rounded variant="text"> Disconnect </v-btn>
+        <v-btn rounded variant="text" @click="closeSession"> Disconnect </v-btn>
       </div>
     </VCardText>
   </VCard>

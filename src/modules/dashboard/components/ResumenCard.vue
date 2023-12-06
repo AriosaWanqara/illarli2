@@ -49,6 +49,7 @@ const chartOptions = computed(() => {
     },
     tooltip: {
       theme: "dark",
+      enabled: false,
     },
   };
 });

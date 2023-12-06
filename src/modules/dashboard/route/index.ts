@@ -2,6 +2,8 @@ import type { RouteRecordRaw } from "vue-router";
 import { configRouter } from "../modules/config/route";
 import { securityRoutes } from "../modules/security/route";
 import { personRoutes } from "../modules/persons/route";
+import { ProductRouter } from "../modules/products/route";
+import { pricingRoute } from "../modules/pricing/route";
 
 export const dashboardRoutes: RouteRecordRaw[] = [
   {
@@ -15,24 +17,11 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         name: "dashboard-home",
         component: () => import("@dashboard/view/Home.vue"),
       },
-      {
-        path: "home/1",
-        name: "product-list",
-        component: () => import("@dashboard/view/Home.vue"),
-      },
-      {
-        path: "home/2",
-        name: "product-category-list",
-        component: () => import("@dashboard/view/Home.vue"),
-      },
-      {
-        path: "home/3",
-        name: "product-brands-list",
-        component: () => import("@dashboard/view/Home.vue"),
-      },
       ...configRouter,
       ...securityRoutes,
       ...personRoutes,
+      ...ProductRouter,
+      ...pricingRoute,
     ],
   },
 ];
