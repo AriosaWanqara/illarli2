@@ -4,7 +4,7 @@ import AccountMenu from "./AccountMenu.vue";
 </script>
 
 <template>
-  <div class="tw-flex tw-gap-1 tw-items-center">
+  <div class="tw-flex tw-gap-1 tw-items-start">
     <VMenu min-width="200px" rounded>
       <template v-slot:activator="{ props }">
         <VAvatar

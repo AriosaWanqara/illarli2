@@ -5,19 +5,23 @@ import Profile from "./account/Profile.vue";
 import ThemeSwitcher from "./theme/ThemeSwitcher.vue";
 import Notifications from "./notification/Notifications.vue";
 import { Icon } from "@iconify/vue";
+import { usethemeCustomizer } from "@/stores/themeCustomizer";
 
 const { layoutState } = useLayoutState();
-const { smAndUp } = useDisplay();
+const { smAndUp, xl } = useDisplay();
+const { setTheme } = usethemeCustomizer();
 </script>
 
 <template>
   <v-app-bar
     :elevation="0"
     color="background"
-    density="compact"
+    :density="xl ? 'default' : 'compact'"
     class="shadow-none"
   >
-    <div class="tw-flex tw-justify-between tw-w-full tw-pr-4">
+    <div
+      class="tw-flex tw-justify-between tw-w-full tw-px-[1vw] md:tw-items-start tw-items-center tw-h-full tw-pt-1"
+    >
       <div class="tw-flex tw-items-center tw-gap-2">
         <VBtn
           v-if="smAndUp"
@@ -34,9 +38,9 @@ const { smAndUp } = useDisplay();
               !layoutState.isMobileNavDrawerShowing
           "
         ></VBtn>
-        <h1>logo</h1>
+        <h1 @click="setTheme('BLUE_THEME')">logo</h1>
       </div>
-      <div class="tw-flex tw-gap-4 tw-items-center">
+      <div class="tw-flex tw-gap-4 md:tw-items-start tw-items-center">
         <RouterLink :to="{ name: 'pos-home' }">
           <div
             class="tw-flex tw-gap-1 tw-py-1 tw-border-[1px] tw-border-gray-300 tw-px-2 tw-rounded-md"

@@ -15,7 +15,7 @@ export interface menu {
 }
 
 const navigationsItems: menu[] = [
-  { header: "home" },
+  { header: " " },
   {
     title: "Productos",
     icon: "material-symbols:production-quantity-limits-outline-rounded",

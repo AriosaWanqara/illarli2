@@ -7,7 +7,7 @@ const stores = usethemeCustomizer();
 
 <template>
   <VLocaleProvider>
-    <VApp :theme="stores.theme ? stores.theme : 'ORANGE_THEME'">
+    <VApp :theme="stores.theme ? stores.theme : 'BLUE_THEME'">
       <RouterView />
     </VApp>
   </VLocaleProvider>

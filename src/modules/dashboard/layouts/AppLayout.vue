@@ -11,9 +11,9 @@ import "@dashboard/scss/style.scss";
     <Customizer />
     <SideBar />
     <MobileSideBar />
-    <TopBar />
+    <TopBar class="md:tw-mt-[2vh] tw-mt-0" />
     <VMain>
-      <RouterView class="tw-px-3"></RouterView>
+      <RouterView class="tw-px-[1vw] md:tw-mt-[2vh] tw-mt-0"></RouterView>
     </VMain>
   </div>
 </template>

@@ -7,8 +7,8 @@ const DARK_BLUE_THEME: ThemeTypes = {
     "border-color": "#333F55",
   },
   colors: {
-    primary: "#1e4db7",
-    secondary: "#1a97f5",
+    primary: "#094B7B",
+    secondary: "#FEC600",
     info: "#539BFF",
     success: "#13DEB9",
     accent: "#FA896B",
