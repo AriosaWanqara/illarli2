@@ -16,5 +16,7 @@ const props = defineProps({ item: Object });
     /> -->
     <span class="mini-text text-white">{{ props.item.header }}</span>
   </v-list-subheader>
-  <VDivider v-else></VDivider>
+  <div class="tw-w-full tw-px-1" v-else>
+    <VDivider></VDivider>
+  </div>
 </template>

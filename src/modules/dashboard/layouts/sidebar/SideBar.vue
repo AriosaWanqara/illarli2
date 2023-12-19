@@ -37,7 +37,7 @@ const { width } = useElementSize(el);
     >
       <Logo v-if="width > 63" />
       <Isotipo v-else />
-      <PerfectScrollbar class="tw-mt-2 scrollnavbar tw-px-1">
+      <PerfectScrollbar class="tw-mt-2 scrollnavbar tw-px-0">
         <v-list bg-color="primary">
           <template v-for="(item, i) in sidebarMenu">
             <!---Item Sub Header -->

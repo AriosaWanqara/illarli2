@@ -43,80 +43,13 @@ watch(deleteProductMutation.isSuccess, () => {
 });
 </script>
 <template>
-  <!-- <ViewScaffold :title="'Productos'">
-    <template v-slot:action>
-      <RouterLink :to="{ name: 'product-add' }">
-        <v-btn flat color="success"
-          ><PlusIcon size="18" class="mr-2" />Agregar</v-btn
-        >
-      </RouterLink>
-    </template>
-    <div class="w-100 d-flex justify-space-between">
-      <v-text-field
-        v-model="search"
-        append-inner-icon="mdi-magnify"
-        label="Buscar"
-        class="search-w"
-      ></v-text-field>
-      <div class="d-flex gap-2">
-        <VBtn color="success"><VIcon>mdi-download</VIcon>Excel</VBtn>
-        <VBtn color="primary"><VIcon>mdi-download</VIcon>PDF</VBtn>
-      </div>
-    </div>
-    <v-data-table
-      :items="products"
-      :search="search"
-      fixed-header
-      :loading="isProductsLoading"
-    >
-      <template v-slot:item="{ item }">
-        <tr>
-          <td>{{ item.name }}</td>
-          <td>{{ item.price }}</td>
-          <td>{{ item.stock }}</td>
-          <td>{{ item.product_type_name }}</td>
-          <td>
-            <v-tooltip text="Edit">
-              <template v-slot:activator="{ props }">
-                <RouterLink
-                  :to="{ name: 'product-update', params: { id: item.id } }"
-                >
-                  <v-btn icon flat v-bind="props" variant="text"
-                    ><PencilIcon
-                      stroke-width="1.5"
-                      size="20"
-                      class="text-primary"
-                  /></v-btn>
-                </RouterLink>
-              </template>
-            </v-tooltip>
-            <v-tooltip text="Delete">
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  icon
-                  flat
-                  v-bind="props"
-                  variant="text"
-                  @click="onDeleteProduct(item)"
-                  :loading="deleteProductMutation.isPending.value"
-                  ><TrashIcon stroke-width="1.5" size="20" class="text-error"
-                /></v-btn>
-              </template>
-            </v-tooltip>
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
-  </ViewScaffold> -->
   <UIScaffold>
     <template #left-action>
       <h1>asd</h1>
     </template>
     <template #right-action>
       <RouterLink :to="{ name: 'product-add' }">
-        <v-btn flat color="success"
-          ><PlusIcon size="18" class="mr-2" />Agregar</v-btn
-        >
+        <v-btn flat color="success">Agregar</v-btn>
       </RouterLink>
     </template>
     <EasyDataTable

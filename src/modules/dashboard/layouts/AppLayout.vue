@@ -13,7 +13,14 @@ import "@dashboard/scss/style.scss";
     <MobileSideBar />
     <TopBar class="md:tw-mt-[2vh] tw-mt-0" />
     <VMain>
-      <RouterView class="tw-px-[1vw] md:tw-mt-[2vh] tw-mt-0"></RouterView>
+      <router-view
+        v-slot="{ Component }"
+        class="tw-px-[1vw] md:tw-mt-[2vh] tw-mt-0"
+      >
+        <transition name="slide-fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </VMain>
   </div>
 </template>

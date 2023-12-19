@@ -4,6 +4,7 @@ import { securityRoutes } from "../modules/security/route";
 import { personRoutes } from "../modules/persons/route";
 import { ProductRouter } from "../modules/products/route";
 import { pricingRoute } from "../modules/pricing/route";
+import { invetoryRoutes } from "../modules/inventory/route";
 
 export const dashboardRoutes: RouteRecordRaw[] = [
   {
@@ -22,6 +23,7 @@ export const dashboardRoutes: RouteRecordRaw[] = [
       ...personRoutes,
       ...ProductRouter,
       ...pricingRoute,
+      ...invetoryRoutes,
     ],
   },
 ];

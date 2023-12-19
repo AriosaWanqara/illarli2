@@ -15,7 +15,6 @@ export interface menu {
 }
 
 const navigationsItems: menu[] = [
-  { header: " " },
   {
     title: "Productos",
     icon: "material-symbols:production-quantity-limits-outline-rounded",
@@ -35,6 +34,18 @@ const navigationsItems: menu[] = [
         title: "Marcas",
         icon: "streamline:money-graph-bar-increase-up-product-performance-increase-arrow-graph-business-chart",
         to: "product-brands-list",
+      },
+    ],
+  },
+  {
+    title: "Inventario",
+    icon: "material-symbols:inventory",
+    to: "#",
+    children: [
+      {
+        title: "Compras",
+        icon: "arcticons:purchased-apps",
+        to: "purchase-list",
       },
     ],
   },

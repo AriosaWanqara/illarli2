@@ -20,7 +20,6 @@ const props = defineProps({ item: Object, level: Number });
     class="mb-1"
     :disabled="item.disabled"
     :target="item.type === 'external' ? '_blank' : ''"
-    v-scroll-to="{ el: '#top' }"
   >
     <!---If icon-->
     <template v-slot:prepend>

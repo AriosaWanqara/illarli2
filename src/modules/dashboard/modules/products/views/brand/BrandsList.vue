@@ -29,9 +29,7 @@ watch(deleteBrandMutation.isSuccess, () => {
   <ViewScaffold title="Marcas">
     <template #action>
       <RouterLink :to="{ name: 'product-brands-add' }">
-        <v-btn flat color="success"
-          ><PlusIcon size="18" class="mr-2" />Agregar</v-btn
-        >
+        <v-btn flat color="success">Agregar</v-btn>
       </RouterLink>
     </template>
     <template #default>

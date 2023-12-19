@@ -8,7 +8,7 @@ const props = defineProps({
 Card||=============================== //
 <template>
   <v-card elevation="0" variant="flat">
-    <v-card-item class="tw-py-4 tw-px-6 tw-pb-0">
+    <v-card-item>
       <div class="tw-flex tw-align-center tw-justify-between">
         <div class="tw-flex tw-align-center">
           <slot name="actionBack"></slot>
@@ -19,7 +19,7 @@ Card||=============================== //
         <!-- </template> -->
       </div>
     </v-card-item>
-    <v-card-text class="pt-2">
+    <v-card-text>
       <slot />
     </v-card-text>
   </v-card>
