@@ -26,6 +26,7 @@ export interface Product {
   categories: Category[];
   products: ProductChild[];
   inventory: Inventory[];
+  amount: number;
 }
 
 interface Inventory {

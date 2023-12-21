@@ -1,5 +1,99 @@
 <script setup lang="ts">
 import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
+import { useRoute, useRouter } from "vue-router";
+import usePurchase from "../../composables/purchase/usePurchase";
+import usePurchaseMutations from "../../composables/purchase/usePurchaseMutations";
+import useReceptionMutations from "../../composables/reception/useReceptionMutations";
+import { watch } from "vue";
+import type { AxiosError } from "axios";
+import type { PurchaseOrderReception } from "../../models/PurchaseOrderReception";
+import type { PurchaseToSave } from "../../models/Purchase";
+
+const params = useRoute().params;
+const router = useRouter();
+
+const { isPurchaseLoading, purchase, purchaseHasError, stalesPurchase } =
+  usePurchase(params.id.toString());
+
+const { updatePurchaseMutations } = usePurchaseMutations();
+const { saveReceptionMutations } = useReceptionMutations();
+
+const ensureMaxValue = (
+  $event: any,
+  order_amount: number,
+  receive_amount: number,
+  amount: number,
+  index: number
+) => {
+  if (amount > order_amount - receive_amount) {
+    purchase.value.details![index].amount = order_amount - receive_amount;
+    $event.preventDefault();
+  }
+};
+
+const onPurchaseSubmit = () => {
+  let newPurchase: PurchaseToSave = {
+    id: purchase.value.id,
+    user_id: purchase.value.user_id,
+    details: [],
+  };
+  purchase.value.details?.map((x) => {
+    if (x.amount! > 0) {
+      newPurchase.details?.push({
+        observation: x.observation,
+        id: x.id,
+        amount: x.amount,
+        order_amount: x.order_amount,
+        product: x.product,
+        unit_price: x.unit_price,
+        receive_amount:
+          parseFloat(x.amount!.toString()) +
+          parseFloat(x.receive_amount!.toString()),
+      });
+    }
+  });
+  console.log(newPurchase.details);
+  updatePurchaseMutations.mutate(newPurchase);
+};
+
+watch(updatePurchaseMutations.isError, () => {
+  if (updatePurchaseMutations.isError.value) {
+    let x = updatePurchaseMutations.error.value as AxiosError;
+    purchase.value = { ...stalesPurchase.value };
+    alert(x);
+  }
+});
+watch(updatePurchaseMutations.isSuccess, () => {
+  if (updatePurchaseMutations.isSuccess.value) {
+    let reception: Partial<PurchaseOrderReception> = {
+      purchase_order_id: purchase.value.id,
+      details: [],
+    };
+    purchase.value.details?.map((x) => {
+      reception.details?.push({
+        id: x.id!,
+        receive_amount: x.amount!,
+      });
+      x.missing_amount! -= parseFloat(x.amount!.toString());
+      x.receive_amount =
+        parseFloat(x.amount!.toString()) +
+        parseFloat(x.receive_amount!.toString());
+      x.amount = 0;
+    });
+    saveReceptionMutations.mutate(reception);
+    stalesPurchase.value = { ...purchase.value };
+  }
+});
+watch(saveReceptionMutations.isError, () => {
+  if (saveReceptionMutations.isError.value) {
+    let x = saveReceptionMutations.error.value as AxiosError;
+    alert(x);
+  }
+});
+watch(saveReceptionMutations.isSuccess, () => {
+  if (saveReceptionMutations.isSuccess.value) {
+  }
+});
 </script>
 
 <template>
@@ -13,7 +107,79 @@ import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
       </RouterLink>
     </template>
     <template #default>
-      <h1>Form</h1>
+      <p v-if="isPurchaseLoading">cargando</p>
+      <p v-else-if="purchaseHasError">error</p>
+      <VRow v-else>
+        <VCol cols="12">
+          <v-table fixed-header>
+            <thead class="table-head">
+              <tr>
+                <th class="text-left font-weight-black"><p>Nombre</p></th>
+                <th class="text-left font-weight-black"><p>Precio</p></th>
+                <th class="text-left font-weight-black"><p>Total</p></th>
+                <th class="text-left font-weight-black">
+                  <p>Cant. pedida</p>
+                </th>
+                <th class="text-left font-weight-black">
+                  <p>Cant. a recibir</p>
+                </th>
+                <th class="text-left font-weight-black">
+                  <p>Cant. faltante</p>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <TransitionGroup name="fade">
+                <tr
+                  v-for="(data, index) in purchase.details"
+                  :key="data.product.id"
+                >
+                  <td>{{ data.product.name }}</td>
+                  <td>{{ data.product.price }}</td>
+                  <td>
+                    {{
+                      (
+                        parseFloat(data.product.price) * data.order_amount
+                      ).toFixed(2)
+                    }}
+                  </td>
+                  <td>{{ data.order_amount }}</td>
+                  <td>
+                    <VTextField
+                      v-model="data.amount"
+                      type="number"
+                      :max="data.order_amount - data.receive_amount!"
+                      @input="
+                        ensureMaxValue(
+                          $event,
+                          data.order_amount,
+                          data.receive_amount!,
+                          data.amount!,
+                          index
+                        )
+                      "
+                    />
+                  </td>
+                  <td>
+                    {{ data.missing_amount }}
+                  </td>
+                </tr>
+              </TransitionGroup>
+            </tbody>
+          </v-table>
+        </VCol>
+        <VCol cols="12">
+          <VBtn
+            @click="onPurchaseSubmit"
+            :loading="
+              updatePurchaseMutations.isPending.value ||
+              saveReceptionMutations.isPending.value
+            "
+          >
+            crear
+          </VBtn>
+        </VCol>
+      </VRow>
     </template>
   </UIScaffold>
 </template>

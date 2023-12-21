@@ -14,7 +14,7 @@ const fetchPurchases = async (): Promise<Purchase[]> => {
 };
 
 const usePurchases = () => {
-  const { data, isError, isFetching } = useQuery({
+  const { data, isError, isFetching, refetch } = useQuery({
     queryFn: fetchPurchases,
     queryKey: ["purchases"],
   });
@@ -29,6 +29,7 @@ const usePurchases = () => {
     purchases,
     isPurchasesLoading: isFetching,
     purchasesHasError: isError,
+    refetchPurchases: refetch,
   };
 };
 

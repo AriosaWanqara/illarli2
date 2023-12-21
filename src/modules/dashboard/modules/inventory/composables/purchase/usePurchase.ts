@@ -1,14 +1,15 @@
-import { ref, watch } from "vue";
-import type { Purchase } from "../../models/Purchase";
 import api from "@/api/axios";
-import type { PurchaseApiResponse } from "../../models/ApiResponse";
 import { useQuery } from "@tanstack/vue-query";
+import { isReadonly, ref, watch } from "vue";
+import type { PurchaseApiResponse } from "../../models/ApiResponse";
+import type { Detail, Purchase } from "../../models/Purchase";
 
 const purchase = ref<Purchase>({} as Purchase);
+const stalesPurchase = ref<Purchase>({} as Purchase);
 
 const fetchPurchase = async (id: string): Promise<Purchase> => {
   const { data } = await api.get<PurchaseApiResponse>(
-    "/accounting/purchase-orders"
+    `/accounting/purchase-orders/${id}`
   );
   return data.data;
 };
@@ -21,12 +22,17 @@ const usePurchase = (id: string) => {
 
   watch(data, () => {
     if (data.value) {
-      purchase.value = data.value;
+      purchase.value = { ...data.value, details: [] };
+      data.value.details?.map((x) => {
+        purchase.value.details!.push({ ...x, amount: 0 });
+      });
+      stalesPurchase.value = { ...purchase.value };
     }
   });
 
   return {
     purchase,
+    stalesPurchase,
     isPurchaseLoading: isFetching,
     purchaseHasError: isError,
   };
