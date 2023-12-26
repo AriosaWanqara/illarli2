@@ -1,19 +1,19 @@
 import { ref, watch } from "vue";
-import type { Purchase } from "../../models/Purchase";
+import type { PurchaseOrder } from "../../models/PurchaseOrder";
 import api from "@/api/axios";
-import type { PurchasesApiResponse } from "../../models/ApiResponse";
+import type { PurchaseOrdersApiResponse } from "../../models/ApiResponse";
 import { useQuery } from "@tanstack/vue-query";
 
-const purchases = ref<Purchase[]>([]);
+const purchases = ref<PurchaseOrder[]>([]);
 
-const fetchPurchases = async (): Promise<Purchase[]> => {
-  const { data } = await api.get<PurchasesApiResponse>(
+const fetchPurchases = async (): Promise<PurchaseOrder[]> => {
+  const { data } = await api.get<PurchaseOrdersApiResponse>(
     "/accounting/purchase-orders"
   );
   return data.data;
 };
 
-const usePurchases = () => {
+const usePurchaseOrders = () => {
   const { data, isError, isFetching, refetch } = useQuery({
     queryFn: fetchPurchases,
     queryKey: ["purchases"],
@@ -33,4 +33,4 @@ const usePurchases = () => {
   };
 };
 
-export default usePurchases;
+export default usePurchaseOrders;

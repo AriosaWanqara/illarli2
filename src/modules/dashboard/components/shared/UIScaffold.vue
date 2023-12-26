@@ -8,7 +8,7 @@
           <div class="">
             <slot name="left-action" />
           </div>
-          <div>
+          <div class="tw-flex tw-gap-1">
             <slot name="right-action" />
           </div>
         </div>

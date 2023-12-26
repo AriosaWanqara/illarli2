@@ -5,26 +5,26 @@ import { ref, watch } from "vue";
 import useProviders from "../../../persons/composables/provider/useProviders";
 import useProducts from "../../../products/composables/product/useProducts";
 import type { Product } from "../../../products/models/products/Product";
-import usePurchaseMutations from "../../composables/purchase/usePurchaseMutations";
-import type { Detail, PurchaseToSave } from "../../models/Purchase";
+import usePurchaseOrderMutations from "../../composables/purchase/usePurchaseOrderMutations";
+import type { Detail, PurchaseOrderToSave } from "../../models/PurchaseOrder";
 import { useRouter } from "vue-router";
 import type { AxiosError } from "axios";
 
 const { isProductsLoading, products, productsHasError } = useProducts();
 const { isProvidersLoading, providers, providersHasError } = useProviders();
-const { savePurchaseMutations } = usePurchaseMutations();
+const { savePurchaseMutations } = usePurchaseOrderMutations();
 
 const { user } = useUserStore();
 const router = useRouter();
 const selectedProvider = ref();
 const selectedProducts = ref<Product[]>([]);
 const selectedProductsNotReadOnly = ref<Product[]>([]);
-const purchase = ref<PurchaseToSave>({
+const purchase = ref<PurchaseOrderToSave>({
   user_id: user.id,
   subsidiary_id: "9ac8b6c2-0c10-4860-8f7c-038d0ba4513d",
   warehouse_id: "9ac8b6c2-1706-4d5f-827c-fc81751bc03d",
   details: [] as Detail[],
-} as PurchaseToSave);
+} as PurchaseOrderToSave);
 
 watch(selectedProducts, () => {
   purchase.value.items = selectedProducts.value.length;
@@ -66,7 +66,7 @@ watch(savePurchaseMutations.isError, () => {
 });
 watch(savePurchaseMutations.isSuccess, () => {
   if (savePurchaseMutations.isSuccess.value) {
-    router.push({ name: "purchase-list" });
+    router.push({ name: "purchase-order-list" });
   }
 });
 </script>
@@ -77,7 +77,7 @@ watch(savePurchaseMutations.isSuccess, () => {
       <h1>Agregar Compras</h1>
     </template>
     <template #right-action>
-      <RouterLink :to="{ name: 'purchase-list' }">
+      <RouterLink :to="{ name: 'purchase-order-list' }">
         <VBtn color="success">back</VBtn>
       </RouterLink>
     </template>
@@ -154,3 +154,4 @@ watch(savePurchaseMutations.isSuccess, () => {
 </template>
 
 <style scoped></style>
+../../models/PurchaseOrder ../../composables/purchase/usePurchaseOrderMutations

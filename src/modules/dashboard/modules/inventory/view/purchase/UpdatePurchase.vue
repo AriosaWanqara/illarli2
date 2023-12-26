@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
 import { useRoute, useRouter } from "vue-router";
-import usePurchase from "../../composables/purchase/usePurchase";
-import usePurchaseMutations from "../../composables/purchase/usePurchaseMutations";
+import usePurchaseOrder from "../../composables/purchase/usePurchaseOrder";
+import usePurchaseOrderMutations from "../../composables/purchase/usePurchaseOrderMutations";
 import useReceptionMutations from "../../composables/reception/useReceptionMutations";
 import { watch } from "vue";
 import type { AxiosError } from "axios";
 import type { PurchaseOrderReception } from "../../models/PurchaseOrderReception";
-import type { PurchaseToSave } from "../../models/Purchase";
+import type {
+  PurchaseOrderToSave,
+  PurchaseToSave,
+} from "../../models/PurchaseOrder";
+import usePurchaseMutations from "../../composables/purchase/usePurchaseMutations";
 
 const params = useRoute().params;
-const router = useRouter();
 
 const { isPurchaseLoading, purchase, purchaseHasError, stalesPurchase } =
-  usePurchase(params.id.toString());
-
-const { updatePurchaseMutations } = usePurchaseMutations();
+  usePurchaseOrder(params.id.toString());
+const { savePurchaseMutations } = usePurchaseMutations();
+const { updatePurchaseMutations } = usePurchaseOrderMutations();
 const { saveReceptionMutations } = useReceptionMutations();
 
 const ensureMaxValue = (
@@ -32,7 +35,7 @@ const ensureMaxValue = (
 };
 
 const onPurchaseSubmit = () => {
-  let newPurchase: PurchaseToSave = {
+  let newPurchase: PurchaseOrderToSave = {
     id: purchase.value.id,
     user_id: purchase.value.user_id,
     details: [],
@@ -52,7 +55,6 @@ const onPurchaseSubmit = () => {
       });
     }
   });
-  console.log(newPurchase.details);
   updatePurchaseMutations.mutate(newPurchase);
 };
 
@@ -65,6 +67,28 @@ watch(updatePurchaseMutations.isError, () => {
 });
 watch(updatePurchaseMutations.isSuccess, () => {
   if (updatePurchaseMutations.isSuccess.value) {
+    if (updatePurchaseMutations.data.value) {
+      if (
+        updatePurchaseMutations.data.value.details!.every(
+          (x) => x.receive_amount! <= x.order_amount
+        )
+      ) {
+        let purchase: PurchaseToSave = {
+          ...updatePurchaseMutations.data.value,
+          details: [],
+        };
+        updatePurchaseMutations.data.value.details?.map((x) => {
+          purchase.details!.push({
+            order_amount: x.order_amount,
+            unit_price: x.unit_price,
+            observation: x.observation,
+            product: x.product,
+          });
+        });
+        delete purchase.status;
+        savePurchaseMutations.mutate(purchase);
+      }
+    }
     let reception: Partial<PurchaseOrderReception> = {
       purchase_order_id: purchase.value.id,
       details: [],
@@ -94,6 +118,19 @@ watch(saveReceptionMutations.isSuccess, () => {
   if (saveReceptionMutations.isSuccess.value) {
   }
 });
+
+watch(savePurchaseMutations.isError, () => {
+  if (savePurchaseMutations.isError.value) {
+    let x = savePurchaseMutations.error.value as AxiosError;
+    alert(JSON.stringify(x.response?.data));
+  }
+});
+
+watch(savePurchaseMutations.isSuccess, () => {
+  if (savePurchaseMutations.isSuccess.value) {
+    alert("Compra guardada");
+  }
+});
 </script>
 
 <template>
@@ -102,7 +139,7 @@ watch(saveReceptionMutations.isSuccess, () => {
       <h1>Actualizar Compras</h1>
     </template>
     <template #right-action>
-      <RouterLink :to="{ name: 'purchase-list' }">
+      <RouterLink :to="{ name: 'purchase-order-list' }">
         <VBtn color="success">back</VBtn>
       </RouterLink>
     </template>

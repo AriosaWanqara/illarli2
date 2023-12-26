@@ -1,8 +1,12 @@
-import type { Purchase } from "./Purchase";
+import type { PurchaseOrder } from "./PurchaseOrder";
+import type { Purchases } from "./Purchases";
 
-export interface PurchasesApiResponse {
-  data: Purchase[];
+export interface PurchaseOrdersApiResponse {
+  data: PurchaseOrder[];
 }
-export interface PurchaseApiResponse {
-  data: Purchase;
+export interface PurchasesApiResponse {
+  data: Purchases[];
+}
+export interface PurchaseOrderApiResponse {
+  data: PurchaseOrder;
 }

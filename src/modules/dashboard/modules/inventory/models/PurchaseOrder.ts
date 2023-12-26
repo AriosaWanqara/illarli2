@@ -2,7 +2,7 @@ import type { Provider } from "../../persons/models/Provider";
 import type { Product } from "../../products/models/products/Product";
 import type { PurchaseOrderReception } from "./PurchaseOrderReception";
 
-export interface Purchase {
+export interface PurchaseOrder {
   id: string;
   date: string;
   user_id: string;
@@ -21,7 +21,7 @@ export interface Purchase {
   details?: Detail[];
 }
 
-export interface PurchaseToSave {
+export interface PurchaseOrderToSave {
   id: string;
   date?: string;
   items?: number;
@@ -43,4 +43,16 @@ export interface Detail {
   unit_price: number;
   observation: string;
   product: Product;
+}
+export interface PurchaseToSave {
+  id: string;
+  date?: string;
+  status?: string;
+  items?: number;
+  user_id?: string;
+  observation?: string;
+  subsidiary_id?: string;
+  warehouse_id?: string;
+  supplier?: Provider;
+  details?: Detail[];
 }

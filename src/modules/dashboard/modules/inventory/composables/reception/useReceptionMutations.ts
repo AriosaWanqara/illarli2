@@ -5,15 +5,12 @@ import { useMutation } from "@tanstack/vue-query";
 const saveReception = async (
   reception: Partial<PurchaseOrderReception>
 ): Promise<any> => {
-  const { data } = await api.post(
-    "/accounting/purchase-order-partials",
-    reception
-  );
+  const { data } = await api.post("/accounting/partial-orders", reception);
   return data;
 };
 
 const deleteReception = async (id: string): Promise<any> => {
-  const { data } = await api.put(`/accounting/purchase-order-partials/${id}`);
+  const { data } = await api.put(`/accounting/partial-orders/${id}`);
   return data;
 };
 

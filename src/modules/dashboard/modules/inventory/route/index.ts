@@ -12,6 +12,14 @@ export const invetoryRoutes: RouteRecordRaw[] = [
           import("@dashboard/modules/inventory/view/purchase/PurchaseList.vue"),
       },
       {
+        path: "pedidos",
+        name: "purchase-order-list",
+        component: () =>
+          import(
+            "@dashboard/modules/inventory/view/purchase/PurchaseOrderList.vue"
+          ),
+      },
+      {
         path: "compras/add",
         name: "purchase-add",
         component: () =>

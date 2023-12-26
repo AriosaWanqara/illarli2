@@ -1,20 +1,20 @@
 import api from "@/api/axios";
 import { useQuery } from "@tanstack/vue-query";
-import { isReadonly, ref, watch } from "vue";
-import type { PurchaseApiResponse } from "../../models/ApiResponse";
-import type { Detail, Purchase } from "../../models/Purchase";
+import { ref, watch } from "vue";
+import type { PurchaseOrderApiResponse } from "../../models/ApiResponse";
+import type { PurchaseOrder } from "../../models/PurchaseOrder";
 
-const purchase = ref<Purchase>({} as Purchase);
-const stalesPurchase = ref<Purchase>({} as Purchase);
+const purchase = ref<PurchaseOrder>({} as PurchaseOrder);
+const stalesPurchase = ref<PurchaseOrder>({} as PurchaseOrder);
 
-const fetchPurchase = async (id: string): Promise<Purchase> => {
-  const { data } = await api.get<PurchaseApiResponse>(
+const fetchPurchase = async (id: string): Promise<PurchaseOrder> => {
+  const { data } = await api.get<PurchaseOrderApiResponse>(
     `/accounting/purchase-orders/${id}`
   );
   return data.data;
 };
 
-const usePurchase = (id: string) => {
+const usePurchaseOrder = (id: string) => {
   const { data, isError, isFetching } = useQuery({
     queryFn: () => fetchPurchase(id),
     queryKey: ["purchase", id],
@@ -38,4 +38,4 @@ const usePurchase = (id: string) => {
   };
 };
 
-export default usePurchase;
+export default usePurchaseOrder;
