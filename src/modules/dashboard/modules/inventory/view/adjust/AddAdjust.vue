@@ -1,100 +1,97 @@
 <script setup lang="ts">
 import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
-import { useUserStore } from "@/stores/userStore";
 import { ref, watch } from "vue";
-import useProviders from "../../../persons/composables/provider/useProviders";
+import useWareHouses from "../../../config/composables/warehouse/useWareHouses";
 import useProducts from "../../../products/composables/product/useProducts";
 import type { Product } from "../../../products/models/products/Product";
-import usePurchaseOrderMutations from "../../composables/purchase/usePurchaseOrderMutations";
-import type { PurchaseOrderToSave } from "../../models/PurchaseOrder";
-import { useRouter } from "vue-router";
+import useAdjustMutations from "../../composables/adjust/useAdjustMutations";
+import type { Adjust } from "../../models/Adjust";
+import { useUserStore } from "@/stores/userStore";
 import type { AxiosError } from "axios";
-import type { Detail } from "../../models/Details";
+import { useRouter } from "vue-router";
 
-const { isProductsLoading, products, productsHasError } = useProducts();
-const { isProvidersLoading, providers, providersHasError } = useProviders();
-const { savePurchaseMutations } = usePurchaseOrderMutations();
-
+const { wareHouses, isWareHousesLoading } = useWareHouses();
 const { user } = useUserStore();
-const router = useRouter();
-const selectedProvider = ref();
+const { isProductsLoading, products } = useProducts();
 const selectedProducts = ref<Product[]>([]);
 const selectedProductsNotReadOnly = ref<Product[]>([]);
-const purchase = ref<PurchaseOrderToSave>({
-  user_id: user.id,
-  subsidiary_id: "9ac8b6c2-0c10-4860-8f7c-038d0ba4513d",
-  warehouse_id: "9ac8b6c2-1706-4d5f-827c-fc81751bc03d",
-  details: [] as Detail[],
-} as PurchaseOrderToSave);
+const { saveAdjustMutations } = useAdjustMutations();
+const adjust = ref<Adjust>({} as Adjust);
+const router = useRouter();
 
 watch(selectedProducts, () => {
-  purchase.value.items = selectedProducts.value.length;
   selectedProductsNotReadOnly.value = [];
   selectedProducts.value.map((x) => {
     selectedProductsNotReadOnly.value.push({ ...x, amount: 1 });
   });
 });
 
-watch(
-  selectedProductsNotReadOnly,
-  () => {
-    purchase.value.details = [];
-    selectedProductsNotReadOnly.value.map((x) => {
-      purchase.value.details!.push({
-        observation: "a",
-        product: x,
-        order_amount: x.amount,
-        unit_price: parseFloat(x.price),
-      });
+const onInventorySubmit = () => {
+  adjust.value.items = selectedProductsNotReadOnly.value.length;
+  adjust.value.user_id = user.id;
+  adjust.value.details = [];
+  selectedProductsNotReadOnly.value.map((x) => {
+    adjust.value.details.push({
+      order_amount: x.amount,
+      amount: x.active,
+      product: x,
+      unit_price: parseFloat(x.price),
     });
-  },
-  { deep: true }
-);
-
-watch(selectedProvider, () => {
-  purchase.value.supplier = selectedProvider.value;
-});
-
-const onPurchaseSubmit = () => {
-  savePurchaseMutations.mutate(purchase.value);
+  });
+  saveAdjustMutations.mutate(adjust.value);
 };
 
-watch(savePurchaseMutations.isError, () => {
-  if (savePurchaseMutations.isError.value) {
-    let x = savePurchaseMutations.error.value as AxiosError;
+watch(saveAdjustMutations.isError, () => {
+  if (saveAdjustMutations.isError.value) {
+    let x = saveAdjustMutations.error.value as AxiosError;
     alert(JSON.stringify(x.response?.data));
   }
 });
-watch(savePurchaseMutations.isSuccess, () => {
-  if (savePurchaseMutations.isSuccess.value) {
-    router.push({ name: "purchase-order-list" });
+watch(saveAdjustMutations.isSuccess, () => {
+  if (saveAdjustMutations.isSuccess.value) {
+    router.push({ name: "adjust-list" });
   }
 });
 </script>
 
 <template>
-  <UIScaffold title="Compras">
+  <UIScaffold>
     <template #left-action>
-      <h1>Agregar Compras</h1>
+      <h1>Agregar Ajustes</h1>
     </template>
     <template #right-action>
-      <RouterLink :to="{ name: 'purchase-order-list' }">
-        <VBtn color="success">back</VBtn>
+      <RouterLink :to="{ name: 'adjust-list' }">
+        <VBtn>back</VBtn>
       </RouterLink>
     </template>
     <template #default>
       <VRow>
-        <VCol cols="6">
-          <VSelect
-            label="Provider"
-            :items="providers"
-            item-title="name"
-            return-object
-            v-model="selectedProvider"
-            :loading="isProvidersLoading"
-          />
+        <VCol cols="12">
+          <VTextField label="Descripcion" v-model="adjust.reason" />
         </VCol>
-        <VCol cols="6">
+        <VCol cols="12" class="py-0">
+          <VSelect
+            item-title="key"
+            v-model="adjust.type"
+            :items="[
+              { key: 'Ingreso', value: '01' },
+              { key: 'Egreso', value: '02' },
+            ]"
+            label="Type"
+            item-value="value"
+          ></VSelect>
+        </VCol>
+        <VCol cols="6" class="py-0">
+          <VSelect
+            item-title="name"
+            v-model="adjust.warehouse_id"
+            :items="wareHouses"
+            label="bodega"
+            item-value="id"
+            :loading="isWareHousesLoading"
+          ></VSelect>
+        </VCol>
+        <VCol cols="6" class="py-0">
           <VSelect
             label="Products"
             :items="products"
@@ -105,7 +102,7 @@ watch(savePurchaseMutations.isSuccess, () => {
             :loading="isProductsLoading"
           />
         </VCol>
-        <VCol cols="12">
+        <VCol cols="12" class="py-0">
           <v-table fixed-header id="asd">
             <thead class="table-head">
               <tr>
@@ -143,11 +140,10 @@ watch(savePurchaseMutations.isSuccess, () => {
         </VCol>
         <VCol cols="12">
           <VBtn
-            @click="onPurchaseSubmit"
-            :loading="savePurchaseMutations.isPending.value"
+            @click="onInventorySubmit"
+            :loading="saveAdjustMutations.isPending.value"
+            >crear</VBtn
           >
-            crear
-          </VBtn>
         </VCol>
       </VRow>
     </template>
@@ -155,4 +151,3 @@ watch(savePurchaseMutations.isSuccess, () => {
 </template>
 
 <style scoped></style>
-../../models/PurchaseOrder ../../composables/purchase/usePurchaseOrderMutations

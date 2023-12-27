@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
-import { useRoute, useRouter } from "vue-router";
+import type { AxiosError } from "axios";
+import { watch } from "vue";
+import { useRoute } from "vue-router";
+import usePurchaseMutations from "../../composables/purchase/usePurchaseMutations";
 import usePurchaseOrder from "../../composables/purchase/usePurchaseOrder";
 import usePurchaseOrderMutations from "../../composables/purchase/usePurchaseOrderMutations";
 import useReceptionMutations from "../../composables/reception/useReceptionMutations";
-import { watch } from "vue";
-import type { AxiosError } from "axios";
-import type { PurchaseOrderReception } from "../../models/PurchaseOrderReception";
 import type {
   PurchaseOrderToSave,
   PurchaseToSave,
 } from "../../models/PurchaseOrder";
-import usePurchaseMutations from "../../composables/purchase/usePurchaseMutations";
+import type { PurchaseOrderReception } from "../../models/PurchaseOrderReception";
 
 const params = useRoute().params;
 
@@ -83,6 +83,8 @@ watch(updatePurchaseMutations.isSuccess, () => {
             unit_price: x.unit_price,
             observation: x.observation,
             product: x.product,
+            missing_amount: x.missing_amount,
+            receive_amount: x.receive_amount,
           });
         });
         delete purchase.status;

@@ -47,6 +47,11 @@ const navigationsItems: menu[] = [
         icon: "arcticons:purchased-apps",
         to: "purchase-list",
       },
+      {
+        title: "Ajustes",
+        icon: "arcticons:purchased-apps",
+        to: "adjust-list",
+      },
     ],
   },
   { header: " " },

@@ -6,6 +6,18 @@ export const invetoryRoutes: RouteRecordRaw[] = [
     name: "invetory-home",
     children: [
       {
+        path: "adjuste",
+        name: "adjust-list",
+        component: () =>
+          import("@dashboard/modules/inventory/view/adjust/AdjustList.vue"),
+      },
+      {
+        path: "adjuste/add",
+        name: "adjust-add",
+        component: () =>
+          import("@dashboard/modules/inventory/view/adjust/AddAdjust.vue"),
+      },
+      {
         path: "compras",
         name: "purchase-list",
         component: () =>

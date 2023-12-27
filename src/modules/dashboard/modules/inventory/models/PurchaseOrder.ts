@@ -1,5 +1,5 @@
 import type { Provider } from "../../persons/models/Provider";
-import type { Product } from "../../products/models/products/Product";
+import type { Detail } from "./Details";
 import type { PurchaseOrderReception } from "./PurchaseOrderReception";
 
 export interface PurchaseOrder {
@@ -34,16 +34,6 @@ export interface PurchaseOrderToSave {
   details?: Detail[];
 }
 
-export interface Detail {
-  id?: string;
-  order_amount: number;
-  receive_amount?: number;
-  missing_amount?: number;
-  amount?: number;
-  unit_price: number;
-  observation: string;
-  product: Product;
-}
 export interface PurchaseToSave {
   id: string;
   date?: string;
