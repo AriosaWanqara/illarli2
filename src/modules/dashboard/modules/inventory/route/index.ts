@@ -6,6 +6,30 @@ export const invetoryRoutes: RouteRecordRaw[] = [
     name: "invetory-home",
     children: [
       {
+        path: "transferencias",
+        name: "transference-list",
+        component: () =>
+          import(
+            "@dashboard/modules/inventory/view/transference/ListTransferences.vue"
+          ),
+      },
+      {
+        path: "transferencias/add",
+        name: "transference-add",
+        component: () =>
+          import(
+            "@dashboard/modules/inventory/view/transference/MakeTransference.vue"
+          ),
+      },
+      {
+        path: "transferencias/reception",
+        name: "transference-reception",
+        component: () =>
+          import(
+            "@dashboard/modules/inventory/view/transference/ReceptTransference.vue"
+          ),
+      },
+      {
         path: "adjuste",
         name: "adjust-list",
         component: () =>

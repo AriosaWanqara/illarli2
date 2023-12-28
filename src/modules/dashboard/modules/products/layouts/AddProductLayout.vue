@@ -10,7 +10,7 @@ const ProductType = ref([
   {
     label: "Estandar",
     to: "product-add-standar",
-    icon: "",
+    icon: "material-symbols:add-business",
   },
   // {
   //     label: 'Serie',
@@ -72,7 +72,9 @@ const navegate = (to: string) => {
             @click="navegate(item.to)"
           >
             <v-card-item>
-              {{ item.label }}
+              <div class="tw-text-center">
+                {{ item.label }}
+              </div>
             </v-card-item>
           </VCard>
         </PerfectScrollbar>

@@ -52,9 +52,96 @@ const navigationsItems: menu[] = [
         icon: "arcticons:purchased-apps",
         to: "adjust-list",
       },
+      {
+        title: "Transferencias",
+        icon: "ph:truck-fill",
+        to: "transference-list",
+      },
     ],
   },
-  { header: " " },
+  {
+    title: "Seguridad",
+    icon: "ic:outline-security",
+    to: "#",
+    children: [
+      {
+        title: "Usuarios",
+        icon: "material-symbols:manage-accounts-rounded",
+        to: "users-list",
+      },
+      {
+        title: "Roles",
+        icon: "eos-icons:role-binding",
+        to: "roles-list",
+      },
+    ],
+  },
+  {
+    title: "Person",
+    icon: "material-symbols:supervisor-account",
+    to: "#",
+    children: [
+      {
+        title: "Clientes",
+        icon: "material-symbols:person-add-rounded",
+        to: "client-list",
+      },
+      {
+        title: "proveedores",
+        icon: "material-symbols-light:person-4-rounded",
+        to: "provider-list",
+      },
+    ],
+  },
+  {
+    title: "Pricing",
+    icon: "ic:baseline-price-change",
+    to: "#",
+    children: [
+      {
+        title: "Tarifas",
+        icon: "streamline:subscription-cashflow-solid",
+        to: "rate-list",
+      },
+      {
+        title: "Promotions",
+        icon: "carbon:promote",
+        to: "promotions-list",
+      },
+    ],
+  },
+  {
+    title: "config",
+    icon: "material-symbols:settings-heart-outline-rounded",
+    to: "#",
+    children: [
+      {
+        title: "Cajas",
+        icon: "fa6-solid:cash-register",
+        to: "config-cashdrawer-list",
+      },
+      {
+        title: "Sucursales",
+        icon: "solar:buildings-3-bold",
+        to: "config-subsidiaries-list",
+      },
+      {
+        title: "Bodegas",
+        icon: "ic:sharp-warehouse",
+        to: "config-wharehouses-list",
+      },
+      {
+        title: "Mis datos",
+        icon: "streamline:interface-file-folder-work-office-company-folder-supplies-file",
+        to: "config-company-account",
+      },
+      {
+        title: "Company",
+        icon: "material-symbols:add-business",
+        to: "config-company-list",
+      },
+    ],
+  },
 ];
 
 export default navigationsItems;

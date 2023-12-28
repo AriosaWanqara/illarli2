@@ -13,7 +13,11 @@ const onAproved = (adjust: Adjust) => {
   let newAdjust: Partial<Adjust> = {
     status: "07",
     id: adjust.id,
+    details: [],
   };
+  adjust.details.map((x) => {
+    newAdjust.details!.push({ ...x, amount: x.order_amount });
+  });
   updateAdjustMutations.mutate(newAdjust);
 };
 
@@ -51,7 +55,11 @@ watch(updateAdjustMutations.isSuccess, () => {
       >
         <p>{{ item.id }}</p>
         <div v-if="item.status == 'REGISTRADO'">
-          <VBtn @click="onAproved(item)">Aprobar</VBtn>
+          <VBtn
+            @click="onAproved(item)"
+            :loading="updateAdjustMutations.isPending.value"
+            >Aprobar</VBtn
+          >
         </div>
         <div v-else>
           {{ item.status }}

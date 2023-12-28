@@ -7,19 +7,22 @@ import useWareHouseRules from "../../composables/warehouse/useWareHouseRules";
 import useWareHousesMutations from "../../composables/warehouse/useWareHousesMutations";
 import type { WareHouse } from "../../models/WareHouse";
 import useSubsidiaries from "../../composables/subsidiary/useSubsidiaries";
+import useWareHouseTypes from "../../composables/warehouse/useWareHouseTypes";
 
 const { saveWareHouseMutation } = useWareHousesMutations();
 const { wareHouseRules } = useWareHouseRules();
 const { isSubsidiariesLoading, subsidiaryDropdown, subsidiariesHasError } =
   useSubsidiaries();
-const whareHouse = ref<WareHouse>({} as WareHouse);
-const whareHouseValidator = useVuelidate(wareHouseRules, whareHouse);
+
+const { isWareHouseTypesLoading, wareHouseTypes } = useWareHouseTypes();
+const wareHouse = ref<WareHouse>({} as WareHouse);
+const whareHouseValidator = useVuelidate(wareHouseRules, wareHouse);
 const router = useRouter();
 
 const onWhareHouseSubmit = () => {
   whareHouseValidator.value.$validate();
   if (!whareHouseValidator.value.$error) {
-    saveWareHouseMutation.mutate(whareHouse.value);
+    saveWareHouseMutation.mutate(wareHouse.value);
   } else {
     alert(
       JSON.stringify(whareHouseValidator.value.$errors.map((x) => x.$message))
@@ -54,19 +57,28 @@ watch(saveWareHouseMutation.isSuccess, () => {
     <template #default>
       <VRow class="mt-1">
         <VCol cols="6" class="py-1">
-          <VTextField label="nombre" v-model="whareHouse.name" />
+          <VSelect
+            :items="wareHouseTypes"
+            item-title="name"
+            label="tipo"
+            item-value="id"
+            v-model="wareHouse.warehouse_type_id"
+          />
         </VCol>
         <VCol cols="6" class="py-1">
-          <VTextField label="code" v-model="whareHouse.code" />
+          <VTextField label="nombre" v-model="wareHouse.name" />
         </VCol>
         <VCol cols="6" class="py-1">
-          <VTextField label="address" v-model="whareHouse.address" />
+          <VTextField label="code" v-model="wareHouse.code" />
+        </VCol>
+        <VCol cols="6" class="py-1">
+          <VTextField label="address" v-model="wareHouse.address" />
         </VCol>
         <VCol cols="6" class="py-1">
           <VSelect
             label="subsidiary"
             :loading="isSubsidiariesLoading"
-            v-model="whareHouse.subsidiary_id"
+            v-model="wareHouse.subsidiary_id"
             :items="subsidiaryDropdown"
             item-title="label"
             item-value="value"

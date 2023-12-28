@@ -1,23 +1,42 @@
 <script setup lang="ts">
 import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
+import { useUserStore } from "@/stores/userStore";
+import type { AxiosError } from "axios";
 import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import useWareHouses from "../../../config/composables/warehouse/useWareHouses";
 import useProducts from "../../../products/composables/product/useProducts";
 import type { Product } from "../../../products/models/products/Product";
-import useAdjustMutations from "../../composables/adjust/useAdjustMutations";
-import type { Adjust } from "../../models/Adjust";
-import { useUserStore } from "@/stores/userStore";
-import type { AxiosError } from "axios";
-import { useRouter } from "vue-router";
+import useTransferenceMutations from "../../composables/transference/useTransferenceMutations";
+import type { Transference } from "../../models/Transference";
+import moment from "moment";
 
 const { wareHouses, isWareHousesLoading } = useWareHouses();
 const { user } = useUserStore();
+const { saveTransferenceMutations } = useTransferenceMutations();
 const { isProductsLoading, products } = useProducts();
 const selectedProducts = ref<Product[]>([]);
 const selectedProductsNotReadOnly = ref<Product[]>([]);
-const { saveAdjustMutations } = useAdjustMutations();
-const adjust = ref<Adjust>({} as Adjust);
+const transference = ref<Transference>({} as Transference);
 const router = useRouter();
+
+const onTransferenceSubmit = () => {
+  transference.value.sender_user_id = user.id;
+  transference.value.details = [];
+  transference.value.items = selectedProductsNotReadOnly.value.length;
+  transference.value.shipping_date = moment(new Date()).format(
+    "DD-MM-YYYY HH:mm"
+  );
+  selectedProductsNotReadOnly.value.map((x) => {
+    transference.value.details.push({
+      order_amount: x.amount,
+      amount: x.amount,
+      product: x,
+      unit_price: parseFloat(x.price),
+    });
+  });
+  saveTransferenceMutations.mutate(transference.value);
+};
 
 watch(selectedProducts, () => {
   selectedProductsNotReadOnly.value = [];
@@ -26,72 +45,54 @@ watch(selectedProducts, () => {
   });
 });
 
-const onInventorySubmit = () => {
-  adjust.value.items = selectedProductsNotReadOnly.value.length;
-  adjust.value.user_id = user.id;
-  adjust.value.details = [];
-  selectedProductsNotReadOnly.value.map((x) => {
-    adjust.value.details.push({
-      order_amount: x.amount,
-      amount: x.amount,
-      product: x,
-      unit_price: parseFloat(x.price),
-    });
-  });
-  saveAdjustMutations.mutate(adjust.value);
-};
-
-watch(saveAdjustMutations.isError, () => {
-  if (saveAdjustMutations.isError.value) {
-    let x = saveAdjustMutations.error.value as AxiosError;
+watch(saveTransferenceMutations.isError, () => {
+  if (saveTransferenceMutations.isError.value) {
+    let x = saveTransferenceMutations.error.value as AxiosError;
     alert(JSON.stringify(x.response?.data));
   }
 });
-watch(saveAdjustMutations.isSuccess, () => {
-  if (saveAdjustMutations.isSuccess.value) {
-    router.push({ name: "adjust-list" });
+
+watch(saveTransferenceMutations.isSuccess, () => {
+  if (saveTransferenceMutations.isSuccess.value) {
+    router.push({ name: "transference-list" });
   }
 });
 </script>
 
 <template>
-  <UIScaffold>
-    <template #left-action>
-      <h1>Agregar Ajustes</h1>
-    </template>
+  <UIScaffold title="Transferencias">
+    <template #left-action>Crear Transferencias </template>
     <template #right-action>
-      <RouterLink :to="{ name: 'adjust-list' }">
-        <VBtn>back</VBtn>
+      <RouterLink :to="{ name: 'transference-list' }">
+        <VBtn> Back </VBtn>
       </RouterLink>
     </template>
     <template #default>
       <VRow>
-        <VCol cols="12">
-          <VTextField label="Descripcion" v-model="adjust.reason" />
-        </VCol>
-        <VCol cols="12" class="py-0">
-          <VSelect
-            item-title="key"
-            v-model="adjust.type"
-            :items="[
-              { key: 'Ingreso', value: '01' },
-              { key: 'Egreso', value: '02' },
-            ]"
-            label="Type"
-            item-value="value"
-          ></VSelect>
-        </VCol>
-        <VCol cols="6" class="py-0">
+        <VCol cols="6">
           <VSelect
             item-title="name"
-            v-model="adjust.warehouse_id"
             :items="wareHouses"
-            label="bodega"
+            v-model="transference.shipping_warehouse_id"
+            label="bodega origen"
             item-value="id"
             :loading="isWareHousesLoading"
           ></VSelect>
         </VCol>
-        <VCol cols="6" class="py-0">
+        <VCol cols="6">
+          <VSelect
+            item-title="name"
+            :items="wareHouses"
+            label="bodega destino"
+            item-value="id"
+            v-model="transference.reception_warehouse_id"
+            :loading="isWareHousesLoading"
+          ></VSelect>
+        </VCol>
+        <VCol cols="12" class="py-0">
+          <VTextField label="Descripcion" v-model="transference.observation" />
+        </VCol>
+        <VCol cols="12" class="py-0">
           <VSelect
             label="Products"
             :items="products"
@@ -140,8 +141,8 @@ watch(saveAdjustMutations.isSuccess, () => {
         </VCol>
         <VCol cols="12">
           <VBtn
-            @click="onInventorySubmit"
-            :loading="saveAdjustMutations.isPending.value"
+            @click="onTransferenceSubmit"
+            :loading="saveTransferenceMutations.isPending.value"
             >crear</VBtn
           >
         </VCol>

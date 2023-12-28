@@ -32,10 +32,16 @@ const props = defineProps<props>();
 const product = ref<ComboProduct>({
   products: [] as ComboProductChild[],
   product_type_id: productTypeEnum.COMBO,
-  taxes: [1],
+  taxes: [
+    // '9aaede03-d462-412b-b007-317fef91cf11'
+    "9aaede03-d617-47bc-b264-74d1e0519177",
+  ],
 } as ComboProduct);
 const productValidator = useVuelidate(comboPoductRules, product);
 const selectedChilds = ref<string[]>([]);
+
+// 9aaede03-d617-47bc-b264-74d1e0519177 12
+// 9aaede03-d462-412b-b007-317fef91cf11 0
 
 if (props.productProps) {
   product.value.id = props.productProps.id;
