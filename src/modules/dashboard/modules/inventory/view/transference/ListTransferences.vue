@@ -22,8 +22,14 @@ const onAproved = (item: Transference) => {
   let newTransference: Partial<Transference> = {
     id: item.id,
     status: "07",
-    details: item.details,
+    details: [],
   };
+  item.details.map((x) => {
+    newTransference.details?.push({
+      ...x,
+      amount: x.order_amount,
+    });
+  });
   updateTransferenceMutations.mutate(newTransference);
 };
 
@@ -33,8 +39,14 @@ const onReception = (item: Transference) => {
     status: "10",
     recepter_user_id: user.id,
     reception_date: moment(new Date()).format("DD-MM-YYYY HH:mm"),
-    details: item.details,
+    details: [],
   };
+  item.details.map((x) => {
+    newTransference.details?.push({
+      ...x,
+      amount: x.order_amount,
+    });
+  });
   updateTransferenceMutations.mutate(newTransference);
 };
 
@@ -79,7 +91,7 @@ watch(updateTransferenceMutations.isSuccess, () => {
             >Aprobar</VBtn
           >
         </div>
-        <div v-if="item.status == 'APROBADO'">
+        <div v-if="item.status == 'PENDIENTE'">
           <VBtn
             @click="onReception(item)"
             :loading="updateTransferenceMutations.isPending.value"
