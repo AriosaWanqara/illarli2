@@ -3,6 +3,8 @@ import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
 import useBrandsMutations from "../../composables/brand/useBrandsMutations";
 import { watch } from "vue";
 import useBrands from "../../composables/brand/useBrands";
+import type { Header } from "vue3-easy-data-table";
+import { Icon } from "@iconify/vue";
 
 const { deleteBrandMutation } = useBrandsMutations();
 const { brands, brandsHasError, isBrandsLoading } = useBrands();
@@ -23,6 +25,10 @@ watch(deleteBrandMutation.isSuccess, () => {
     );
   }
 });
+const headers: Header[] = [
+  { text: "Nombre", value: "name" },
+  { text: "", value: "actions", width: 110 },
+];
 </script>
 
 <template>
@@ -35,17 +41,45 @@ watch(deleteBrandMutation.isSuccess, () => {
     <template #default>
       <p v-if="isBrandsLoading">cargando..</p>
       <p v-else-if="brandsHasError">error</p>
-      <div v-else v-for="brand in brands">
-        {{ brand.id }}
-        {{ brand.name }}
-        <RouterLink
-          :to="{ name: 'product-brands-update', params: { id: brand.id } }"
+      <div v-else>
+        <EasyDataTable
+          :headers="headers"
+          :theme-color="'#f48225'"
+          :items="brands"
+          alternating
+          class="customize-table"
         >
-          <VBtn>Modificar</VBtn>
-        </RouterLink>
-        <VBtn @click="onDelete(brand.id)">Eliminar</VBtn>
-        <br />
-        <br />
+          <template #item-actions="item">
+            <v-tooltip text="Edit">
+              <template v-slot:activator="{ props }">
+                <RouterLink
+                  :to="{
+                    name: 'product-brands-update',
+                    params: { id: item.id },
+                  }"
+                >
+                  <v-btn icon flat v-bind="props" variant="text">
+                    <Icon icon="mdi:pencil" />
+                  </v-btn>
+                </RouterLink>
+              </template>
+            </v-tooltip>
+            <v-tooltip text="Delete">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  icon
+                  flat
+                  v-bind="props"
+                  variant="text"
+                  @click="onDelete(item.id)"
+                  :loading="deleteBrandMutation.isPending.value"
+                >
+                  <Icon icon="mdi:trash-can-outline" />
+                </v-btn>
+              </template>
+            </v-tooltip>
+          </template>
+        </EasyDataTable>
       </div>
     </template>
   </ViewScaffold>

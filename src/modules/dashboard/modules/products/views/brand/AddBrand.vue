@@ -1,26 +1,18 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import useBrandsMutations from "../../composables/brand/useBrandsMutations";
-import { useVuelidate } from "@vuelidate/core";
-import { ref, watch } from "vue";
-import type { Brand } from "../../models/Brand";
-import useBrandRules from "@dashboard/modules/products/composables/brand/useBrandRules";
-import { useRouter } from "vue-router";
 import type { AxiosError } from "axios";
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import createBrandFormVue from "../../component/brand/createBrandForm.vue";
+import useBrandsMutations from "../../composables/brand/useBrandsMutations";
+import type { Brand } from "../../models/Brand";
 
 const { saveBrandMutation } = useBrandsMutations();
-const { brandRules } = useBrandRules();
 const brand = ref<Brand>({} as Brand);
-const brandValidator = useVuelidate(brandRules, brand);
 const router = useRouter();
 
-const onBrandSubmit = () => {
-  brandValidator.value.$validate();
-  if (!brandValidator.value.$error) {
-    saveBrandMutation.mutate(brand.value);
-  } else {
-    alert(JSON.stringify(brandValidator.value.$errors.map((x) => x.$property)));
-  }
+const onBrandSubmit = (brandToSave: Brand) => {
+  saveBrandMutation.mutate(brandToSave);
 };
 
 watch(saveBrandMutation.isError, () => {
@@ -51,22 +43,11 @@ watch(saveBrandMutation.isSuccess, () => {
       </RouterLink>
     </template>
     <template #default>
-      <VRow class="mt-1">
-        <VCol cols="12" class="py-1">
-          <VTextField label="nombre" v-model="brand.name" />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VTextField label="Observacion" v-model="brand.observation" />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VBtn
-            color="primary"
-            @click="onBrandSubmit"
-            :loading="saveBrandMutation.isPending.value"
-            >Crear</VBtn
-          >
-        </VCol>
-      </VRow>
+      <createBrandFormVue
+        :brand="brand"
+        :isLoading="saveBrandMutation.isPending.value"
+        @submit-brand="onBrandSubmit"
+      />
     </template>
   </ViewScaffold>
 </template>

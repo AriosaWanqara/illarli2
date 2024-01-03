@@ -36,7 +36,7 @@ watch(updateWareHouseMutation.isError, () => {
 
 watch(updateWareHouseMutation.isSuccess, () => {
   if (updateWareHouseMutation.isSuccess.value) {
-    router.push({ name: "config-wharehouses-list" });
+    router.push({ name: "config-warehouses-list" });
   }
 });
 </script>
@@ -44,7 +44,7 @@ watch(updateWareHouseMutation.isSuccess, () => {
 <template>
   <ViewScaffold title="Crear bodega">
     <template #actionBack>
-      <RouterLink :to="{ name: 'config-wharehouses-list' }">
+      <RouterLink :to="{ name: 'config-warehouses-list' }">
         <v-btn
           color="secondary"
           icon="mdi-arrow-left"

@@ -1,36 +1,22 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import { useVuelidate } from "@vuelidate/core";
 import type { AxiosError } from "axios";
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import CreateCashDrawerForm from "../../component/cashdrawer/createCashDrawerForm.vue";
 import useCashdrawer from "../../composables/cashdrawer/useCashdrawer";
-import useCashdrawerRules from "../../composables/cashdrawer/useCashdrawerRules";
 import useCashdrawersMutations from "../../composables/cashdrawer/useCashdrawersMutations";
-import useDocumentTypes from "../../composables/documentType/useDocumentTypes";
-import useSubsidiaries from "../../composables/subsidiary/useSubsidiaries";
+import type { Cashdrawer } from "../../models/Cashdrawer";
 
 const { updateCashdrawerMutations } = useCashdrawersMutations();
-const { documentTypeDropdown, isDocumentsTypeLoading } = useDocumentTypes();
-const { isSubsidiariesLoading, subsidiaryDropdown } = useSubsidiaries();
 const params = useRoute().params;
 const router = useRouter();
 const { cashdrawer, cashdrawerHasError, isCashdrawerLoading } = useCashdrawer(
   params.id.toString()
 );
-const { cashdrawerRules } = useCashdrawerRules();
-const cashdrawerToSave = ref(cashdrawer);
-const cashdrawerValidator = useVuelidate(cashdrawerRules, cashdrawerToSave);
 
-const onCashDrawerSubmit = () => {
-  cashdrawerValidator.value.$validate();
-  if (!cashdrawerValidator.value.$error) {
-    updateCashdrawerMutations.mutate(cashdrawerToSave.value);
-  } else {
-    alert(
-      JSON.stringify(cashdrawerValidator.value.$errors.map((x) => x.$message))
-    );
-  }
+const onCashDrawerSubmit = (cashdrawerToSave: Cashdrawer) => {
+  updateCashdrawerMutations.mutate(cashdrawerToSave);
 };
 
 watch(updateCashdrawerMutations.isError, () => {
@@ -74,42 +60,12 @@ watch(updateCashdrawerMutations.isSuccess, () => {
           <p>error..</p>
         </VCol>
       </VRow>
-      <VRow class="mt-1" v-else>
-        <VCol cols="6" class="py-0">
-          <VTextField label="codigo" v-model="cashdrawerToSave.code" />
-        </VCol>
-        <VCol cols="6" class="py-0">
-          <VTextField
-            label="observacion"
-            v-model="cashdrawerToSave.observation"
-          />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VSelect
-            label="subsidiary"
-            :loading="isSubsidiariesLoading"
-            v-model="cashdrawerToSave.subsidiary_id"
-            :items="subsidiaryDropdown"
-            item-title="label"
-            item-value="value"
-          />
-        </VCol>
-        <VCol cols="6" class="py-0">
-          <VSelect
-            label="Tipo de documento"
-            multiple
-            chips
-            v-model="cashdrawerToSave.document_type"
-            :loading="isDocumentsTypeLoading"
-            :items="documentTypeDropdown"
-            item-title="label"
-            item-value="value"
-          />
-        </VCol>
-        <VCol cols="12">
-          <VBtn color="primary" @click="onCashDrawerSubmit">crear</VBtn>
-        </VCol>
-      </VRow>
+      <CreateCashDrawerForm
+        v-else
+        :cashdrawer="cashdrawer"
+        :is-loading="updateCashdrawerMutations.isPending.value"
+        @submit-cashdrawer="onCashDrawerSubmit"
+      />
     </template>
   </ViewScaffold>
 </template>

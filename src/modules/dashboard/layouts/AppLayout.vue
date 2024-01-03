@@ -11,7 +11,7 @@ import "@dashboard/scss/style.scss";
     <Customizer />
     <SideBar />
     <MobileSideBar />
-    <TopBar class="md:tw-mt-[2vh] tw-mt-0" />
+    <TopBar class="md:tw-pt-[2vh] tw-pt-0" />
     <VMain>
       <router-view
         v-slot="{ Component }"

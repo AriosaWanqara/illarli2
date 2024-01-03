@@ -1,15 +1,15 @@
-import { required, helpers } from '@vuelidate/validators';
+import { required, helpers } from "@vuelidate/validators";
 
 const categoryRules = {
-    name: {
-        required: helpers.withMessage('El nombre es requerido', required)
-    }
+  name: {
+    required: helpers.withMessage("El nombre es requerido", required),
+  },
 };
 
 const useCategoryRules = () => {
-    return {
-        categoryRules
-    };
+  return {
+    categoryRules,
+  };
 };
 
 export default useCategoryRules;

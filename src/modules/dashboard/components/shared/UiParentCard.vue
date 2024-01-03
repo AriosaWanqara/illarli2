@@ -8,9 +8,9 @@ const props = defineProps({
 Card||=============================== //
 <template>
   <v-card elevation="0" variant="flat">
-    <v-card-item>
-      <div class="tw-flex tw-align-center tw-justify-between">
-        <div class="tw-flex tw-align-center">
+    <v-card-item class="py-0">
+      <div class="tw-flex tw-items-center tw-justify-between tw-py-3">
+        <div class="tw-flex tw-items-center tw-gap-1">
           <slot name="actionBack"></slot>
           <v-card-title class="text-h5">{{ title }}</v-card-title>
         </div>

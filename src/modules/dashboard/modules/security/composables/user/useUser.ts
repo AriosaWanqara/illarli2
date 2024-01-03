@@ -2,10 +2,13 @@ import api from "@/api/axios";
 import { useQuery } from "@tanstack/vue-query";
 import { ref, watch } from "vue";
 import type { UserApiResponse } from "../../models/ApiResponse";
-import type { User } from "../../models/User";
+import type { User, userToSave } from "../../models/User";
+import type { Dropdown } from "@/models/Dropdown";
 
 const user = ref<User>({} as User);
 const roles = ref<string[]>([]);
+const userToSave = ref<userToSave>({} as userToSave);
+const cashDrawerDropdown = ref<Dropdown[]>([]);
 
 const fetchUser = async (id: string): Promise<User> => {
   const { data } = await api.get<UserApiResponse>(`/users/${id}`);
@@ -26,6 +29,21 @@ const useUser = (id: string) => {
       data.value.roles.map((x) => {
         roles.value.push(x.id);
       });
+      let checkoutsId: string[] = [];
+      let subsidiariesId: string[] = [];
+      data.value.checkouts.map((x) => {
+        checkoutsId.push(x.id);
+      });
+      data.value.subsidiaries.map((x) => {
+        subsidiariesId.push(x.id);
+      });
+      userToSave.value = {
+        ...data.value,
+        roles: roles.value,
+        checkoutsId: checkoutsId,
+        subsidiariesId: subsidiariesId,
+      };
+      cashDrawerDropdown.value = [];
     }
   });
 
@@ -34,6 +52,8 @@ const useUser = (id: string) => {
     roles,
     userHasError: isError,
     isUserLoading: isFetching,
+    userToSave,
+    cashDrawerDropdown,
   };
 };
 

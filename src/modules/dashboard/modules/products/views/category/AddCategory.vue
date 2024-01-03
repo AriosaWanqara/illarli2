@@ -1,25 +1,18 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import useCategoryMutations from "@dashboard/modules/products/composables/category/useCategoryMutations";
-import useCategoryRules from "@dashboard/modules/products/composables/category/useCategoryRules";
-import type { Category } from "@dashboard/modules/products/models/Category";
-import { useVuelidate } from "@vuelidate/core";
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import { watch } from "vue";
+import useCategoryMutations from "@dashboard/modules/products/composables/category/useCategoryMutations";
+import type { Category } from "@dashboard/modules/products/models/Category";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import CreateCategoryForm from "../../component/category/createCategoryForm.vue";
 
 const { saveCategoryMutation } = useCategoryMutations();
-const { categoryRules } = useCategoryRules();
 const router = useRouter();
 
 const category = ref<Category>({} as Category);
-const categoryValidator = useVuelidate(categoryRules, category);
 
-const onCategorySubmit = () => {
-  categoryValidator.value.$validate();
-  if (!categoryValidator.value.$error) {
-    saveCategoryMutation.mutate(category.value);
-  }
+const onCategorySubmit = (categoryToSave: Category) => {
+  saveCategoryMutation.mutate(categoryToSave);
 };
 
 watch(saveCategoryMutation.isError, () => {
@@ -49,22 +42,11 @@ watch(saveCategoryMutation.isSuccess, () => {
       </RouterLink>
     </template>
     <template #default>
-      <VRow class="mt-2">
-        <VCol cols="12" class="py-1">
-          <VTextField label="nombre" v-model="category.name" />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VTextField label="descripcion" v-model="category.description" />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VBtn
-            color="primary"
-            @click="onCategorySubmit"
-            :loading="saveCategoryMutation.isPending.value"
-            >Crear</VBtn
-          >
-        </VCol>
-      </VRow>
+      <CreateCategoryForm
+        :category="category"
+        :isLoading="saveCategoryMutation.isPending.value"
+        @category-submit="onCategorySubmit"
+      />
     </template>
   </ViewScaffold>
 </template>

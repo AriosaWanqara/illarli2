@@ -1,13 +1,16 @@
 import api from "@/api/axios";
 import { useQuery } from "@tanstack/vue-query";
 import { ref, watch } from "vue";
-import type { ClientsApiResponse } from "../../models/ApiResponse";
-import type { Client } from "../../models/Client";
+import { personRolEnum } from "../../constant/personRolEnum";
+import type { ProvidersApiResponse } from "../../models/ApiResponse";
+import type { Provider } from "../../models/Provider";
 
-const clients = ref<Client[]>([]);
+const clients = ref<Provider[]>([]);
 
-const fetchClients = async (): Promise<Client[]> => {
-  const { data } = await api.get<ClientsApiResponse>("");
+const fetchClients = async (): Promise<Provider[]> => {
+  const { data } = await api.get<ProvidersApiResponse>(
+    `/general/persons?role=${personRolEnum.SUPPLIER}`
+  );
   return data.data;
 };
 

@@ -33,8 +33,8 @@ watch(updateCompanyConfigsMutations.isSuccess, () => {
 </script>
 
 <template>
-  <ViewScaffold title="Config">
-    <VRow v-if="isCompanyConfigsLoading">
+  <ViewScaffold title="Configuracion">
+    <!-- <VRow v-if="isCompanyConfigsLoading">
       <p>cargando..</p>
     </VRow>
     <VRow v-else-if="companyConfigsHasError">
@@ -85,7 +85,7 @@ watch(updateCompanyConfigsMutations.isSuccess, () => {
           <VBtn @click="onUpdateConfig"> Crear </VBtn>
         </VCol>
       </VRow>
-    </VRow>
+    </VRow> -->
   </ViewScaffold>
 </template>
 

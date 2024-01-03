@@ -1,40 +1,20 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import { useRoute, useRouter } from "vue-router";
-import useRol from "../../composables/rol/useRol";
-import { ref } from "vue";
-import type { RolToSave } from "../../models/Rol";
-import { useVuelidate } from "@vuelidate/core";
-import useRolRules from "../../composables/rol/useRolRules";
-import useRolMutations from "../../composables/rol/useRolMutations";
-import { watch } from "vue";
 import type { AxiosError } from "axios";
-import usePermissions from "../../composables/permission/usePermissions";
+import { watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import CreateRolForm from "../../components/rol/createRolForm.vue";
+import useRol from "../../composables/rol/useRol";
+import useRolMutations from "../../composables/rol/useRolMutations";
+import type { RolToSave } from "../../models/Rol";
 
 const params = useRoute().params;
-const { isRolLoading, permissions, rol, rolHasError } = useRol(
-  params.id.toString()
-);
-const { rolRules } = useRolRules();
+const { isRolLoading, rolHasError, rolToSave } = useRol(params.id.toString());
 const { updateRolMutations } = useRolMutations();
 const router = useRouter();
-const { isPermissionsLoading, permissionsHasError, permissionDropdown } =
-  usePermissions();
 
-const rolToSave = ref<RolToSave>({
-  id: rol.value.id,
-  name: rol.value.name,
-  permissions: permissions.value,
-} as RolToSave);
-const rolValidator = useVuelidate(rolRules, rolToSave);
-
-const onRolSubmit = () => {
-  rolValidator.value.$validate();
-  if (!rolValidator.value.$error) {
-    updateRolMutations.mutate(rolToSave.value);
-  } else {
-    alert(JSON.stringify(rolValidator.value.$errors.map((x) => x.$property)));
-  }
+const onRolSubmit = (rol: RolToSave) => {
+  updateRolMutations.mutate(rol);
 };
 
 watch(updateRolMutations.isError, () => {
@@ -75,29 +55,12 @@ watch(updateRolMutations.isSuccess, () => {
           <p>error..</p>
         </VCol>
       </VRow>
-      <VRow class="mt-1" v-else>
-        <VCol cols="6">
-          <VTextField label="name" v-model="rolToSave.name" />
-        </VCol>
-        <VCol cols="6">
-          <VSelect
-            :items="permissionDropdown"
-            item-title="label"
-            label="permisos"
-            multiple
-            item-value="value"
-            :loading="isPermissionsLoading"
-            v-model="rolToSave.permissions"
-          />
-        </VCol>
-        <VCol cols="12">
-          <VBtn
-            @click="onRolSubmit"
-            :loading="updateRolMutations.isPending.value"
-            >crear</VBtn
-          >
-        </VCol>
-      </VRow>
+      <CreateRolForm
+        v-else
+        :is-loading="updateRolMutations.isPending.value"
+        :rol="rolToSave"
+        @rol-submit="onRolSubmit"
+      />
     </template>
   </ViewScaffold>
 </template>

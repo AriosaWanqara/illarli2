@@ -128,7 +128,7 @@ const navigationsItems: menu[] = [
       {
         title: "Bodegas",
         icon: "ic:sharp-warehouse",
-        to: "config-wharehouses-list",
+        to: "config-warehouses-list",
       },
       {
         title: "Mis datos",

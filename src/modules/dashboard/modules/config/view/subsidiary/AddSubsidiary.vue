@@ -40,7 +40,7 @@ watch(saveSubsidiaryMutations.isSuccess, () => {
 </script>
 
 <template>
-  <ViewScaffold title="Crear marcas">
+  <ViewScaffold title="Crear sucursal">
     <template #actionBack>
       <RouterLink :to="{ name: 'config-subsidiaries-list' }">
         <v-btn
@@ -53,14 +53,35 @@ watch(saveSubsidiaryMutations.isSuccess, () => {
     </template>
     <template #default>
       <VRow class="mt-1">
-        <VCol cols="6" class="py-1">
-          <VTextField label="business name" v-model="brand.businessname" />
+        <VCol cols="12" class="py-0 tw-mb-4">
+          <VDivider></VDivider>
         </VCol>
-        <VCol cols="6" class="py-1">
-          <VTextField label="address" v-model="brand.address" />
+        <VCol cols="12" md="6" class="py-0">
+          <div class="tw-flex tw-flex-col tw-gap-1">
+            <label for="" class="tw-font-semibold"> Nombre comercial*</label>
+            <VTextField
+              placeholder="business name"
+              v-model="brand.businessname"
+            />
+          </div>
         </VCol>
-        <VCol cols="6" class="py-1">
-          <VTextField label="phone" v-model="brand.phone" />
+        <VCol cols="12" md="6" class="py-0">
+          <div class="tw-flex tw-flex-col tw-gap-1">
+            <label for="" class="tw-font-semibold">
+              Direccion de la sucursal*</label
+            >
+
+            <VTextField placeholder="address" v-model="brand.address" />
+          </div>
+        </VCol>
+        <VCol cols="12" md="6" class="py-0">
+          <div class="tw-flex tw-flex-col tw-gap-1">
+            <label for="" class="tw-font-semibold">
+              Telefono de la sucursal</label
+            >
+
+            <VTextField placeholder="phone" v-model="brand.phone" />
+          </div>
         </VCol>
         <VCol cols="12" class="py-1">
           <VBtn

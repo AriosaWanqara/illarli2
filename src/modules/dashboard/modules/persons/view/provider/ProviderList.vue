@@ -4,6 +4,8 @@ import useProvidersMutations from "../../composables/provider/useProvidersMutati
 import { watch } from "vue";
 import useProviders from "../../composables/provider/useProviders";
 import type { AxiosError } from "axios";
+import type { Header } from "vue3-easy-data-table";
+import { Icon } from "@iconify/vue";
 
 const { deleteProviderMutation } = useProvidersMutations();
 const { providers, isProvidersLoading, providersHasError } = useProviders();
@@ -11,6 +13,11 @@ const { providers, isProvidersLoading, providersHasError } = useProviders();
 const onDelete = (id: string) => {
   deleteProviderMutation.mutate(id);
 };
+const headers: Header[] = [
+  { text: "Nombre", value: "name" },
+  { text: "Identificacion", value: "identity" },
+  { text: "", value: "actions", width: 110 },
+];
 
 watch(deleteProviderMutation.isError, () => {
   if (deleteProviderMutation.isError.value) {
@@ -40,21 +47,42 @@ watch(deleteProviderMutation.isSuccess, () => {
     <template #default>
       <p v-if="isProvidersLoading">cargando..</p>
       <p v-else-if="providersHasError">error</p>
-      <div v-else v-for="provider in providers">
-        {{ provider.id }}
-        {{ provider.name }}
-        <RouterLink
-          :to="{ name: 'provider-update', params: { id: provider.id } }"
+      <div v-else>
+        <EasyDataTable
+          :headers="headers"
+          :theme-color="'#f48225'"
+          :items="providers"
+          alternating
+          class="customize-table"
         >
-          <VBtn>Modificar</VBtn>
-        </RouterLink>
-        <VBtn
-          @click="onDelete(provider.id)"
-          :loading="deleteProviderMutation.isPending.value"
-          >Eliminar</VBtn
-        >
-        <br />
-        <br />
+          <template #item-actions="item">
+            <v-tooltip text="Edit">
+              <template v-slot:activator="{ props }">
+                <RouterLink
+                  :to="{ name: 'provider-update', params: { id: item.id } }"
+                >
+                  <v-btn icon flat v-bind="props" variant="text">
+                    <Icon icon="mdi:pencil" />
+                  </v-btn>
+                </RouterLink>
+              </template>
+            </v-tooltip>
+            <v-tooltip text="Delete">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  icon
+                  flat
+                  v-bind="props"
+                  variant="text"
+                  @click="onDelete(item.id)"
+                  :loading="deleteProviderMutation.isPending.value"
+                >
+                  <Icon icon="mdi:trash-can-outline" />
+                </v-btn>
+              </template>
+            </v-tooltip>
+          </template>
+        </EasyDataTable>
       </div>
     </template>
   </ViewScaffold>

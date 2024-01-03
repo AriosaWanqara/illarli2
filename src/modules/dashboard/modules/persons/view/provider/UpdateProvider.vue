@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import { useVuelidate } from "@vuelidate/core";
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useProvider from "../../composables/provider/useProvider";
 import useProvidersMutations from "../../composables/provider/useProvidersMutations";
-import useProvidersRules from "../../composables/provider/useProvidersRules";
-import { allCivilStatusEnum } from "../../constant/civilStatusEnum";
-import { allGenders } from "../../constant/genderEnum";
+import type { Provider } from "../../models/Provider";
+import CreatePersonForm from "../../components/createPersonForm.vue";
 
 const { updateProviderMutation } = useProvidersMutations();
 const params = useRoute().params;
@@ -15,19 +13,9 @@ const router = useRouter();
 const { isProviderLoading, provider, providerHasError } = useProvider(
   params.id.toString()
 );
-const { providersRules } = useProvidersRules();
-const providerToSave = ref(provider);
-const providerValidator = useVuelidate(providersRules, providerToSave);
 
-const onProviderSubmit = () => {
-  providerValidator.value.$validate();
-  if (!providerValidator.value.$error) {
-    updateProviderMutation.mutate(providerToSave.value);
-  } else {
-    alert(
-      JSON.stringify(providerValidator.value.$errors.map((x) => x.$property))
-    );
-  }
+const onProviderSubmit = (providerToSave: Provider) => {
+  updateProviderMutation.mutate(providerToSave);
 };
 
 watch(updateProviderMutation.isError, () => {
@@ -69,42 +57,12 @@ watch(updateProviderMutation.isSuccess, () => {
           <p>error</p>
         </VCol>
       </VRow>
-      <VRow class="mt-1" v-else>
-        <VCol cols="6" class="py-1">
-          <VTextField label="Nombre" v-model="providerToSave.name" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VTextField label="phone" v-model="providerToSave.phones[0]" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VTextField label="emails" v-model="providerToSave.emails[0]" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VTextField label="identity" v-model="providerToSave.identity" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VTextField label="address" v-model="providerToSave.address" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VSelect
-            :items="allCivilStatusEnum"
-            label="Civil status"
-            v-model="providerToSave.civil_status"
-          />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VSelect
-            :items="allGenders"
-            label="gender"
-            v-model="providerToSave.gender"
-            item-title="label"
-            item-value="value"
-          />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VBtn color="primary" @click="onProviderSubmit">Crear</VBtn>
-        </VCol>
-      </VRow>
+      <CreatePersonForm
+        v-else
+        :is-loading="updateProviderMutation.isPending.value"
+        :person="provider"
+        @person-submit="onProviderSubmit"
+      />
     </template>
   </ViewScaffold>
 </template>

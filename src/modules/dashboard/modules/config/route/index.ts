@@ -45,24 +45,24 @@ export const configRouter: RouteRecordRaw[] = [
   },
   {
     path: "bodegas",
-    name: "config-wharehouses-list",
+    name: "config-warehouses-list",
     meta: { permission: "list characteristics" },
     component: () =>
-      import("@dashboard/modules/config/view/warehouse/WhareHousesList.vue"),
+      import("@dashboard/modules/config/view/warehouse/WareHousesList.vue"),
   },
   {
     path: "bodegas/:id",
-    name: "config-wharehouses-update",
+    name: "config-warehouses-update",
     meta: { permission: "list characteristics" },
     component: () =>
-      import("@dashboard/modules/config/view/warehouse/UpdateWhareHouse.vue"),
+      import("@dashboard/modules/config/view/warehouse/UpdateWareHouse.vue"),
   },
   {
     path: "bodega/add",
-    name: "config-wharehouses-add",
+    name: "config-warehouses-add",
     meta: { permission: "list characteristics" },
     component: () =>
-      import("@dashboard/modules/config/view/warehouse/AddWhareHouse.vue"),
+      import("@dashboard/modules/config/view/warehouse/AddWareHouse.vue"),
   },
   {
     path: "empresa",

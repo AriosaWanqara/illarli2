@@ -9,14 +9,20 @@
 }
 
 .v-field {
-  font-size: 14px;
-  color: rgba(var(--v-theme-textPrimary));
+  font-size: 14px !important;
+  color: rgba(var(--v-theme-textPrimary)) !important;
 }
+// .v-field__input::placeholder {
 
+// }
 // select outlined
 .v-field--variant-outlined .v-field__outline__start,
 .v-field--variant-outlined .v-field__outline__notch::before,
 .v-field--variant-outlined .v-field__outline__notch::after,
 .v-field--variant-outlined .v-field__outline__end {
   opacity: 1;
+}
+
+.v-field--variant-solo-filled {
+  background-color: #fafafa !important;
 }

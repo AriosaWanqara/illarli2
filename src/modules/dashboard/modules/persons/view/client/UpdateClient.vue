@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import { useVuelidate } from "@vuelidate/core";
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useClient from "../../composables/client/useClient";
-import useClientRules from "../../composables/client/useClientRules";
 import useClientsMutations from "../../composables/client/useClientsMutations";
+import type { Provider } from "../../models/Provider";
+import CreatePersonForm from "../../components/createPersonForm.vue";
 
 const { updateClientMutations } = useClientsMutations();
 const params = useRoute().params;
@@ -13,19 +13,9 @@ const router = useRouter();
 const { client, clientHasError, isClientLoading } = useClient(
   params.id.toString()
 );
-const { clientRules } = useClientRules();
-const clientToSave = ref(client);
-const clientValidator = useVuelidate(clientRules, clientToSave);
 
-const onClientSubmit = () => {
-  clientValidator.value.$validate();
-  if (!clientValidator.value.$error) {
-    updateClientMutations.mutate(clientToSave.value);
-  } else {
-    alert(
-      JSON.stringify(clientValidator.value.$errors.map((x) => x.$property))
-    );
-  }
+const onClientSubmit = (personToSave: Provider) => {
+  updateClientMutations.mutate(personToSave);
 };
 
 watch(updateClientMutations.isError, () => {
@@ -67,14 +57,12 @@ watch(updateClientMutations.isSuccess, () => {
           <p>error..</p>
         </VCol>
       </VRow>
-      <VRow class="mt-1" v-else>
-        <VCol cols="12" class="py-1">
-          <VTextField label="Nombre" v-model="clientToSave.name" />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VBtn color="primary" @click="onClientSubmit">Crear</VBtn>
-        </VCol>
-      </VRow>
+      <CreatePersonForm
+        v-else
+        :is-loading="updateClientMutations.isPending.value"
+        :person="client"
+        @person-submit="onClientSubmit"
+      />
     </template>
   </ViewScaffold>
 </template>

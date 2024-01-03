@@ -1,33 +1,20 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import usePermissions from "../../composables/permission/usePermissions";
-import { ref } from "vue";
-import useRolRules from "../../composables/rol/useRolRules";
-import { useVuelidate } from "@vuelidate/core";
+import type { AxiosError } from "axios";
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import CreateRolForm from "../../components/rol/createRolForm.vue";
 import useRolMutations from "../../composables/rol/useRolMutations";
 import type { RolToSave } from "../../models/Rol";
-import { watch } from "vue";
-import type { AxiosError } from "axios";
-import { useRouter } from "vue-router";
 
-const { isPermissionsLoading, permissionsHasError, permissionDropdown } =
-  usePermissions();
-const { rolRules } = useRolRules();
 const { saveRolMutations } = useRolMutations();
 const router = useRouter();
 
 const rol = ref<RolToSave>({
   permissions: [] as string[],
 } as RolToSave);
-const rolValidator = useVuelidate(rolRules, rol);
-
-const onRolSubmit = () => {
-  rolValidator.value.$validate();
-  if (!rolValidator.value.$error) {
-    saveRolMutations.mutate(rol.value);
-  } else {
-    alert(JSON.stringify(rolValidator.value.$errors.map((x) => x.$property)));
-  }
+const onRolSubmit = (rolToSave: RolToSave) => {
+  saveRolMutations.mutate(rolToSave);
 };
 
 watch(saveRolMutations.isError, () => {
@@ -58,27 +45,11 @@ watch(saveRolMutations.isSuccess, () => {
     </template>
 
     <template #default>
-      <VRow class="mt-1">
-        <VCol cols="6">
-          <VTextField label="name" v-model="rol.name" />
-        </VCol>
-        <VCol cols="6">
-          <VSelect
-            :items="permissionDropdown"
-            item-title="label"
-            label="permisos"
-            multiple
-            item-value="value"
-            :loading="isPermissionsLoading"
-            v-model="rol.permissions"
-          />
-        </VCol>
-        <VCol cols="12">
-          <VBtn @click="onRolSubmit" :loading="saveRolMutations.isPending.value"
-            >crear</VBtn
-          >
-        </VCol>
-      </VRow>
+      <CreateRolForm
+        :is-loading="saveRolMutations.isPending.value"
+        :rol="rol"
+        @rol-submit="onRolSubmit"
+      />
     </template>
   </ViewScaffold>
 </template>

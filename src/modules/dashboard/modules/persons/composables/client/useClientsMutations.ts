@@ -1,17 +1,17 @@
 import api from "@/api/axios";
 import { useMutation } from "@tanstack/vue-query";
-import type { Client } from "../../models/Client";
+import type { Provider } from "../../models/Provider";
 
-const saveClient = async (client: Partial<Client>): Promise<any> => {
-  const { data } = await api.post("", client);
+const saveClient = async (client: Partial<Provider>): Promise<any> => {
+  const { data } = await api.post("/general/persons", client);
   return data;
 };
-const updateClient = async (client: Partial<Client>): Promise<any> => {
-  const { data } = await api.patch(`/${client.id}`, client);
+const updateClient = async (client: Partial<Provider>): Promise<any> => {
+  const { data } = await api.patch(`/general/persons/${client.id}`, client);
   return data;
 };
 const deleteClient = async (id: string): Promise<any> => {
-  const { data } = await api.delete(`/${id}`);
+  const { data } = await api.delete(`/general/persons/${id}`);
   return data;
 };
 

@@ -18,11 +18,17 @@ html {
   .bg-error {
     color: $white !important;
   }
+  p {
+    font-size: 14px;
+  }
+  label {
+    font-size: 10px;
+  }
 }
 
 .border,
 .v-divider {
-  border-color: rgba(var(--v-border-color), 1) !important;
+  border-color: rgba(var(--v-theme-textPrimary)) !important;
 }
 .avtar-border {
   border: 2px solid rgb(var(--v-theme-surface)) !important;
@@ -44,4 +50,8 @@ html {
 }
 .textPrimary {
   color: rgb(var(--v-theme-textPrimary));
+}
+
+.text-bg-primary {
+  color: rgb(var(--v-theme-primary));
 }

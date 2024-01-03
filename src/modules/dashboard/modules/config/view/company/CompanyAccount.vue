@@ -5,13 +5,14 @@ import useCompany from "../../composables/company/useCompany";
 import { watch } from "vue";
 import type { AxiosError } from "axios";
 import { useUserStore } from "@/stores/userStore";
+import moment from "moment";
+import { Icon } from "@iconify/vue";
 
 const {
   companyConfigs,
   companyConfigsHasError,
   isCompanyConfigsLoading,
   staleData,
-  staleDomain,
 } = useCompany();
 const { updateCompanyConfigsMutations, updateCompanyConfigsDomainMutations } =
   useCompanyConfigsMutations();
@@ -19,12 +20,6 @@ const { logout } = useUserStore();
 
 const onUpdateConfig = () => {
   updateCompanyConfigsMutations.mutate(companyConfigs.value);
-};
-
-const onDomainValidate = () => {
-  updateCompanyConfigsDomainMutations.mutate({
-    subDomainToVerify: companyConfigs.value.domain,
-  });
 };
 
 watch(updateCompanyConfigsMutations.isError, () => {
@@ -69,73 +64,116 @@ watch(updateCompanyConfigsDomainMutations.isSuccess, () => {
     <VRow v-else-if="companyConfigsHasError">
       <p>cargando..</p>
     </VRow>
-    <VRow v-else class="mt-1">
-      <VCol cols="6" class="py-1">
-        <VTextField label="email" v-model="companyConfigs.email" />
+    <VRow v-else>
+      <VCol cols="12" class="py-0">
+        <v-divider></v-divider>
       </VCol>
-      <VCol cols="6" class="py-1">
-        <VTextField label="phone" v-model="companyConfigs.phone" />
+      <VCol cols="12" md="6">
+        <div class="tw-flex tw-gap-1 tw-items-center">
+          <Icon icon="ic:baseline-event-repeat" height="24" />
+          <p>
+            Proxima renovacion :
+            <span class="tw-font-semibold">
+              {{ moment(companyConfigs.expiration_date).format("YYYY-MM-DD") }}
+            </span>
+          </p>
+        </div>
       </VCol>
-      <VCol cols="6" class="py-1">
-        <VTextField label="address" v-model="companyConfigs.address" />
+      <VCol cols="12" md="6"></VCol>
+
+      <VCol cols="12" md="6" class="py-0 tw-mt-4">
+        <VTextField label="Correo empresarial" v-model="companyConfigs.email" />
       </VCol>
-      <VCol cols="6" class="py-1">
+      <VCol cols="12" md="6" class="py-0 md:tw-mt-4">
         <VTextField
-          label="artisan_resolution"
-          v-model="companyConfigs.artisan_resolution"
+          label="Telefono empresarial"
+          v-model="companyConfigs.phone"
         />
       </VCol>
-      <VCol cols="6" class="py-1">
+      <VCol cols="12" class="py-0">
         <VTextField
-          label="withholding_agent_resolution"
-          v-model="companyConfigs.withholding_agent_resolution"
+          label="Direccion empresarial"
+          v-model="companyConfigs.address"
         />
       </VCol>
-      <VCol cols="6" class="py-1">
+      <VCol cols="6" class="py-0">
         <v-checkbox
           :true-value="1"
           :false-value="0"
-          label="is artisan"
+          label="Eres artesano?"
           v-model="companyConfigs.is_artisan"
         ></v-checkbox>
       </VCol>
-      <VCol cols="6" class="py-1">
+      <VCol cols="6" class="py-0">
+        <VTextField
+          label="Resolucion de artesano"
+          :disabled="!companyConfigs.is_artisan"
+          v-model="companyConfigs.artisan_resolution"
+        />
+      </VCol>
+      <VCol cols="6" class="py-0">
         <v-checkbox
           :true-value="1"
           :false-value="0"
-          label="is_withholding_agent"
+          label="Eres agente de retencion?"
           v-model="companyConfigs.is_withholding_agent"
         ></v-checkbox>
       </VCol>
-      <VCol cols="6" class="py-1">
+      <VCol cols="6" class="py-0">
+        <VTextField
+          label="Resolucion de agente"
+          :disabled="!companyConfigs.is_withholding_agent"
+          v-model="companyConfigs.withholding_agent_resolution"
+        />
+      </VCol>
+      <VCol cols="6" class="py-0">
         <v-checkbox
           :true-value="1"
           :false-value="0"
-          label="is_force_accounting"
+          label="Llevas contabilidad?"
           v-model="companyConfigs.is_force_accounting"
         ></v-checkbox>
       </VCol>
-      <VCol cols="6" class="py-1">
+      <VCol cols="6" class="py-0">
         <v-checkbox
           :true-value="1"
           :false-value="0"
-          label="is_rimpe"
+          label="Eres rimpe?"
           v-model="companyConfigs.is_rimpe"
         ></v-checkbox>
       </VCol>
-      <VCol cols="6" class="py-1">
-        <VTextField label="domain" v-model="companyConfigs.domain">
-          <template #append-inner>
-            <VBtn
-              @click="onDomainValidate"
-              :disabled="staleDomain == companyConfigs.domain"
-              >validar</VBtn
-            >
+      <VCol cols="12" class="py-0">
+        <v-divider></v-divider>
+      </VCol>
+      <VCol cols="12" class="py-0 tw-mt-1">
+        <h1 class="tw-text-lg tw-px-1">Configuracion firma electronica</h1>
+      </VCol>
+      <VCol cols="12" md="6">
+        <div class="tw-flex tw-gap-1 tw-h-full">
+          <Icon icon="mdi:card-account-details" height="20" />
+          <p>
+            Válida hasta:
+            <span class="tw-font-semibold">
+              {{ companyConfigs.sign_expiration_date ?? "2025/04/06 08:16" }}
+            </span>
+          </p>
+        </div>
+      </VCol>
+      <VCol cols="12" md="6">
+        <v-file-input
+          clearable
+          label="Firma electronica"
+          variant="outlined"
+          density="compact"
+          prepend-icon=""
+        >
+          <template #prepend-inner>
+            <Icon icon="mdi:file-document-plus-outline" height="20" />
           </template>
-        </VTextField>
+        </v-file-input>
       </VCol>
       <VCol cols="12">
-        <VBtn @click="onUpdateConfig"> crear </VBtn>
+        <VBtn @click="onUpdateConfig"> GUARDAR </VBtn>
       </VCol>
     </VRow>
   </ViewScaffold>

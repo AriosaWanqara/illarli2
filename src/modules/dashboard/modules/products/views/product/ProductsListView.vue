@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
 
-import useProducts from "../../composables/product/useProducts";
-import useProductMutations from "../../composables/product/useProductMutations";
-import type { Product } from "../../models/products/Product";
-import { watch } from "vue";
-import type { AxiosError } from "axios";
-import type { Header } from "vue3-easy-data-table";
 import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
 import { Icon } from "@iconify/vue";
+import type { AxiosError } from "axios";
+import { watch } from "vue";
+import type { Header } from "vue3-easy-data-table";
+import useProductMutations from "../../composables/product/useProductMutations";
+import useProducts from "../../composables/product/useProducts";
+import type { Product } from "../../models/products/Product";
 
 const { isProductsLoading, products, productsHasError } = useProducts();
 const { deleteProductMutation } = useProductMutations();

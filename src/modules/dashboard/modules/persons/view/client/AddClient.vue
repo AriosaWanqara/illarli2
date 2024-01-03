@@ -1,30 +1,23 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import useClientsMutations from "../../composables/client/useClientsMutations";
-import useClientRules from "../../composables/client/useClientRules";
-import type { Client } from "@dashboard/modules/persons/models/Client";
-import { ref } from "vue";
-import { useVuelidate } from "@vuelidate/core";
-import { watch } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-import { allGenders } from "../../constant/genderEnum";
+import CreatePersonForm from "../../components/createPersonForm.vue";
+import useClientsMutations from "../../composables/client/useClientsMutations";
+import type { Provider } from "../../models/Provider";
+import { personRolEnum } from "../../constant/personRolEnum";
 
 const { saveClientMutations } = useClientsMutations();
 const router = useRouter();
-const { clientRules } = useClientRules();
 
-const client = ref<Client>({} as Client);
-const clientValidator = useVuelidate(clientRules, client);
+const client = ref<Provider>({
+  phones: [] as string[],
+  emails: [] as string[],
+  roles: [personRolEnum.SUPPLIER],
+} as Provider);
 
-const onClientSubmit = () => {
-  clientValidator.value.$validate();
-  if (!clientValidator.value.$error) {
-    saveClientMutations.mutate(client.value);
-  } else {
-    alert(
-      JSON.stringify(clientValidator.value.$errors.map((x) => x.$property))
-    );
-  }
+const onClientSubmit = (personToSave: Provider) => {
+  saveClientMutations.mutate(personToSave);
 };
 
 watch(saveClientMutations.isError, () => {
@@ -53,27 +46,11 @@ watch(saveClientMutations.isSuccess, () => {
     </template>
 
     <template #default>
-      <VRow class="mt-1">
-        <VCol cols="12" class="py-1">
-          <VTextField label="Nombre" v-model="client.name" />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VSelect
-            label="Genero"
-            :items="allGenders"
-            itemTitle="label"
-            itemValue="value"
-          />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VBtn
-            color="primary"
-            @click="onClientSubmit"
-            :loading="saveClientMutations.isPending.value"
-            >Crear</VBtn
-          >
-        </VCol>
-      </VRow>
+      <CreatePersonForm
+        :is-loading="saveClientMutations.isPending.value"
+        :person="client"
+        @person-submit="onClientSubmit"
+      />
     </template>
   </ViewScaffold>
 </template>

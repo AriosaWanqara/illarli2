@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import useCategories from "../../composables/category/useCategories";
-import useCategoryMutations from "../../composables/category/useCategoryMutations";
+import type { AxiosError } from "axios";
 import { watch } from "vue";
 import type { RouterLink } from "vue-router";
-import type { AxiosError } from "axios";
-import api from "@/api/axios";
+import type { Header } from "vue3-easy-data-table";
+import useCategories from "../../composables/category/useCategories";
+import useCategoryMutations from "../../composables/category/useCategoryMutations";
+import { Icon } from "@iconify/vue";
 
 const { categories, categoriesHasError, isCategoriesLoading } = useCategories();
 const { deleteCategoryMutation } = useCategoryMutations();
@@ -32,16 +33,10 @@ const onDelete = (id: string) => {
   deleteCategoryMutation.mutate(id);
 };
 
-const text = () => {
-  api
-    .get("https://todoneg.com/api/sri/payment/methods")
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+const headers: Header[] = [
+  { text: "Nombre", value: "name" },
+  { text: "", value: "actions", width: 110 },
+];
 </script>
 
 <template>
@@ -52,25 +47,49 @@ const text = () => {
           ><PlusIcon size="18" class="mr-2" />Agregar</v-btn
         >
       </RouterLink>
-      <!-- <v-btn color="success" @click="text"><PlusIcon size="18" class="mr-2" />test</v-btn> -->
     </template>
     <template #default>
       <p v-if="isCategoriesLoading">cargando..</p>
       <p v-else-if="categoriesHasError">error</p>
-      <div v-else v-for="category in categories">
-        {{ category.name }}
-        <RouterLink
-          :to="{ name: 'product-category-update', params: { id: category.id } }"
+      <div v-else>
+        <EasyDataTable
+          :headers="headers"
+          :theme-color="'#f48225'"
+          :items="categories"
+          alternating
+          class="customize-table"
         >
-          <VBtn>Modificar</VBtn>
-        </RouterLink>
-        <VBtn
-          @click="onDelete(category.id)"
-          :loading="deleteCategoryMutation.isPending.value"
-          >Eliminar</VBtn
-        >
-        <br />
-        <br />
+          <template #item-actions="item">
+            <v-tooltip text="Edit">
+              <template v-slot:activator="{ props }">
+                <RouterLink
+                  :to="{
+                    name: 'product-category-update',
+                    params: { id: item.id },
+                  }"
+                >
+                  <v-btn icon flat v-bind="props" variant="text">
+                    <Icon icon="mdi:pencil" />
+                  </v-btn>
+                </RouterLink>
+              </template>
+            </v-tooltip>
+            <v-tooltip text="Delete">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  icon
+                  flat
+                  v-bind="props"
+                  variant="text"
+                  @click="onDelete(item.id)"
+                  :loading="deleteCategoryMutation.isPending.value"
+                >
+                  <Icon icon="mdi:trash-can-outline" />
+                </v-btn>
+              </template>
+            </v-tooltip>
+          </template>
+        </EasyDataTable>
       </div>
     </template>
   </ViewScaffold>

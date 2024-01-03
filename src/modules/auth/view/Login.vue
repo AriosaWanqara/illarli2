@@ -5,6 +5,8 @@ import type { AxiosError } from "axios";
 import { watch } from "vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import LoginForm from "../component/loginForm.vue";
+import Welcome from "../component/welcome.vue";
 
 const { loginStore } = useUserStore();
 const router = useRouter();
@@ -36,26 +38,9 @@ watch(signInMutation.isSuccess, () => {
 </script>
 
 <template>
-  <div class="h-screen w-100 d-flex justify-center align-center">
-    <VCard class="login">
-      <form @submit.prevent="onSignInSubmit">
-        <VCardItem>
-          <VRow>
-            <VCol cols="12" class="pb-0">
-              <VTextField label="username" v-model="email" />
-            </VCol>
-            <VCol cols="12" class="py-1">
-              <VTextField label="password" v-model="password" />
-            </VCol>
-          </VRow>
-        </VCardItem>
-        <VCardActions>
-          <VBtn type="submit" :loading="signInMutation.isPending.value">
-            login
-          </VBtn>
-        </VCardActions>
-      </form>
-    </VCard>
+  <div class="tw-h-screen tw-w-full tw-flex">
+    <Welcome class="md:tw-flex tw-hidden" />
+    <LoginForm />
   </div>
 </template>
 

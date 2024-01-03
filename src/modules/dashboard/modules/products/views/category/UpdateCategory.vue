@@ -1,30 +1,24 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
 import useCategoryMutations from "@dashboard/modules/products/composables/category/useCategoryMutations";
-import useCategoryRules from "@dashboard/modules/products/composables/category/useCategoryRules";
-import { useVuelidate } from "@vuelidate/core";
-import { watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import useCategory from "../../composables/category/useCategory";
-import { ref } from "vue";
 import type { AxiosError } from "axios";
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import CreateCategoryForm from "../../component/category/createCategoryForm.vue";
+import useCategory from "../../composables/category/useCategory";
+import type { Category } from "../../models/Category";
 
 const { updateCategoryMutation } = useCategoryMutations();
-const { categoryRules } = useCategoryRules();
 const params = useRoute().params;
 const { categoryHasError, isCategoryLoading, category, categoryError } =
   useCategory(params.id.toString());
 const router = useRouter();
-const categoryValidator = useVuelidate(categoryRules, category);
 const error = ref(
   categoryError.value as AxiosError<{ message: string; errors: string[] }>
 );
 
-const onCategorySubmit = () => {
-  categoryValidator.value.$validate();
-  if (!categoryValidator.value.$error) {
-    updateCategoryMutation.mutate(category.value);
-  }
+const onCategorySubmit = (categoryToSave: Category) => {
+  updateCategoryMutation.mutate(categoryToSave);
 };
 
 watch(updateCategoryMutation.isError, () => {
@@ -67,22 +61,12 @@ watch(updateCategoryMutation.isSuccess, () => {
           <p>{{ error }}</p>
         </VCol>
       </VRow>
-      <VRow class="mt-2" v-else>
-        <VCol cols="12" class="py-1">
-          <VTextField label="nombre" v-model="category.name" />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VTextField label="descripcion" v-model="category.description" />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VBtn
-            color="primary"
-            @click="onCategorySubmit"
-            :loading="updateCategoryMutation.isPending.value"
-            >Crear</VBtn
-          >
-        </VCol>
-      </VRow>
+      <CreateCategoryForm
+        v-else
+        :category="category"
+        :isLoading="updateCategoryMutation.isPending.value"
+        @category-submit="onCategorySubmit"
+      />
     </template>
   </ViewScaffold>
 </template>
