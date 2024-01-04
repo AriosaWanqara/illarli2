@@ -14,7 +14,7 @@ const closeSession = () => {
 <template>
   <VCard>
     <VCardText>
-      <div class="mx-auto text-center">
+      <div class="mx-auto tw-text-center">
         <v-avatar color="brown">
           <span class="text-h5">JL</span>
         </v-avatar>

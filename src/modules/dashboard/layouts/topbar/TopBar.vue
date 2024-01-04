@@ -44,7 +44,7 @@ const { setTheme } = usethemeCustomizer();
         </VBtn>
         <h1 @click="setTheme('BLUE_THEME')">logo</h1>
       </div>
-      <div class="tw-flex tw-gap-4 md:tw-items-start tw-items-center">
+      <div class="tw-flex tw-gap-5 tw-items-center">
         <RouterLink :to="{ name: 'pos-home' }">
           <div
             class="tw-flex tw-gap-1 tw-py-1 tw-border-[1px] tw-border-gray-300 tw-px-2 tw-rounded-md"
@@ -55,6 +55,9 @@ const { setTheme } = usethemeCustomizer();
         </RouterLink>
         <Notifications />
         <ThemeSwitcher />
+
+        <VDivider vertical />
+
         <Profile />
       </div>
     </div>
