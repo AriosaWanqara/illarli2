@@ -26,6 +26,7 @@ const { width } = useElementSize(el);
     class="tw-pl-[1vw] tw-py-[2vh] leftSidebar"
     elevation="0"
     rail-width="68"
+    width="220"
     :class="mdAndDown || layoutState.isRail ? 'mini-asidebar' : ''"
     expand-on-hover
     color="background"

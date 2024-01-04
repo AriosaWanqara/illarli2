@@ -17,7 +17,7 @@ const props = defineProps({ item: Object, level: Number });
       <v-list-item v-bind="props" :value="item.title" rounded class="mb-1">
         <!---Icon  -->
         <template v-slot:prepend>
-          <Icon :icon="item.icon" height="22" />
+          <Icon :icon="item.icon" height="16" />
         </template>
         <!---Title  -->
         <v-list-item-title class="mr-auto">{{ item.title }}</v-list-item-title>

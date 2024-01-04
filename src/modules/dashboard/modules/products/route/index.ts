@@ -23,20 +23,6 @@ export const ProductRouter: RouteRecordRaw[] = [
       import("@dashboard/modules/products/views/category/CategoriesList.vue"),
   },
   {
-    path: "categoria/add",
-    name: "product-category-add",
-    meta: { permission: "list characteristics" },
-    component: () =>
-      import("@dashboard/modules/products/views/category/AddCategory.vue"),
-  },
-  {
-    path: "categorias/:id",
-    name: "product-category-update",
-    meta: { permission: "list characteristics" },
-    component: () =>
-      import("@dashboard/modules/products/views/category/UpdateCategory.vue"),
-  },
-  {
     path: "marcas",
     name: "product-brands-list",
     meta: { permission: "list characteristics" },

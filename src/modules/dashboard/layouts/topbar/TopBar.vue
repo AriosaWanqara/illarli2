@@ -26,18 +26,22 @@ const { setTheme } = usethemeCustomizer();
         <VBtn
           v-if="smAndUp"
           color="textPrimary"
-          icon="mdi-menu"
+          icon
           @click="layoutState.isRail = !layoutState.isRail"
-        ></VBtn>
+        >
+          <Icon icon="solar:list-outline" height="24" />
+        </VBtn>
         <VBtn
           v-else
-          icon="mdi-menu"
           color="textPrimary"
+          icon
           @click="
             layoutState.isMobileNavDrawerShowing =
               !layoutState.isMobileNavDrawerShowing
           "
-        ></VBtn>
+        >
+          <Icon icon="solar:list-outline" height="24" />
+        </VBtn>
         <h1 @click="setTheme('BLUE_THEME')">logo</h1>
       </div>
       <div class="tw-flex tw-gap-4 md:tw-items-start tw-items-center">

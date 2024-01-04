@@ -2,19 +2,23 @@ import api from "@/api/axios";
 import { useMutation } from "@tanstack/vue-query";
 import { watch } from "vue";
 import type { Category } from "../../models/Category";
+import type { CategoryApiResponse } from "../../models/ApiResponse";
 
 const saveCategory = async (category: Partial<Category>): Promise<Category> => {
-  const { data } = await api.post("/inventory/categories", category);
-  return data;
+  const { data } = await api.post<CategoryApiResponse>(
+    "/inventory/categories",
+    category
+  );
+  return data.data;
 };
 const updateCategory = async (
   category: Partial<Category>
 ): Promise<Category> => {
-  const { data } = await api.patch(
+  const { data } = await api.patch<CategoryApiResponse>(
     `/inventory/categories/${category.id}`,
     category
   );
-  return data;
+  return data.data;
 };
 const deleteCategory = async (id: string): Promise<Category> => {
   const { data } = await api.delete(`/inventory/categories/${id}`);

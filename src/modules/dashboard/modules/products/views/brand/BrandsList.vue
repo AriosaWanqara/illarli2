@@ -39,13 +39,12 @@ const headers: Header[] = [
       </RouterLink>
     </template>
     <template #default>
-      <p v-if="isBrandsLoading">cargando..</p>
-      <p v-else-if="brandsHasError">error</p>
-      <div v-else>
+      <div>
         <EasyDataTable
           :headers="headers"
           :theme-color="'#f48225'"
           :items="brands"
+          :loading="isBrandsLoading"
           alternating
           class="customize-table"
         >

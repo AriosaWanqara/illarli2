@@ -16,6 +16,11 @@ export interface menu {
 
 const navigationsItems: menu[] = [
   {
+    title: "Mi Illarli",
+    icon: "streamline:dashboard-3-solid",
+    to: "dashboard-home",
+  },
+  {
     title: "Productos",
     icon: "material-symbols:production-quantity-limits-outline-rounded",
     to: "#",

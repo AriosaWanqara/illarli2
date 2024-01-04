@@ -102,11 +102,19 @@
         background: transparent;
         color: white;
       }
-      .v-list-group__items .v-list-item.v-list-item--active,
       .v-list-group__items .v-list-item.v-list-item--active {
         border-left: 2px solid rgb(var(--v-theme-secondary));
         border-top-left-radius: 0px !important;
         border-bottom-left-radius: 0px !important;
+      }
+    }
+    a.v-list-item.v-list-item--active {
+      border-left: 2px solid rgb(var(--v-theme-secondary));
+      border-top-left-radius: 0px !important;
+      border-bottom-left-radius: 0px !important;
+      > .v-list-item__overlay {
+        background: transparent;
+        color: white;
       }
     }
   }

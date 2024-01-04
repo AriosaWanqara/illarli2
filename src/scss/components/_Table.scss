@@ -1,6 +1,7 @@
 .customize-table {
   border-radius: 12px;
   overflow: hidden;
+  --da0d4328: fit-content !important;
   --easy-table-border: 1px solid #ebf0ed;
   --easy-table-row-border: 1px solid #ebf0ed;
 
@@ -46,5 +47,8 @@
   --fdaf7e9e: #2d3a4f !important;
   th {
     font-weight: 500;
+  }
+  .selected-row {
+    background-color: rgb(237, 254, 255);
   }
 }

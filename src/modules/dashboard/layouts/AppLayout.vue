@@ -7,15 +7,15 @@ import "@dashboard/scss/style.scss";
 </script>
 
 <template>
-  <div class="tw-relative">
+  <div class="tw-relative tw-h-full">
     <Customizer />
     <SideBar />
     <MobileSideBar />
     <TopBar class="md:tw-pt-[2vh] tw-pt-0" />
-    <VMain>
+    <VMain class="tw-h-full">
       <router-view
         v-slot="{ Component }"
-        class="tw-px-[1vw] md:tw-mt-[2vh] tw-mt-0"
+        class="tw-px-[1vw] md:tw-pt-[2vh] tw-pt-0"
       >
         <transition name="slide-fade" mode="out-in">
           <component :is="Component" />

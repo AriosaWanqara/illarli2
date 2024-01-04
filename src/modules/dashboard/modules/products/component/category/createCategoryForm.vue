@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import type { Category } from "../../models/Category";
-import useCategoryRules from "../../composables/category/useCategoryRules";
 import useVuelidate from "@vuelidate/core";
+import useCategoryRules from "../../composables/category/useCategoryRules";
+import type { Category } from "../../models/Category";
 
 interface props {
   isLoading: boolean;
   category: Category;
+  buttonText: string;
 }
 
-const { category } = defineProps<props>();
-const categoryToSave = ref<Category>({ ...category });
+const props = defineProps<props>();
+
 const emit = defineEmits(["category-submit"]);
 const { categoryRules } = useCategoryRules();
-const categoryValidator = useVuelidate(categoryRules, categoryToSave);
 
 const onCategorySubmit = () => {
+  const categoryValidator = useVuelidate(categoryRules, props.category);
+  categoryValidator.value.$reset();
   categoryValidator.value.$validate();
+  console.log(props.category);
   if (!categoryValidator.value.$error) {
-    emit("category-submit", categoryToSave.value);
+    emit("category-submit", props.category);
   } else {
     alert(
       JSON.stringify(categoryValidator.value.$errors.map((x) => x.$message))
@@ -29,32 +31,53 @@ const onCategorySubmit = () => {
 
 <template>
   <VRow>
-    <VCol cols="12" class="tw-mb-1">
-      <VDivider />
-    </VCol>
     <VCol cols="12" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">Nombre de la categoria*</label>
-        <VTextField placeholder="nombre" v-model="categoryToSave.name" />
-      </div>
-    </VCol>
-    <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"
-          >Descripcion de la categoria</label
-        >
-        <VTextarea
-          rows="2"
-          density="compact"
-          placeholder="descripcion"
-          v-model="categoryToSave.description"
+        <label class="tw-font-semibold tw-text-gray-400 tw-uppercase"
+          >Nombre de la categoria <span class="tw-text-red-300">*</span>
+        </label>
+        <VTextField
+          placeholder="nombre"
+          v-model="props.category.name"
+          variant="solo-filled"
         />
       </div>
     </VCol>
     <VCol cols="12" class="py-0">
-      <VBtn color="primary" @click="onCategorySubmit" :loading="isLoading"
-        >Crear</VBtn
-      >
+      <div class="tw-flex tw-flex-col tw-gap-1 tw-text-gray-400">
+        <label class="tw-font-semibold tw-uppercase"
+          >Descripcion de la categoria</label
+        >
+        <VTextarea
+          rows="4"
+          flat
+          variant="solo-filled"
+          density="compact"
+          placeholder="descripcion"
+          v-model="props.category.description"
+        />
+      </div>
+    </VCol>
+    <!-- <VCol cols="12" class="py-0">
+      <div class="tw-flex tw-flex-col tw-gap-1 tw-text-gray-400">
+        <label class="tw-font-semibold">Descripcion de la categoria</label>
+        <VFileInput prepend-icon="" label="foto" variant="solo-filled" flat>
+        </VFileInput>
+      </div>
+    </VCol> -->
+    <VCol cols="12" class="py-0">
+      <div class="tw-flex tw-w-full tw-justify-end">
+        <VBtn
+          color="info"
+          @click="onCategorySubmit"
+          :loading="props.isLoading"
+          prepend-icon="mdi-plus"
+          variant="elevated"
+          density="default"
+        >
+          <p class="tw-font-semibold">{{ buttonText }}</p>
+        </VBtn>
+      </div>
     </VCol>
   </VRow>
 </template>

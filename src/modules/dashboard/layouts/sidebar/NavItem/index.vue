@@ -23,7 +23,7 @@ const props = defineProps({ item: Object, level: Number });
   >
     <!---If icon-->
     <template v-slot:prepend>
-      <Icon :icon="item.icon" height="18" />
+      <Icon :icon="item.icon" height="16" />
     </template>
     <v-list-item-title>{{ item.title }}</v-list-item-title>
     <!---If Caption-->
