@@ -2,6 +2,16 @@
 import useVuelidate from "@vuelidate/core";
 import useCategoryRules from "../../composables/category/useCategoryRules";
 import type { Category } from "../../models/Category";
+import vueFilePond from "vue-filepond";
+import "filepond/dist/filepond.min.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+
+const FilePond = vueFilePond(
+  FilePondPluginFileValidateType,
+  FilePondPluginImagePreview
+);
 
 interface props {
   isLoading: boolean;
@@ -25,6 +35,22 @@ const onCategorySubmit = () => {
     alert(
       JSON.stringify(categoryValidator.value.$errors.map((x) => x.$message))
     );
+  }
+};
+
+const handleLoad = async (event: any) => {
+  if (event.length > 0) {
+    const file = event[0].file;
+    const reader = new FileReader();
+    let blob = await fetch(file.objectURL).then((r) => r.blob()); //blob:url
+
+    reader.readAsDataURL(blob);
+
+    reader.onloadend = function () {
+      const base64data = reader.result;
+      console.log(base64data);
+      props.category.image = base64data as string;
+    };
   }
 };
 </script>
@@ -59,14 +85,16 @@ const onCategorySubmit = () => {
       </div>
     </VCol>
     <!-- <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1 tw-text-gray-400">
-        <label class="tw-font-semibold">Descripcion de la categoria</label>
-        <VFileInput prepend-icon="" label="foto" variant="solo-filled" flat>
-        </VFileInput>
-      </div>
+      <file-pond
+        name="test"
+        ref="pond"
+        label-idle="Drag & Drop una Imagen o da click"
+        accepted-file-types="image/jpeg, image/png"
+        v-on:updatefiles="handleLoad"
+      />
     </VCol> -->
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-w-full tw-justify-end">
+      <div class="tw-flex tw-w-full tw-justify-end tw-mt-2">
         <VBtn
           color="info"
           @click="onCategorySubmit"
@@ -75,7 +103,7 @@ const onCategorySubmit = () => {
           variant="elevated"
           density="default"
         >
-          <p class="tw-font-semibold">{{ buttonText }}</p>
+          {{ buttonText }}
         </VBtn>
       </div>
     </VCol>

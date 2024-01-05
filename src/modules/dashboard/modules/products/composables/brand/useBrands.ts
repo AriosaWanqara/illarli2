@@ -21,7 +21,7 @@ const useBrands = () => {
 
   watch(data, () => {
     if (data.value) {
-      brands.value = data.value;
+      brands.value = [...data.value];
       brandsDropdown.value = [];
 
       data.value.map((x) => {

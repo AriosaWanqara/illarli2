@@ -9,8 +9,9 @@ import useCategoryMutations from "../../composables/category/useCategoryMutation
 import type { Category } from "../../models/Category";
 import { computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
+import FormListContainer from "@/modules/dashboard/components/shared/FormListContainer.vue";
 
-const { width, height } = useWindowSize();
+const { width } = useWindowSize();
 const { categories } = useCategories();
 const { deleteCategoryMutation, updateCategoryMutation, saveCategoryMutation } =
   useCategoryMutations();
@@ -84,7 +85,7 @@ watch(updateCategoryMutation.isSuccess, () => {
     category.value = {} as Category;
     buttonText.value = "Añadir categoria";
     showFormModal.value = false;
-    let response = saveCategoryMutation.data.value;
+    let response = updateCategoryMutation.data.value;
     if (response) {
       categories.value.filter((x) => x.id == response?.id);
       categories.value = [...categories.value, response];
@@ -113,82 +114,88 @@ watch(deleteCategoryMutation.isSuccess, () => {
 </script>
 
 <template>
-  <div class="tw-flex tw-gap-2 tw-pt-2 tw-flex-col-reverse md:tw-flex-row">
-    <ViewScaffold
-      :title="category.id ? 'Modificando Categoria' : 'Crear Categoria'"
-      :is-flat="false"
-      class="tw-max-w-[400px] tw-hidden md:tw-block"
-    >
-      <template #default>
-        <div class="tw-mb-3"></div>
-        <CreateCategoryForm
-          :category="category"
-          :is-loading="isCategoryFormLoading"
-          :button-text="buttonText"
-          @category-submit="onCategoriSave"
-        />
-      </template>
-    </ViewScaffold>
-    <ViewScaffold title="Categorias" :is-flat="false" class="tw-flex-1">
-      <template #default>
-        <div>
-          <div
-            class="tw-flex tw-mb-5 tw-justify-between tw-items-center tw-px-2"
-          >
-            <div class="tw-max-w-sm tw-min-w-[200px]">
-              <!-- <VTextField
-                label="search"
-                hide-details
-                v-model="search"
-                prepend-inner-icon="mdi-magnify"
-              /> -->
-              <p class="tw-font-semibold">Todas las categorias</p>
-            </div>
-            <div class="tw-hidden md:tw-block">
-              <VBtn
-                color="success"
-                prepend-icon="mdi-plus"
-                @click="onNewCategory"
-                >Nuevo</VBtn
-              >
-            </div>
-            <div class="md:tw-hidden">
-              <VBtn
-                color="success"
-                prepend-icon="mdi-plus"
-                @click="showFormModal = true"
-                >Nuevo</VBtn
-              >
-            </div>
-          </div>
-          <CategoriesListTable
+  <FormListContainer>
+    <template #form>
+      <ViewScaffold
+        :title="category.id ? 'Modificando Categoria' : 'Crear Categoria'"
+        :is-flat="false"
+        class="tw-max-w-[400px] tw-hidden md:tw-block"
+      >
+        <template #default>
+          <div class="tw-mb-3"></div>
+          <CreateCategoryForm
             :category="category"
-            :is-delete-loading="deleteCategoryMutation.isPending.value"
-            :is-modify-loading="false"
-            :search="search"
-            @update-handle="onSelectedCategory"
-            @delete-handle="onDelete"
+            :is-loading="isCategoryFormLoading"
+            :button-text="buttonText"
+            @category-submit="onCategoriSave"
           />
-          <VDialog v-model="showFormModal" max-width="400">
-            <ViewScaffold
-              :title="category.id ? 'Modificando Categoria' : 'Crear Categoria'"
-              :is-flat="false"
+        </template>
+      </ViewScaffold>
+    </template>
+    <template #default>
+      <ViewScaffold title="Categorias" :is-flat="false" class="tw-flex-1">
+        <template #default>
+          <div>
+            <div
+              class="tw-flex tw-mb-5 tw-justify-between tw-items-center tw-px-2"
             >
-              <template #default>
-                <div class="tw-mb-3"></div>
-                <CreateCategoryForm
-                  :category="category"
-                  :is-loading="isCategoryFormLoading"
-                  :button-text="buttonText"
-                  @category-submit="onCategoriSave"
-                />
-              </template>
-            </ViewScaffold>
-          </VDialog>
-        </div>
-      </template>
-    </ViewScaffold>
-  </div>
+              <div class="tw-max-w-sm tw-min-w-[200px]">
+                <!-- <VTextField
+                  label="search"
+                  hide-details
+                  v-model="search"
+                  prepend-inner-icon="mdi-magnify"
+                /> -->
+                <p class="tw-font-semibold">Todas las categorias</p>
+              </div>
+              <div class="tw-hidden md:tw-block">
+                <VBtn
+                  color="success"
+                  prepend-icon="mdi-plus"
+                  @click="onNewCategory"
+                  >Nuevo</VBtn
+                >
+              </div>
+              <div class="md:tw-hidden">
+                <VBtn
+                  color="success"
+                  prepend-icon="mdi-plus"
+                  @click="showFormModal = true"
+                  >Nuevo</VBtn
+                >
+              </div>
+            </div>
+            <CategoriesListTable
+              :category="category"
+              :is-delete-loading="deleteCategoryMutation.isPending.value"
+              :is-modify-loading="false"
+              :search="search"
+              @update-handle="onSelectedCategory"
+              @delete-handle="onDelete"
+            />
+            <VDialog v-model="showFormModal" max-width="400">
+              <ViewScaffold
+                :title="
+                  category.id ? 'Modificando Categoria' : 'Crear Categoria'
+                "
+                :is-flat="false"
+              >
+                <template #default>
+                  <div class="tw-mb-3"></div>
+                  <CreateCategoryForm
+                    :category="category"
+                    :is-loading="isCategoryFormLoading"
+                    :button-text="buttonText"
+                    @category-submit="onCategoriSave"
+                  />
+                </template>
+              </ViewScaffold>
+            </VDialog>
+          </div>
+        </template>
+      </ViewScaffold>
+    </template>
+  </FormListContainer>
 </template>
 
 <style scoped></style>

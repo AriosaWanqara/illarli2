@@ -1,28 +1,27 @@
 <script setup lang="ts">
-import imageNotFound from "@/assets/Image-not-found.png";
 import { Icon } from "@iconify/vue";
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import type {
   BodyRowClassNameFunction,
   Header,
   Item,
 } from "vue3-easy-data-table";
-import useCategories from "../../composables/category/useCategories";
-import type { Category } from "../../models/Category";
+import useBrands from "../../composables/brand/useBrands";
+import type { Brand } from "../../models/Brand";
+import { computed } from "vue";
 
 interface props {
-  category: Category;
-  isModifyLoading: boolean;
   isDeleteLoading: boolean;
+  isUpdateLoading: boolean;
+  brand: Brand;
   search?: string;
 }
 
 const props = defineProps<props>();
-const emits = defineEmits(["delete-handle", "update-handle"]);
-const dataTable = ref();
-const { categories, isCategoriesLoading } = useCategories();
-const page = ref(1);
+const emits = defineEmits(["brand-update", "brand-delete"]);
+const { brands, isBrandsLoading } = useBrands();
 
+const dataTable = ref();
 const currentPageLastIndex = computed(
   () => dataTable.value?.currentPageLastIndex
 );
@@ -30,30 +29,31 @@ const clientItemsLength = computed(() => dataTable.value?.clientItemsLength);
 const maxPaginationNumber = computed(
   () => dataTable.value?.maxPaginationNumber
 );
+const page = ref(1);
+const headers: Header[] = [
+  { text: "Nombre", value: "name", sortable: true },
+  { text: "Acciones", value: "actions", width: 110 },
+];
+
+const onDelete = (brand: Brand) => {
+  emits("brand-delete", brand);
+};
+
+const onBrandSelected = (brand: Brand) => {
+  emits("brand-update", brand);
+};
+
 const bodyRowClassNameFunction: BodyRowClassNameFunction = (
   item: Item,
   _: number
 ): string => {
-  if (props.category.id) {
-    if (props.category.id == item.id) {
+  if (props.brand.id) {
+    if (props.brand.id == item.id) {
       return "selected-row";
     }
   }
   return "";
 };
-
-const headers: Header[] = [
-  { text: "Nombre de la categoría", value: "name", sortable: true },
-  { text: "Acciones", value: "actions", width: 110 },
-];
-
-const onUpdateCategory = (category: Category) => {
-  emits("update-handle", category);
-};
-const onDeleteCategory = (category: Category) => {
-  emits("delete-handle", category);
-};
-
 watch(page, () => {
   if (page.value > 0) {
     dataTable.value.updatePage(page.value);
@@ -62,43 +62,29 @@ watch(page, () => {
 </script>
 
 <template>
-  <div class="tw-flex tw-flex-col">
+  <div>
     <EasyDataTable
       :headers="headers"
       :theme-color="'#f48225'"
-      :items="categories"
-      ref="dataTable"
+      :items="brands"
       :body-row-class-name="bodyRowClassNameFunction"
-      :loading="isCategoriesLoading"
+      :loading="isBrandsLoading"
+      ref="dataTable"
       alternating
       :search-field="['name', 'description']"
       :search-value="props.search"
       :rows-per-page="10"
       hide-footer
-      class="customize-table tw-w-full"
+      class="customize-table"
     >
       <template #item-name="item">
-        <div class="tw-flex tw-gap-2">
-          <div
-            class="tw-flex tw-justify-center tw-items-center tw-rounded-md tw-overflow-hidden"
+        <div class="tw-flex tw-flex-col">
+          <p class="tw-font-semibold tw-leading-4">{{ item.name }}</p>
+          <p
+            class="tw-font-semibold tw-leading-4 tw-text-gray-400 tw-w-[15ch] tw-truncate"
           >
-            <VImg
-              :src="item.image ? item.image : imageNotFound"
-              height="40"
-              width="40"
-              aspect-ratio="2/2"
-            />
-          </div>
-          <div class="tw-flex tw-flex-col tw-justify-center">
-            <p class="tw-font-semibold tw-m-0 tw-leading-4">
-              {{ item.name }}
-            </p>
-            <p
-              class="tw-text-gray-400 tw-m-0 tw-leading-4 tw-truncate tw-w-[15ch]"
-            >
-              {{ item.description }}
-            </p>
-          </div>
+            {{ item.observation }}
+          </p>
         </div>
       </template>
       <template #item-actions="item">
@@ -107,11 +93,11 @@ watch(page, () => {
             <v-btn
               icon
               flat
-              v-bind="props"
               color="black"
+              v-bind="props"
+              :loading="isUpdateLoading"
               variant="text"
-              :loading="isModifyLoading"
-              @click="onUpdateCategory(item)"
+              @click="onBrandSelected(item)"
             >
               <Icon icon="lucide:pencil" />
             </v-btn>
@@ -121,14 +107,14 @@ watch(page, () => {
           <template v-slot:activator="{ props }">
             <v-btn
               icon
+              color="error"
               flat
               v-bind="props"
-              color="error"
               variant="text"
-              @click="onDeleteCategory(item)"
+              @click="onDelete(item)"
               :loading="isDeleteLoading"
             >
-              <Icon icon="solar:trash-bin-trash-outline" />
+              <Icon icon="mdi:trash-can-outline" />
             </v-btn>
           </template>
         </v-tooltip>
@@ -136,7 +122,7 @@ watch(page, () => {
     </EasyDataTable>
     <div
       class="tw-flex tw-justify-between tw-items-center"
-      v-if="categories.length > 10"
+      v-if="brands.length > 10"
     >
       <p class="tw-text-sm">
         Mostrando {{ currentPageLastIndex }} de
