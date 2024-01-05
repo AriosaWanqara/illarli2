@@ -1,8 +1,7 @@
-import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 import { authRoutes } from "@/modules/auth/route";
-import { posRoutes } from "@/modules/pos/route";
 import { dashboardRoutes } from "@/modules/dashboard/route";
+import { posRoutes } from "@/modules/pos/route";
+import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,7 +9,7 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: HomeView,
+      redirect: { name: "dashboard-home" },
     },
     ...authRoutes,
     ...posRoutes,
