@@ -1,24 +1,63 @@
 <script setup lang="ts">
+import FormListContainer from "@/modules/dashboard/components/shared/FormListContainer.vue";
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import { RouterLink } from "vue-router";
-import useRates from "../../compossables/rate/useRates";
-import useRateMutations from "../../compossables/rate/useRateMutations";
-import { watch } from "vue";
+import { useWindowSize } from "@vueuse/core";
 import type { AxiosError } from "axios";
-import type { Header } from "vue3-easy-data-table";
-import { Icon } from "@iconify/vue";
+import { computed, ref, watch } from "vue";
+import createRateForm from "../../components/rate/createRateForm.vue";
+import RatesTableList from "../../components/rate/ratesTableList.vue";
+import useRateMutations from "../../compossables/rate/useRateMutations";
+import useRates from "../../compossables/rate/useRates";
+import type { Rate } from "../../models/Rate";
 
-const { isRatesLoading, rates, ratesHasErro } = useRates();
-const { deleteRateMutations } = useRateMutations();
+const { rates } = useRates();
+const { deleteRateMutations, saveRateMutations, updateRateMutations } =
+  useRateMutations();
+const isFormLoading = computed(
+  () => saveRateMutations.isPending.value || updateRateMutations.isPending.value
+);
+const { width } = useWindowSize();
+const formButtonText = ref("Añadir tarifa");
+const showFormModal = ref(false);
+const rate = ref<Rate>({
+  operation: "0",
+  type: "0",
+} as Rate);
 
-const onDelete = (id: string) => {
-  deleteRateMutations.mutate(id);
+const onDelete = (rateToDelete: Rate) => {
+  deleteRateMutations.mutate(rateToDelete.id);
+};
+const resetForm = () => {
+  rate.value = {
+    operation: "0",
+    type: "0",
+  } as Rate;
+  formButtonText.value = "Añadir tarifa";
+  showFormModal.value = false;
 };
 
-const headers: Header[] = [
-  { text: "Nombre", value: "name" },
-  { text: "", value: "actions", width: 110 },
-];
+const onRateSave = (rateToSave: Rate) => {
+  if (rateToSave.id) {
+    updateRateMutations.mutate(rateToSave);
+  } else {
+    saveRateMutations.mutate(rateToSave);
+  }
+};
+
+const onCreateNew = () => {
+  resetForm();
+  if (width.value < 768) {
+    showFormModal.value = true;
+  }
+};
+
+const onRateSelected = (selectedRate: Rate) => {
+  rate.value = selectedRate;
+  formButtonText.value = "Actualizar Tarifa";
+  if (width.value < 768) {
+    showFormModal.value = true;
+  }
+};
 
 watch(deleteRateMutations.isError, () => {
   if (deleteRateMutations.isError.value) {
@@ -32,59 +71,109 @@ watch(deleteRateMutations.isSuccess, () => {
     rates.value = rates.value.filter(
       (x) => x.id != deleteRateMutations.variables.value
     );
+    resetForm();
+  }
+});
+
+watch(saveRateMutations.isError, () => {
+  if (saveRateMutations.isError.value) {
+    let x = saveRateMutations.error.value as AxiosError;
+    alert(JSON.stringify(x.response?.data));
+  }
+});
+
+watch(saveRateMutations.isSuccess, () => {
+  if (saveRateMutations.isSuccess.value) {
+    let response = saveRateMutations.data.value;
+    if (response) {
+      rates.value = [response, ...rates.value];
+    }
+    resetForm();
+  }
+});
+
+watch(updateRateMutations.isError, () => {
+  if (updateRateMutations.isError.value) {
+    let x = updateRateMutations.error.value as AxiosError;
+    alert(JSON.stringify(x.response?.data));
+  }
+});
+
+watch(updateRateMutations.isSuccess, () => {
+  if (updateRateMutations.isSuccess.value) {
+    let response = updateRateMutations.data.value;
+    if (response) {
+      for (let index = 0; index < rates.value.length; index++) {
+        if (rates.value[index].id == response.id) {
+          rates.value[index] = response;
+        }
+      }
+    }
+    resetForm();
   }
 });
 </script>
 
 <template>
-  <ViewScaffold title="Tarifas">
-    <template #action>
-      <RouterLink :to="{ name: 'rate-add' }">
-        <VBtn>add</VBtn>
-      </RouterLink>
+  <FormListContainer>
+    <template #form>
+      <ViewScaffold :title="rate.id ? 'Actualizar Tarifa' : 'Crear Tarifa'">
+        <template #default>
+          <div class="tw-mb-3"></div>
+          <createRateForm
+            :rate="rate"
+            :is-loading="isFormLoading"
+            :form-button-text="formButtonText"
+            @rate-submit="onRateSave"
+          />
+        </template>
+      </ViewScaffold>
     </template>
     <template #default>
-      <p v-if="isRatesLoading">cargando..</p>
-      <p v-else-if="ratesHasErro">error</p>
-      <div v-else>
-        <EasyDataTable
-          :headers="headers"
-          :theme-color="'#f48225'"
-          :items="rates"
-          alternating
-          class="customize-table"
-        >
-          <template #item-actions="item">
-            <v-tooltip text="Edit">
-              <template v-slot:activator="{ props }">
-                <RouterLink
-                  :to="{ name: 'rate-update', params: { id: item.id } }"
+      <ViewScaffold title="Tarifas">
+        <template #default>
+          <div>
+            <div class="tw-flex tw-justify-between tw-mb-2 tw-items-center">
+              <div class="tw-font-semibold tw-text-gray-400">
+                <p>Todas las tarifas</p>
+              </div>
+              <div class="">
+                <VBtn
+                  color="success"
+                  prepend-icon="mdi-plus"
+                  @click="onCreateNew"
                 >
-                  <v-btn icon flat v-bind="props" variant="text">
-                    <Icon icon="mdi:pencil" />
-                  </v-btn>
-                </RouterLink>
-              </template>
-            </v-tooltip>
-            <v-tooltip text="Delete">
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  icon
-                  flat
-                  v-bind="props"
-                  variant="text"
-                  @click="onDelete(item.id)"
-                  :loading="deleteRateMutations.isPending.value"
-                >
-                  <Icon icon="mdi:trash-can-outline" />
-                </v-btn>
-              </template>
-            </v-tooltip>
-          </template>
-        </EasyDataTable>
-      </div>
+                  nuevo
+                </VBtn>
+              </div>
+            </div>
+            <RatesTableList
+              :is-delete-loading="deleteRateMutations.isPending.value"
+              :is-update-loading="updateRateMutations.isPending.value"
+              :rate="rate"
+              @update-rate="onRateSelected"
+              @delete-rate="onDelete"
+            />
+            <VDialog max-width="400" v-model="showFormModal">
+              <ViewScaffold
+                :title="rate.id ? 'Actualizar Tarifa' : 'Crear Tarifa'"
+              >
+                <template #default>
+                  <div class="tw-mb-3"></div>
+                  <createRateForm
+                    :rate="rate"
+                    :is-loading="isFormLoading"
+                    :form-button-text="formButtonText"
+                    @rate-submit="onRateSave"
+                  />
+                </template>
+              </ViewScaffold>
+            </VDialog>
+          </div>
+        </template>
+      </ViewScaffold>
     </template>
-  </ViewScaffold>
+  </FormListContainer>
 </template>
 
 <style scoped></style>

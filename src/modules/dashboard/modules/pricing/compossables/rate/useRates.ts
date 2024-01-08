@@ -19,7 +19,7 @@ const useRates = () => {
 
   watch(data, () => {
     if (data.value) {
-      rates.value = data.value;
+      rates.value = [...data.value];
     }
   });
 

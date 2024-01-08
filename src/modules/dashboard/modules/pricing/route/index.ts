@@ -9,19 +9,6 @@ export const pricingRoute: RouteRecordRaw[] = [
       import("@dashboard/modules/pricing/view/rate/RateList.vue"),
   },
   {
-    path: "tarifa/add",
-    name: "rate-add",
-    meta: { permission: "list characteristics" },
-    component: () => import("@dashboard/modules/pricing/view/rate/AddRate.vue"),
-  },
-  {
-    path: "tarifas/:id",
-    name: "rate-update",
-    meta: { permission: "list characteristics" },
-    component: () =>
-      import("@dashboard/modules/pricing/view/rate/UpdateRate.vue"),
-  },
-  {
     path: "metodo-pago",
     name: "payment-method-list",
     meta: { permission: "list characteristics" },
