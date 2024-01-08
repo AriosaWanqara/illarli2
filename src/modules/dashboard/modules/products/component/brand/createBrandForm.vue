@@ -62,7 +62,10 @@ const onBrandSubmit = () => {
           @click="onBrandSubmit"
           :loading="isLoading"
           density="default"
-          prepend-icon="mdi-plus"
+          class="tw-transition-all tw-duration-200"
+          :prepend-icon="
+            props.brand.id ? 'mdi-content-save-outline' : 'mdi-plus'
+          "
           variant="elevated"
           >{{ props.buttonText }}</VBtn
         >

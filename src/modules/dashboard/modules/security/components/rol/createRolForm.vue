@@ -62,6 +62,7 @@ const onRolSubmit = () => {
           @click="onRolSubmit"
           :loading="isLoading"
           variant="elevated"
+          density="default"
           color="info"
           :prepend-icon="rolToSave.id ? 'mdi-content-save-outline' : 'mdi-plus'"
           >{{ formButtonText }}</VBtn

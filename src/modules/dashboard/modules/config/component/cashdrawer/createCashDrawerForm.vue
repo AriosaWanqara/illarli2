@@ -102,7 +102,10 @@ const onCashDrawerSubmit = () => {
           @click="onCashDrawerSubmit"
           :loading="isLoading"
           color="info"
-          prepend-icon="mdi-plus"
+          density="default"
+          :prepend-icon="
+            props.cashdrawer.id ? 'mdi-content-save-outline' : 'mdi-plus'
+          "
           variant="elevated"
         >
           {{ props.formButtonText }}

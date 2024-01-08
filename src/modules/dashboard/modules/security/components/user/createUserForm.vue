@@ -170,6 +170,7 @@ const onUserSubmit = () => {
         <VBtn
           @click="onUserSubmit"
           :loading="isLoding"
+          density="default"
           :prepend-icon="
             userToSave.id ? 'mdi-content-save-outline' : 'mdi-plus'
           "

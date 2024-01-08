@@ -98,7 +98,9 @@ const onRateSubmit = () => {
           density="default"
           variant="elevated"
           :loading="isLoading"
-          prepend-icon="mdi-plus"
+          :prepend-icon="
+            props.rate.id ? 'mdi-content-save-outline' : 'mdi-plus'
+          "
           >{{ props.formButtonText }}</VBtn
         >
       </div>

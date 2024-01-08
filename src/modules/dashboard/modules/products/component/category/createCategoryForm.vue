@@ -99,7 +99,9 @@ const handleLoad = async (event: any) => {
           color="info"
           @click="onCategorySubmit"
           :loading="props.isLoading"
-          prepend-icon="mdi-plus"
+          :prepend-icon="
+            props.category.id ? 'mdi-content-save-outline' : 'mdi-plus'
+          "
           variant="elevated"
           density="default"
         >

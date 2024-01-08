@@ -123,7 +123,8 @@ const onPersonSubmit = () => {
     <VCol cols="12" class="py-0">
       <div class="tw-flex tw-justify-end">
         <VBtn
-          color="primary"
+          color="info"
+          density="default"
           @click="onPersonSubmit"
           :loading="isLoading"
           variant="elevated"
