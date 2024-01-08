@@ -4,7 +4,7 @@ export const pricingRoute: RouteRecordRaw[] = [
   {
     path: "tarifas",
     name: "rate-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Tarifas" },
     component: () =>
       import("@dashboard/modules/pricing/view/rate/RateList.vue"),
   },

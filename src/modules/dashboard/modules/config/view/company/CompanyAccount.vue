@@ -57,7 +57,7 @@ watch(updateCompanyConfigsDomainMutations.isSuccess, () => {
 </script>
 
 <template>
-  <ViewScaffold title="Mis datos">
+  <ViewScaffold>
     <VRow v-if="isCompanyConfigsLoading">
       <p>cargando..</p>
     </VRow>
@@ -65,9 +65,6 @@ watch(updateCompanyConfigsDomainMutations.isSuccess, () => {
       <p>cargando..</p>
     </VRow>
     <VRow v-else>
-      <VCol cols="12" class="py-0">
-        <v-divider></v-divider>
-      </VCol>
       <VCol cols="12" md="6">
         <div class="tw-flex tw-gap-1 tw-items-center">
           <Icon icon="ic:baseline-event-repeat" height="24" />

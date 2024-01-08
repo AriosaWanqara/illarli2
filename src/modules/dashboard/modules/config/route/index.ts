@@ -4,7 +4,7 @@ export const configRouter: RouteRecordRaw[] = [
   {
     path: "cajas",
     name: "config-cashdrawer-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Cajas" },
     component: () =>
       import("@dashboard/modules/config/view/Cashdrawer/CashdrawerList.vue"),
   },
@@ -60,7 +60,7 @@ export const configRouter: RouteRecordRaw[] = [
   {
     path: "empresa/datos",
     name: "config-company-account",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Mis Datos" },
     component: () =>
       import("@dashboard/modules/config/view/company/CompanyAccount.vue"),
   },

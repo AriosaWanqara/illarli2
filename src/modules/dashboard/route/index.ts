@@ -16,6 +16,7 @@ export const dashboardRoutes: RouteRecordRaw[] = [
       {
         path: "home",
         name: "dashboard-home",
+        meta: { name: "Mi Illarli" },
         component: () => import("@dashboard/view/Home.vue"),
       },
       ...configRouter,

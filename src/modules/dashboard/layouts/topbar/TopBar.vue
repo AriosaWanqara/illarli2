@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import { useDisplay } from "vuetify/lib/framework.mjs";
 import useLayoutState from "../../composable/useLayoutState";
 import Profile from "./account/Profile.vue";
-import ThemeSwitcher from "./theme/ThemeSwitcher.vue";
 import Notifications from "./notification/Notifications.vue";
-import { Icon } from "@iconify/vue";
-import { usethemeCustomizer } from "@/stores/themeCustomizer";
+import ThemeSwitcher from "./theme/ThemeSwitcher.vue";
+import { useRoute } from "vue-router";
 
 const { layoutState } = useLayoutState();
 const { smAndUp, xl } = useDisplay();
-const { setTheme } = usethemeCustomizer();
+
+const route = useRoute();
 </script>
 
 <template>
@@ -42,7 +43,7 @@ const { setTheme } = usethemeCustomizer();
         >
           <Icon icon="solar:list-outline" height="24" />
         </VBtn>
-        <h1 @click="setTheme('BLUE_THEME')">logo</h1>
+        <h1 class="tw-font-Noto">{{ route.meta.name ?? "logo" }}</h1>
       </div>
       <div class="tw-flex tw-gap-5 tw-items-center">
         <RouterLink :to="{ name: 'pos-home' }">

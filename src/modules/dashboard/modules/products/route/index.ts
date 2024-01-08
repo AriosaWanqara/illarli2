@@ -4,28 +4,28 @@ export const ProductRouter: RouteRecordRaw[] = [
   {
     path: "productos",
     name: "product-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Productos" },
     component: () =>
       import("@dashboard/modules/products/views/product/ProductsListView.vue"),
   },
   {
     path: "productos/:id",
     name: "product-update",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Actualizar produto" },
     component: () =>
       import("@dashboard/modules/products/views/product/UpdateProduct.vue"),
   },
   {
     path: "categorias",
     name: "product-category-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Categorias" },
     component: () =>
       import("@dashboard/modules/products/views/category/CategoriesList.vue"),
   },
   {
     path: "marcas",
     name: "product-brands-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Marcas" },
     component: () =>
       import("@dashboard/modules/products/views/brand/BrandsList.vue"),
   },
@@ -33,6 +33,7 @@ export const ProductRouter: RouteRecordRaw[] = [
     path: "add",
     name: "product-add",
     redirect: { name: "product-add-standar" },
+    meta: { name: "Agregar Producto" },
     component: () =>
       import("@dashboard/modules/products/layouts/AddProductLayout.vue"),
     children: [
