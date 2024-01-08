@@ -42,56 +42,72 @@ export const ProductRouter: RouteRecordRaw[] = [
         name: "product-add-standar",
         meta: { permission: "list characteristics" },
         component: () =>
-          import("@dashboard/modules/products/component/create/Standar.vue"),
+          import(
+            "@dashboard/modules/products/component/product/create/Standar.vue"
+          ),
       },
       {
         path: "sub-producto",
         name: "product-add-subproduct",
         meta: { permission: "list characteristics" },
         component: () =>
-          import("@dashboard/modules/products/component/create/Subproduct.vue"),
+          import(
+            "@dashboard/modules/products/component/product/create/Subproduct.vue"
+          ),
       },
       {
         path: "receta",
         name: "product-add-recipe",
         meta: { permission: "list characteristics" },
         component: () =>
-          import("@dashboard/modules/products/component/create/Recipe.vue"),
+          import(
+            "@dashboard/modules/products/component/product/create/Recipe.vue"
+          ),
       },
       {
         path: "serie",
         name: "product-add-serie",
         meta: { permission: "list characteristics" },
         component: () =>
-          import("@dashboard/modules/products/component/create/Serie.vue"),
+          import(
+            "@dashboard/modules/products/component/product/create/Serie.vue"
+          ),
       },
       {
         path: "combo",
         name: "product-add-combo",
         meta: { permission: "list characteristics" },
         component: () =>
-          import("@dashboard/modules/products/component/create/Combo.vue"),
+          import(
+            "@dashboard/modules/products/component/product/create/Combo.vue"
+          ),
       },
       {
         path: "lote",
         name: "product-add-lote",
         meta: { permission: "list characteristics" },
         component: () =>
-          import("@dashboard/modules/products/component/create/Lote.vue"),
+          import(
+            "@dashboard/modules/products/component/product/create/Lote.vue"
+          ),
       },
       {
         path: "tallas-color",
         name: "product-add-size-color",
         meta: { permission: "list characteristics" },
         component: () =>
-          import("@dashboard/modules/products/component/create/SizeColor.vue"),
+          import(
+            "@dashboard/modules/products/component/product/create/SizeColor.vue"
+          ),
       },
       {
         path: "servicio",
         name: "product-add-service",
         meta: { permission: "list characteristics" },
         component: () =>
-          import("@dashboard/modules/products/component/create/Service.vue"),
+          import(
+            "@dashboard/modules/products/component/product/create/Service.vue"
+          ),
       },
     ],
   },

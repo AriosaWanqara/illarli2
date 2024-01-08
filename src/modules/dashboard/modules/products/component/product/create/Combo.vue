@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import useComboPoductRules from "../../composables/product/combo/useComboPoductRules";
-import useComboPoductMutations from "../../composables/product/combo/useComboPoductMutations";
+import useComboPoductMutations from "../../../composables/product/combo/useComboPoductMutations";
 import { useVuelidate } from "@vuelidate/core";
 import type {
   ComboProduct,
@@ -10,11 +9,12 @@ import type {
 } from "@dashboard/modules/products/models/products/ComboProduct";
 import { watch } from "vue";
 import type { AxiosError } from "axios";
-import { productTypeEnum } from "../../const/productTypeEnum";
-import useStandarProducts from "../../composables/product/standar/useStandarProducts";
-import type { Product } from "../../models/products/Product";
-import useBrands from "../../composables/brand/useBrands";
-import useCategories from "../../composables/category/useCategories";
+import { productTypeEnum } from "../../../const/productTypeEnum";
+import useStandarProducts from "../../../composables/product/standar/useStandarProducts";
+import type { Product } from "../../../models/products/Product";
+import useBrands from "../../../composables/brand/useBrands";
+import useCategories from "../../../composables/category/useCategories";
+import useComboPoductRules from "../../../composables/product/combo/useComboPoductRules";
 
 interface props {
   productProps?: Product;

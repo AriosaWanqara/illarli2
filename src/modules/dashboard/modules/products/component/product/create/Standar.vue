@@ -4,12 +4,12 @@ import { useVuelidate } from "@vuelidate/core";
 import type { AxiosError } from "axios";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-import useStandarPoductMutations from "../../composables/product/standar/useStandarPoductMutations";
-import useStandarPoductRules from "../../composables/product/standar/useStandarPoductRules";
-import { productTypeEnum } from "../../const/productTypeEnum";
-import type { Product } from "../../models/products/Product";
-import useCategories from "../../composables/category/useCategories";
-import useBrands from "../../composables/brand/useBrands";
+import useStandarPoductMutations from "../../../composables/product/standar/useStandarPoductMutations";
+import useStandarPoductRules from "../../../composables/product/standar/useStandarPoductRules";
+import { productTypeEnum } from "../../../const/productTypeEnum";
+import type { Product } from "../../../models/products/Product";
+import useCategories from "../../../composables/category/useCategories";
+import useBrands from "../../../composables/brand/useBrands";
 
 interface props {
   productProps?: Product;

@@ -28,7 +28,6 @@ const isCategoryFormLoading = ref(
 );
 
 const onDelete = (brandToDelete: Brand) => {
-  // deleteBrandMutation.mutate(brand.id);
   brand.value = brandToDelete;
   showConfirmModal.value = true;
 };

@@ -1,23 +1,40 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
 import { watch } from "vue";
+import { useRouter } from "vue-router";
+import WareHouseTableList from "../../component/warehouse/WareHouseTableList.vue";
 import useWareHouses from "../../composables/warehouse/useWareHouses";
 import useWareHousesMutations from "../../composables/warehouse/useWareHousesMutations";
-import type { Header } from "vue3-easy-data-table";
-import { Icon } from "@iconify/vue";
-import { getPrimaryColor } from "@/utils/getColors";
+import type { WareHouse } from "../../models/WareHouse";
+import { ref } from "vue";
+import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
 
-const { wareHouses, isWareHousesLoading, wareHousesHasError } = useWareHouses();
+const { wareHouses } = useWareHouses();
 const { deleteWareHouseMutation } = useWareHousesMutations();
+const router = useRouter();
+const showConfirmDialog = ref(false);
+const selectedWareHouse = ref<WareHouse>({} as WareHouse);
 
-const onDelete = (id: string) => {
-  deleteWareHouseMutation.mutate(id);
+const onDelete = (wareHouse: WareHouse) => {
+  selectedWareHouse.value = wareHouse;
+  showConfirmDialog.value = true;
 };
 
-const headers: Header[] = [
-  { text: "Nombre", value: "name" },
-  { text: "", value: "actions", width: 110 },
-];
+const onConfirmReponse = (response: boolean) => {
+  if (response) {
+    try {
+      deleteWareHouseMutation.mutate(selectedWareHouse.value.id);
+    } catch (error) {}
+  }
+  showConfirmDialog.value = false;
+};
+
+const onSelectWareHouse = (wareHouse: WareHouse) => {
+  router.push({
+    name: "config-warehouses-update",
+    params: { id: wareHouse.id },
+  });
+};
 
 watch(deleteWareHouseMutation.isError, () => {
   if (deleteWareHouseMutation.isError.value) {
@@ -34,54 +51,27 @@ watch(deleteWareHouseMutation.isSuccess, () => {
 });
 </script>
 <template>
-  <ViewScaffold title="Bodegas">
-    <template #action>
-      <RouterLink :to="{ name: 'config-warehouses-add' }">
-        <v-btn flat color="success">Agregar</v-btn>
-      </RouterLink>
-    </template>
+  <ViewScaffold>
     <template #default>
-      <p v-if="isWareHousesLoading">cargando</p>
-      <p v-else-if="wareHousesHasError">error</p>
-      <div v-else>
-        <EasyDataTable
-          :headers="headers"
-          :theme-color="getPrimaryColor()"
-          :items="wareHouses"
-          alternating
-          class="customize-table"
-        >
-          <template #item-actions="item">
-            <v-tooltip text="Edit">
-              <template v-slot:activator="{ props }">
-                <RouterLink
-                  :to="{
-                    name: 'config-warehouses-update',
-                    params: { id: item.id },
-                  }"
-                >
-                  <v-btn icon flat v-bind="props" variant="text">
-                    <Icon icon="mdi:pencil" />
-                  </v-btn>
-                </RouterLink>
-              </template>
-            </v-tooltip>
-            <v-tooltip text="Delete">
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  icon
-                  flat
-                  v-bind="props"
-                  variant="text"
-                  @click="onDelete(item.id)"
-                  :loading="deleteWareHouseMutation.isPending.value"
-                >
-                  <Icon icon="mdi:trash-can-outline" />
-                </v-btn>
-              </template>
-            </v-tooltip>
-          </template>
-        </EasyDataTable>
+      <div>
+        <div class="tw-flex tw-items-center tw-justify-between tw-mb-2">
+          <p class="tw-font-semibold tw-text-gray-400">Todas las bodegas</p>
+          <RouterLink :to="{ name: 'config-warehouses-add' }">
+            <v-btn flat color="success" prepend-icon="mdi-plus">Nueva</v-btn>
+          </RouterLink>
+        </div>
+        <WareHouseTableList
+          :is-delete-loading="deleteWareHouseMutation.isPending.value"
+          :is-update-loading="false"
+          @warehouse-delete="onDelete"
+          @warehouse-update="onSelectWareHouse"
+        />
+        <ConfirmDeleteDialog
+          :show-modal="showConfirmDialog"
+          :title="'Desea borrar'"
+          :dialog-text="'Esta seguro que desea borrar la bodega?'"
+          @confirm-response="onConfirmReponse"
+        />
       </div>
     </template>
   </ViewScaffold>

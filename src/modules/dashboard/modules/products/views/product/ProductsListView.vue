@@ -1,31 +1,37 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 
 import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
-import { Icon } from "@iconify/vue";
 import type { AxiosError } from "axios";
 import { watch } from "vue";
-import type { Header } from "vue3-easy-data-table";
+import ProductTableList from "../../component/product/list/ProductTableList.vue";
 import useProductMutations from "../../composables/product/useProductMutations";
 import useProducts from "../../composables/product/useProducts";
 import type { Product } from "../../models/products/Product";
-import { getPrimaryColor } from "@/utils/getColors";
+import ViewScaffold from "@/modules/dashboard/components/shared/ViewScaffold.vue";
+import { ref } from "vue";
+import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
 
-const { isProductsLoading, products, productsHasError } = useProducts();
+const { products } = useProducts();
 const { deleteProductMutation } = useProductMutations();
-const search = ref("");
-
-const headers: Header[] = [
-  { text: "Nombre", value: "name" },
-  { text: "Precio", value: "price" },
-  { text: "stock", value: "stock" },
-  { text: "Tipo", value: "product_type_name" },
-  { text: "", value: "actions", width: 110 },
-];
+const router = useRouter();
+const showConfirmModal = ref(false);
+const selectedProduct = ref<Product>({} as Product);
 
 const onDeleteProduct = (product: Product) => {
-  deleteProductMutation.mutate(product);
+  selectedProduct.value = product;
+  showConfirmModal.value = true;
+};
+
+const onConfirmReponse = (response: boolean) => {
+  if (response) {
+    deleteProductMutation.mutate(selectedProduct.value);
+  }
+  showConfirmModal.value = false;
+};
+
+const onSelectProduct = (product: Product) => {
+  router.push({ name: "product-update", params: { id: product.id } });
 };
 
 watch(deleteProductMutation.isError, () => {
@@ -43,51 +49,30 @@ watch(deleteProductMutation.isSuccess, () => {
 });
 </script>
 <template>
-  <UIScaffold>
-    <template #left-action>
-      <h1>asd</h1>
+  <ViewScaffold>
+    <template #default>
+      <div>
+        <div class="tw-flex tw-justify-between tw-items-center tw-mb-2">
+          <p class="tw-font-semibold tw-text-gray-400">Todos los productos</p>
+          <RouterLink :to="{ name: 'product-add' }">
+            <v-btn flat color="success" prepend-icon="mdi-plus">Nuevo</v-btn>
+          </RouterLink>
+        </div>
+        <ProductTableList
+          :is-delete-loading="deleteProductMutation.isPending.value"
+          :is-update-loading="false"
+          @product-delete="onDeleteProduct"
+          @product-update="onSelectProduct"
+        />
+        <ConfirmDeleteDialog
+          :dialog-text="'Esta seguro que desa borrar el producto?'"
+          :show-modal="showConfirmModal"
+          :title="'Desea borrar'"
+          @confirm-response="onConfirmReponse"
+        />
+      </div>
     </template>
-    <template #right-action>
-      <RouterLink :to="{ name: 'product-add' }">
-        <v-btn flat color="success">Agregar</v-btn>
-      </RouterLink>
-    </template>
-    <EasyDataTable
-      :headers="headers"
-      :theme-color="getPrimaryColor()"
-      :items="products"
-      alternating
-      class="customize-table"
-    >
-      <template #item-actions="item">
-        <v-tooltip text="Edit">
-          <template v-slot:activator="{ props }">
-            <RouterLink
-              :to="{ name: 'product-update', params: { id: item.id } }"
-            >
-              <v-btn icon flat v-bind="props" variant="text">
-                <Icon icon="mdi:pencil" />
-              </v-btn>
-            </RouterLink>
-          </template>
-        </v-tooltip>
-        <v-tooltip text="Delete">
-          <template v-slot:activator="{ props }">
-            <v-btn
-              icon
-              flat
-              v-bind="props"
-              variant="text"
-              @click="onDeleteProduct(item)"
-              :loading="deleteProductMutation.isPending.value"
-            >
-              <Icon icon="mdi:trash-can-outline" />
-            </v-btn>
-          </template>
-        </v-tooltip>
-      </template>
-    </EasyDataTable>
-  </UIScaffold>
+  </ViewScaffold>
 </template>
 
 <style scoped>

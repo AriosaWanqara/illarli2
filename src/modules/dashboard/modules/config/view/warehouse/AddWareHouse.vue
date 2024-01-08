@@ -41,6 +41,7 @@ watch(saveWareHouseMutation.isSuccess, () => {
     <template #default>
       <CreateWareHouseForm
         :ware-house="wareHouse"
+        :form-button-text="'Añadir Bodega'"
         :is-loading="saveWareHouseMutation.isPending.value"
         @submit-warehouse="onWareHouseSubmit"
       />

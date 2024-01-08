@@ -1,30 +1,22 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import { useVuelidate } from "@vuelidate/core";
+import type { AxiosError } from "axios";
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import CreateWareHouseForm from "../../component/warehouse/createWareHouseForm.vue";
 import useWareHouse from "../../composables/warehouse/useWareHouse";
-import useWareHouseRules from "../../composables/warehouse/useWareHouseRules";
 import useWareHousesMutations from "../../composables/warehouse/useWareHousesMutations";
-import type { AxiosError } from "axios";
-import useSubsidiaries from "../../composables/subsidiary/useSubsidiaries";
+import type { WareHouse } from "../../models/WareHouse";
 
 const router = useRouter();
 const params = useRoute().params;
 const { isWareHouseLoading, wareHouse, wareHouseHasError, wareHouseError } =
   useWareHouse(params.id.toString());
-const { isSubsidiariesLoading, subsidiaryDropdown, subsidiariesHasError } =
-  useSubsidiaries();
-const { wareHouseRules } = useWareHouseRules();
+
 const { updateWareHouseMutation } = useWareHousesMutations();
-const whareHouseToSave = ref(wareHouse);
-const whareHouseValidator = useVuelidate(wareHouseRules, whareHouseToSave);
 const error = ref(wareHouseError.value as AxiosError);
-const onWhareHouseSubmit = () => {
-  whareHouseValidator.value.$validate();
-  if (!whareHouseValidator.value.$error) {
-    updateWareHouseMutation.mutate(whareHouseToSave.value);
-  }
+const onWareHouseSubmit = (wareHouse: WareHouse) => {
+  updateWareHouseMutation.mutate(wareHouse);
 };
 
 watch(updateWareHouseMutation.isError, () => {
@@ -67,38 +59,13 @@ watch(updateWareHouseMutation.isSuccess, () => {
           <p>{{ error }}</p>
         </VCol>
       </VRow>
-      <VRow class="mt-1" v-else>
-        <VCol cols="12" class="py-1">
-          <VTextField label="nombre" v-model="whareHouseToSave.name" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VTextField label="nombre" v-model="whareHouseToSave.name" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VTextField label="code" v-model="whareHouseToSave.code" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VTextField label="address" v-model="whareHouseToSave.address" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VSelect
-            label="subsidiary"
-            :loading="isSubsidiariesLoading"
-            v-model="whareHouseToSave.subsidiary_id"
-            :items="subsidiaryDropdown"
-            item-title="label"
-            item-value="value"
-          />
-        </VCol>
-        <VCol cols="12" class="py-1">
-          <VBtn
-            color="primary"
-            @click="onWhareHouseSubmit"
-            :loading="updateWareHouseMutation.isPending.value"
-            >Crear</VBtn
-          >
-        </VCol>
-      </VRow>
+      <CreateWareHouseForm
+        v-else
+        :ware-house="wareHouse"
+        :form-button-text="'Actualizar Bodega'"
+        :is-loading="updateWareHouseMutation.isPending.value"
+        @submit-warehouse="onWareHouseSubmit"
+      />
     </template>
   </ViewScaffold>
 </template>

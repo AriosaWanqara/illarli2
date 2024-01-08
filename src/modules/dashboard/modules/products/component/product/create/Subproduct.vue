@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { Subproduct } from "../../models/products/Subproduct";
-import useStandarProducts from "../../composables/product/standar/useStandarProducts";
-import useSubproductRules from "../../composables/product/subproduct/useSubproductRules";
-import useSubproductMutations from "../../composables/product/subproduct/useSubproductMutations";
+import type { Subproduct } from "../../../models/products/Subproduct";
+import useStandarProducts from "../../../composables/product/standar/useStandarProducts";
+import useSubproductRules from "../../../composables/product/subproduct/useSubproductRules";
+import useSubproductMutations from "../../../composables/product/subproduct/useSubproductMutations";
 import { useVuelidate } from "@vuelidate/core";
-import { productTypeEnum } from "../../const/productTypeEnum";
+import { productTypeEnum } from "../../../const/productTypeEnum";
 import { watch } from "vue";
 import type { AxiosError } from "axios";
 import { useRouter } from "vue-router";
-import type { Product } from "../../models/products/Product";
-import useCategories from "../../composables/category/useCategories";
-import useBrands from "../../composables/brand/useBrands";
+import type { Product } from "../../../models/products/Product";
+import useCategories from "../../../composables/category/useCategories";
+import useBrands from "../../../composables/brand/useBrands";
 
 interface props {
   productProps?: Product;

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import useVuelidate from "@vuelidate/core";
 import useSubsidiaries from "../../composables/subsidiary/useSubsidiaries";
+import useWareHouseRules from "../../composables/warehouse/useWareHouseRules";
 import useWareHouseTypes from "../../composables/warehouse/useWareHouseTypes";
 import type { WareHouse } from "../../models/WareHouse";
-import useWareHouseRules from "../../composables/warehouse/useWareHouseRules";
-import useVuelidate from "@vuelidate/core";
 
 interface props {
   isLoading: boolean;
@@ -98,6 +97,7 @@ const onWareHouseSubmit = () => {
       <div class="tw-flex tw-justify-end">
         <VBtn
           color="info"
+          density="default"
           @click="onWareHouseSubmit"
           :prepend-icon="
             props.wareHouse.id ? 'mdi-content-save-outline' : 'mdi-plus'

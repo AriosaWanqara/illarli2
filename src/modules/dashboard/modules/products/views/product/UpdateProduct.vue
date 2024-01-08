@@ -2,9 +2,9 @@
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
 import useProduct from "../../composables/product/useProduct";
 import { useRoute } from "vue-router";
-import Standar from "../../component/create/Standar.vue";
-import Combo from "../../component/create/Combo.vue";
-import Subproduct from "../../component/create/Subproduct.vue";
+import Standar from "../../component/product/create/Standar.vue";
+import Combo from "../../component/product/create/Combo.vue";
+import Subproduct from "../../component/product/create/Subproduct.vue";
 import { productTypeEnum } from "../../const/productTypeEnum";
 
 const params = useRoute().params;
