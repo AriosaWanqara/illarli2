@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import type { Rate } from "../../models/Rate";
-import useRateRules from "../../compossables/rate/useRateRules";
 import useVuelidate from "@vuelidate/core";
+import useRateRules from "../../compossables/rate/useRateRules";
+import type { Rate } from "../../models/Rate";
 
 interface props {
   rate: Rate;
@@ -28,7 +27,8 @@ const onRateSubmit = () => {
     <VCol cols="12" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1 tw-mb-6">
         <label for="" class="tw-font-semibold tw-text-gray-400"
-          >Caracteristicas de la tarifa</label
+          >Caracteristicas de la tarifa
+          <span class="tw-text-red-300">*</span></label
         >
         <div class="tw-flex tw-gap-2">
           <v-btn-toggle
@@ -55,7 +55,7 @@ const onRateSubmit = () => {
     <VCol cols="12" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
         <label for="" class="tw-font-semibold tw-text-gray-400"
-          >Nombre de la tarifa</label
+          >Nombre de la tarifa <span class="tw-text-red-300">*</span></label
         >
         <VTextField
           variant="solo-filled"
@@ -67,7 +67,7 @@ const onRateSubmit = () => {
     <VCol cols="12" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
         <label for="" class="tw-font-semibold tw-text-gray-400"
-          >Valor de la tarifa</label
+          >Valor de la tarifa <span class="tw-text-red-300">*</span></label
         >
         <VTextField
           variant="solo-filled"
@@ -94,6 +94,8 @@ const onRateSubmit = () => {
       <div class="tw-flex tw-justify-end">
         <VBtn
           @click="onRateSubmit"
+          color="info"
+          variant="elevated"
           :loading="isLoading"
           prepend-icon="mdi-plus"
           >{{ props.formButtonText }}</VBtn

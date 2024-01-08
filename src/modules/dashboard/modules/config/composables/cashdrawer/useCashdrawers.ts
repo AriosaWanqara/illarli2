@@ -19,7 +19,7 @@ const useCashdrawers = () => {
 
   watch(data, () => {
     if (data.value) {
-      cashdrawers.value = data.value;
+      cashdrawers.value = [...data.value];
     }
   });
 

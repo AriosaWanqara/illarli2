@@ -1,97 +1,113 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import type { Cashdrawer } from "../../models/Cashdrawer";
-import useSubsidiaries from "../../composables/subsidiary/useSubsidiaries";
-import useDocumentTypes from "../../composables/documentType/useDocumentTypes";
-import useCashdrawerRules from "../../composables/cashdrawer/useCashdrawerRules";
 import useVuelidate from "@vuelidate/core";
+import useCashdrawerRules from "../../composables/cashdrawer/useCashdrawerRules";
+import useDocumentTypes from "../../composables/documentType/useDocumentTypes";
+import useSubsidiaries from "../../composables/subsidiary/useSubsidiaries";
+import type { Cashdrawer } from "../../models/Cashdrawer";
 
 interface props {
   cashdrawer: Cashdrawer;
   isLoading: boolean;
+  formButtonText: string;
 }
 
-const { cashdrawer } = defineProps<props>();
+const props = defineProps<props>();
 const emits = defineEmits(["submit-cashdrawer"]);
-console.log(cashdrawer);
 
 const { isSubsidiariesLoading, subsidiaryDropdown } = useSubsidiaries();
 const { documentTypeDropdown, isDocumentsTypeLoading } = useDocumentTypes();
 
-const cashdrawerToSave = ref({ ...cashdrawer });
-const { cashdrawerRules } = useCashdrawerRules();
-const cashdrawerValidator = useVuelidate(cashdrawerRules, cashdrawerToSave);
-
 const onCashDrawerSubmit = () => {
+  const { cashdrawerRules } = useCashdrawerRules();
+  const cashdrawerValidator = useVuelidate(cashdrawerRules, props.cashdrawer);
   cashdrawerValidator.value.$validate();
   if (!cashdrawerValidator.value.$error) {
-    emits("submit-cashdrawer", cashdrawerToSave.value);
+    emits("submit-cashdrawer", props.cashdrawer);
   }
 };
 </script>
 
 <template>
   <VRow class="mt-1">
-    <VCol cols="12" class="py-0 tw-mb-4">
-      <VDivider></VDivider>
-    </VCol>
-    <VCol cols="6" class="py-0">
+    <VCol cols="12" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"> Codigo de la caja*</label>
-
-        <VTextField placeholder="codigo" v-model="cashdrawerToSave.code" />
-      </div>
-    </VCol>
-    <VCol cols="6" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"> Observacion</label>
+        <label for="" class="tw-font-semibold tw-text-gray-400">
+          Codigo de la caja <span class="tw-text-red-300">*</span></label
+        >
 
         <VTextField
-          placeholder="observacion"
-          v-model="cashdrawerToSave.observation"
+          placeholder="codigo"
+          v-model="props.cashdrawer.code"
+          variant="solo-filled"
         />
       </div>
     </VCol>
-    <VCol cols="6" class="py-0">
+    <VCol cols="12" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"> Sucursal de la caja*</label>
+        <label for="" class="tw-font-semibold tw-text-gray-400">
+          Sucursal de la caja <span class="tw-text-red-300">*</span></label
+        >
 
         <VSelect
+          variant="solo-filled"
+          flat
           placeholder="subsidiary"
           :loading="isSubsidiariesLoading"
-          v-model="cashdrawerToSave.subsidiary_id"
+          v-model="props.cashdrawer.subsidiary_id"
           :items="subsidiaryDropdown"
           item-title="label"
           item-value="value"
         >
-          <template #selection="{ index, item }" v-if="isSubsidiariesLoading">
-            <p>Cargando...</p>
-          </template>
         </VSelect>
       </div>
     </VCol>
-    <VCol cols="6" class="py-0">
+    <VCol cols="12" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"> Tipo de documento*</label>
+        <label for="" class="tw-font-semibold tw-text-gray-400">
+          Tipo de documento <span class="tw-text-red-300">*</span></label
+        >
 
         <VSelect
+          variant="solo-filled"
+          flat
           placeholder="Tipo de documento"
           multiple
           chips
-          v-model="cashdrawerToSave.document_type"
+          v-model="props.cashdrawer.document_type"
           :loading="isDocumentsTypeLoading"
           :items="documentTypeDropdown"
           item-title="label"
           item-value="value"
         >
-          <template #selection="{ index, item }" v-if="isDocumentsTypeLoading">
-            <p>Cargando...</p>
-          </template>
         </VSelect>
       </div>
     </VCol>
+    <VCol cols="12" class="py-0">
+      <div class="tw-flex tw-flex-col tw-gap-1">
+        <label for="" class="tw-font-semibold tw-text-gray-400">
+          Observacion</label
+        >
+
+        <VTextarea
+          variant="solo-filled"
+          flat
+          placeholder="observacion"
+          v-model="props.cashdrawer.observation"
+        />
+      </div>
+    </VCol>
     <VCol cols="12">
-      <VBtn @click="onCashDrawerSubmit" :loading="isLoading"> crear </VBtn>
+      <div class="tw-flex tw-justify-end">
+        <VBtn
+          @click="onCashDrawerSubmit"
+          :loading="isLoading"
+          color="info"
+          prepend-icon="mdi-plus"
+          variant="elevated"
+        >
+          {{ props.formButtonText }}
+        </VBtn>
+      </div>
     </VCol>
   </VRow>
 </template>

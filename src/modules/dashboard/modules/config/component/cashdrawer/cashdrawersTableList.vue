@@ -1,24 +1,31 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
-import { computed, ref } from "vue";
 import type {
   BodyRowClassNameFunction,
   Header,
   Item,
 } from "vue3-easy-data-table";
-import useRates from "../../compossables/rate/useRates";
-import type { Rate } from "../../models/Rate";
+import useCashdrawers from "../../composables/cashdrawer/useCashdrawers";
+import type { Cashdrawer } from "../../models/Cashdrawer";
+import { Icon } from "@iconify/vue";
+import { ref } from "vue";
+import { computed } from "vue";
 
 interface props {
   isDeleteLoading: boolean;
   isUpdateLoading: boolean;
-  rate: Rate;
+  cashdrawer: Cashdrawer;
   search?: string;
 }
 
 const props = defineProps<props>();
-const emits = defineEmits(["update-rate", "delete-rate"]);
-const { isRatesLoading, rates } = useRates();
+const emits = defineEmits(["update-cashdrawer", "delete-cashdrawer"]);
+
+const { cashdrawers, isCashdrawersLoading } = useCashdrawers();
+
+const headers: Header[] = [
+  { text: "Nombre", value: "code" },
+  { text: "", value: "actions", width: 110 },
+];
 
 const dataTable = ref();
 const currentPageLastIndex = computed(
@@ -30,40 +37,32 @@ const maxPaginationNumber = computed(
 );
 const page = ref(1);
 
-const headers: Header[] = [
-  { text: "Nombre", value: "name" },
-  { text: "operation", value: "operation" },
-  { text: "type", value: "type" },
-  { text: "", value: "actions", width: 110 },
-];
-
 const bodyRowClassNameFunction: BodyRowClassNameFunction = (
   item: Item,
   _: number
 ): string => {
-  if (props.rate.id) {
-    if (props.rate.id == item.id) {
+  if (props.cashdrawer.id) {
+    if (props.cashdrawer.id == item.id) {
       return "selected-row";
     }
   }
   return "";
 };
 
-const onRateSelected = (rate: Rate) => {
-  emits("update-rate", rate);
+const onCashDrawerSelect = (cashdrawer: Cashdrawer) => {
+  emits("update-cashdrawer", cashdrawer);
 };
-
-const onDelete = (rate: Rate) => {
-  emits("delete-rate", rate);
+const onDelete = (cashdrawer: Cashdrawer) => {
+  emits("delete-cashdrawer", cashdrawer);
 };
 </script>
 
 <template>
   <EasyDataTable
     :headers="headers"
+    :loading="isCashdrawersLoading"
     :theme-color="'#f48225'"
-    :items="rates"
-    :loading="isRatesLoading"
+    :items="cashdrawers"
     alternating
     ref="dataTable"
     :body-row-class-name="bodyRowClassNameFunction"
@@ -73,25 +72,17 @@ const onDelete = (rate: Rate) => {
     hide-footer
     class="customize-table"
   >
-    <template #item-type="item">
-      <p v-if="item.type == 1">Valor</p>
-      <p v-else>Porcentage</p>
-    </template>
-    <template #item-operation="item">
-      <p v-if="item.operation == 1">Positivo</p>
-      <p v-else>Negativo</p>
-    </template>
     <template #item-actions="item">
       <v-tooltip text="Edit">
         <template v-slot:activator="{ props }">
           <v-btn
             icon
             flat
-            color="black"
             v-bind="props"
+            color="black"
             variant="text"
             :loading="isUpdateLoading"
-            @click="onRateSelected(item)"
+            @click="onCashDrawerSelect(item)"
           >
             <Icon icon="lucide:pencil" />
           </v-btn>
@@ -102,8 +93,8 @@ const onDelete = (rate: Rate) => {
           <v-btn
             icon
             flat
-            v-bind="props"
             color="error"
+            v-bind="props"
             variant="text"
             @click="onDelete(item)"
             :loading="isDeleteLoading"
@@ -116,7 +107,7 @@ const onDelete = (rate: Rate) => {
   </EasyDataTable>
   <div
     class="tw-flex tw-justify-between tw-items-center"
-    v-if="rates.length > 10"
+    v-if="cashdrawers.length > 10"
   >
     <p class="tw-text-sm">
       Mostrando {{ currentPageLastIndex }} de {{ clientItemsLength }} resultados

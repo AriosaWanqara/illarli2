@@ -9,20 +9,6 @@ export const configRouter: RouteRecordRaw[] = [
       import("@dashboard/modules/config/view/Cashdrawer/CashdrawerList.vue"),
   },
   {
-    path: "cajas/:id",
-    name: "config-cashdrawer-update",
-    meta: { permission: "list characteristics" },
-    component: () =>
-      import("@dashboard/modules/config/view/Cashdrawer/UpdateCashdrawer.vue"),
-  },
-  {
-    path: "caja/add",
-    name: "config-cashdrawer-add",
-    meta: { permission: "list characteristics" },
-    component: () =>
-      import("@dashboard/modules/config/view/Cashdrawer/AddCashdrawer.vue"),
-  },
-  {
     path: "sucursales",
     name: "config-subsidiaries-list",
     meta: { permission: "list characteristics" },
