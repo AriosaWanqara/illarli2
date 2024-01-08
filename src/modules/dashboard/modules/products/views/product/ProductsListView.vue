@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { RouterLink, useRouter } from "vue-router";
-
-import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
+import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
+import ViewScaffold from "@/modules/dashboard/components/shared/ViewScaffold.vue";
 import type { AxiosError } from "axios";
-import { watch } from "vue";
+import { ref, watch } from "vue";
 import ProductTableList from "../../component/product/list/ProductTableList.vue";
 import useProductMutations from "../../composables/product/useProductMutations";
 import useProducts from "../../composables/product/useProducts";
 import type { Product } from "../../models/products/Product";
-import ViewScaffold from "@/modules/dashboard/components/shared/ViewScaffold.vue";
-import { ref } from "vue";
-import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
 
 const { products } = useProducts();
 const { deleteProductMutation } = useProductMutations();
