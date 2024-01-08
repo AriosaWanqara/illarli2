@@ -31,7 +31,7 @@ watch(updateProviderMutation.isSuccess, () => {
 </script>
 
 <template>
-  <ViewScaffold title="Crear proveedor">
+  <ViewScaffold title="Actualizar proveedor">
     <template #actionBack>
       <RouterLink :to="{ name: 'provider-list' }">
         <v-btn
@@ -48,9 +48,6 @@ watch(updateProviderMutation.isSuccess, () => {
         <VCol cols="12" class="py-1">
           <p>cargando...</p>
         </VCol>
-        <VCol cols="12" class="py-1">
-          <VBtn color="primary">Crear</VBtn>
-        </VCol>
       </VRow>
       <VRow class="mt-1" v-else-if="providerHasError">
         <VCol cols="12" class="py-1">
@@ -59,6 +56,7 @@ watch(updateProviderMutation.isSuccess, () => {
       </VRow>
       <CreatePersonForm
         v-else
+        :form-button-text="'Actualizar proveedor'"
         :is-loading="updateProviderMutation.isPending.value"
         :person="provider"
         @person-submit="onProviderSubmit"

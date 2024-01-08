@@ -12,9 +12,10 @@ interface props {
   isLoding: boolean;
   user: userToSave;
   cashDrawerDropdownProps?: Dropdown[];
+  formButtonText: string;
 }
 
-const { user, cashDrawerDropdownProps } = defineProps<props>();
+const { user, cashDrawerDropdownProps, formButtonText } = defineProps<props>();
 const emit = defineEmits(["user-submit"]);
 const { isRolesLoading, rolesHasError, rolesDropdown } = useRoles();
 const { isSubsidiariesLoading, subsidiaryDropdown, subsidiaries } =
@@ -72,24 +73,25 @@ const onUserSubmit = () => {
 
 <template>
   <VRow class="mt-1">
-    <VCol cols="12" class="tw-mb-1">
-      <VDivider />
-    </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"> Nombre del usuario </label>
+        <label for="" class="tw-font-semibold tw-text-gray-400">
+          Nombre del usuario
+        </label>
         <VTextField placeholder="name" v-model="userToSave.name" />
       </div>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"> Correo del usuario </label>
+        <label for="" class="tw-font-semibold tw-text-gray-400">
+          Correo del usuario
+        </label>
         <VTextField placeholder="email" v-model="userToSave.email" />
       </div>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">
+        <label for="" class="tw-font-semibold tw-text-gray-400">
           Username del usuario
           <VTextField placeholder="username" v-model="userToSave.username" />
         </label>
@@ -97,7 +99,7 @@ const onUserSubmit = () => {
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">
+        <label for="" class="tw-font-semibold tw-text-gray-400">
           Contraseña del usuario
           <VTextField placeholder="contraseña" v-model="userToSave.password" />
         </label>
@@ -105,7 +107,9 @@ const onUserSubmit = () => {
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"> Rol del usuario </label>
+        <label for="" class="tw-font-semibold tw-text-gray-400">
+          Rol del usuario
+        </label>
         <VSelect
           placeholder="rol"
           :items="rolesDropdown"
@@ -123,7 +127,9 @@ const onUserSubmit = () => {
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"> Sucursal del usuario </label>
+        <label for="" class="tw-font-semibold tw-text-gray-400">
+          Sucursal del usuario
+        </label>
         <VSelect
           placeholder="sucursal"
           :items="subsidiaryDropdown"
@@ -141,7 +147,9 @@ const onUserSubmit = () => {
     </VCol>
     <VCol cols="12" md="6" class="py-0" v-if="userToSave.subsidiariesId">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"> Caja del usuario </label>
+        <label for="" class="tw-font-semibold tw-text-gray-400">
+          Caja del usuario
+        </label>
         <VSelect
           placeholder="Caja"
           :items="cashDrawerDropdown"
@@ -158,7 +166,19 @@ const onUserSubmit = () => {
       </div>
     </VCol>
     <VCol cols="12">
-      <VBtn @click="onUserSubmit" :loading="isLoding"> crear </VBtn>
+      <div class="tw-flex tw-justify-end">
+        <VBtn
+          @click="onUserSubmit"
+          :loading="isLoding"
+          :prepend-icon="
+            userToSave.id ? 'mdi-content-save-outline' : 'mdi-plus'
+          "
+          color="info"
+          variant="elevated"
+        >
+          {{ formButtonText }}
+        </VBtn>
+      </div>
     </VCol>
   </VRow>
 </template>

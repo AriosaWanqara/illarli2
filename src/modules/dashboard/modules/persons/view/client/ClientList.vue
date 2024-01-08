@@ -1,29 +1,44 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
+import { watch } from "vue";
+import PersonsTableList from "../../components/PersonsTableList.vue";
 import useClients from "../../composables/client/useClients";
 import useClientsMutations from "../../composables/client/useClientsMutations";
-import { watch } from "vue";
-import type { Header } from "vue3-easy-data-table";
-import { Icon } from "@iconify/vue";
+import type { Provider } from "../../models/Provider";
+import { useRouter } from "vue-router";
+import { ref } from "vue";
+import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
 
-const { clients, clientsHasError, isClientsLoading } = useClients();
+const { clients, isClientsLoading } = useClients();
 const { deleteClientMutations } = useClientsMutations();
+const router = useRouter();
+const selectedClient = ref<Provider>({} as Provider);
+const showConfirmDialog = ref(false);
 
-const onDelete = (id: string) => {
-  deleteClientMutations.mutate(id);
+const onDelete = (person: Provider) => {
+  selectedClient.value = person;
+  showConfirmDialog.value = true;
 };
 
-const headers: Header[] = [
-  { text: "Nombre", value: "name" },
-  { text: "Identificacion", value: "identity" },
-  { text: "", value: "actions", width: 110 },
-];
+const onConfirmReponse = (response: boolean) => {
+  if (response) {
+    try {
+      deleteClientMutations.mutate(selectedClient.value.id);
+    } catch (error) {}
+  }
+  showConfirmDialog.value = false;
+};
+
+const onClientSelected = (person: Provider) => {
+  router.push({ name: "client-update", params: { id: person.id } });
+};
 
 watch(deleteClientMutations.isError, () => {
   if (deleteClientMutations.isError.value) {
     alert("Bad");
   }
 });
+
 watch(deleteClientMutations.isSuccess, () => {
   if (deleteClientMutations.isSuccess.value) {
     clients.value = clients.value.filter(
@@ -34,53 +49,29 @@ watch(deleteClientMutations.isSuccess, () => {
 </script>
 
 <template>
-  <ViewScaffold title="Clientes">
-    <template #action>
-      <RouterLink :to="{ name: 'client-add' }">
-        <v-btn flat color="success"
-          ><PlusIcon size="18" class="mr-2" />Agregar</v-btn
-        >
-      </RouterLink>
-    </template>
+  <ViewScaffold>
     <template #default>
-      <p v-if="isClientsLoading">cargando..</p>
-      <p v-else-if="clientsHasError">error</p>
-      <div v-else>
-        <EasyDataTable
-          :headers="headers"
-          :theme-color="'#f48225'"
-          :items="clients"
-          alternating
-          class="customize-table"
-        >
-          <template #item-actions="item">
-            <v-tooltip text="Edit">
-              <template v-slot:activator="{ props }">
-                <RouterLink
-                  :to="{ name: 'client-update', params: { id: item.id } }"
-                >
-                  <v-btn icon flat v-bind="props" variant="text">
-                    <Icon icon="mdi:pencil" />
-                  </v-btn>
-                </RouterLink>
-              </template>
-            </v-tooltip>
-            <v-tooltip text="Delete">
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  icon
-                  flat
-                  v-bind="props"
-                  variant="text"
-                  @click="onDelete(item.id)"
-                  :loading="deleteClientMutations.isPending.value"
-                >
-                  <Icon icon="mdi:trash-can-outline" />
-                </v-btn>
-              </template>
-            </v-tooltip>
-          </template>
-        </EasyDataTable>
+      <div>
+        <div class="tw-flex tw-mb-2 tw-justify-between tw-items-center">
+          <p class="tw-font-semibold tw-text-gray-400">Todos los clientes</p>
+          <RouterLink :to="{ name: 'client-add' }">
+            <v-btn flat color="success" prepend-icon="mdi-plus">Nuevo</v-btn>
+          </RouterLink>
+        </div>
+        <PersonsTableList
+          :is-delete-loading="deleteClientMutations.isPending.value"
+          :is-table-loading="isClientsLoading"
+          :is-update-loading="false"
+          :persons="clients"
+          @person-delete="onDelete"
+          @person-update="onClientSelected"
+        />
+        <ConfirmDeleteDialog
+          :show-modal="showConfirmDialog"
+          :title="'Desea borrar'"
+          :dialog-text="'Esta seguro que desea borrar al cliente?'"
+          @confirm-response="onConfirmReponse"
+        />
       </div>
     </template>
   </ViewScaffold>

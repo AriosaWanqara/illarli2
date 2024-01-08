@@ -8,11 +8,12 @@ import type { RolToSave } from "../../models/Rol";
 interface props {
   isLoading: boolean;
   rol: RolToSave;
+  formButtonText: string;
 }
 
 const { isPermissionsLoading, permissionsHasError, permissionDropdown } =
   usePermissions();
-const { rol } = defineProps<props>();
+const { rol, formButtonText } = defineProps<props>();
 const rolToSave = ref({ ...rol });
 const emit = defineEmits(["rol-submit"]);
 const { rolRules } = useRolRules();
@@ -30,18 +31,19 @@ const onRolSubmit = () => {
 
 <template>
   <VRow class="mt-1">
-    <VCol cols="12" class="tw-mb-1">
-      <VDivider />
-    </VCol>
     <VCol cols="12" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">Nombre del rol</label>
+        <label for="" class="tw-font-semibold tw-text-gray-400"
+          >Nombre del rol</label
+        >
         <VTextField placeholder="name" v-model="rolToSave.name" />
       </div>
     </VCol>
     <VCol cols="12" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">Permisos para el rol</label>
+        <label for="" class="tw-font-semibold tw-text-gray-400"
+          >Permisos para el rol</label
+        >
         <VSelect
           :items="permissionDropdown"
           item-title="label"
@@ -50,11 +52,21 @@ const onRolSubmit = () => {
           item-value="value"
           :loading="isPermissionsLoading"
           v-model="rolToSave.permissions"
-        />
+        >
+        </VSelect>
       </div>
     </VCol>
     <VCol cols="12">
-      <VBtn @click="onRolSubmit" :loading="isLoading">crear</VBtn>
+      <div class="tw-flex tw-justify-end">
+        <VBtn
+          @click="onRolSubmit"
+          :loading="isLoading"
+          variant="elevated"
+          color="info"
+          :prepend-icon="rolToSave.id ? 'mdi-content-save-outline' : 'mdi-plus'"
+          >{{ formButtonText }}</VBtn
+        >
+      </div>
     </VCol>
   </VRow>
 </template>

@@ -55,6 +55,7 @@ watch(updateUserMutations.isSuccess, () => {
       </VRow>
       <CreateUserForm
         v-else
+        :form-button-text="'Actualizar usuario'"
         :is-loding="updateUserMutations.isPending.value"
         :user="userToSave"
         @user-submit="onUserSubmit"

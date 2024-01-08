@@ -4,7 +4,7 @@ export const personRoutes: RouteRecordRaw[] = [
   {
     path: "clientes",
     name: "client-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Clientes" },
     component: () =>
       import("@dashboard/modules/persons/view/client/ClientList.vue"),
   },
@@ -25,7 +25,7 @@ export const personRoutes: RouteRecordRaw[] = [
   {
     path: "proveedores",
     name: "provider-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Proveedores" },
     component: () =>
       import("@dashboard/modules/persons/view/provider/ProviderList.vue"),
   },

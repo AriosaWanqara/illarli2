@@ -60,6 +60,7 @@ watch(updateRolMutations.isSuccess, () => {
         :is-loading="updateRolMutations.isPending.value"
         :rol="rolToSave"
         @rol-submit="onRolSubmit"
+        :form-button-text="'Actualizar rol'"
       />
     </template>
   </ViewScaffold>

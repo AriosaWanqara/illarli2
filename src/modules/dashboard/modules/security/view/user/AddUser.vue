@@ -46,6 +46,7 @@ watch(saveUserMutations.isSuccess, () => {
 
     <template #default>
       <createUserFormVue
+        :form-button-text="'Añadir usuario'"
         :is-loding="saveUserMutations.isPending.value"
         :user="user"
         @user-submit="onUserSubmit"

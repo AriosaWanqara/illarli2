@@ -49,6 +49,7 @@ watch(saveClientMutations.isSuccess, () => {
       <CreatePersonForm
         :is-loading="saveClientMutations.isPending.value"
         :person="client"
+        :form-button-text="'Añadir cliente'"
         @person-submit="onClientSubmit"
       />
     </template>

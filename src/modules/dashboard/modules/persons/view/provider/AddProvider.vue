@@ -49,6 +49,7 @@ watch(saveProviderMutation.isSuccess, () => {
 
     <template #default>
       <CreatePersonForm
+        :form-button-text="'Añadir proveedor'"
         :is-loading="saveProviderMutation.isPending.value"
         :person="provider"
         @person-submit="onProviderSubmit"

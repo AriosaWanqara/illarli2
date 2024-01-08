@@ -48,9 +48,6 @@ watch(updateClientMutations.isSuccess, () => {
         <VCol cols="12" class="py-1">
           <p>cargando...</p>
         </VCol>
-        <VCol cols="12" class="py-1">
-          <VBtn color="primary">Crear</VBtn>
-        </VCol>
       </VRow>
       <VRow class="mt-1" v-else-if="clientHasError">
         <VCol cols="12" class="py-1">
@@ -61,6 +58,7 @@ watch(updateClientMutations.isSuccess, () => {
         v-else
         :is-loading="updateClientMutations.isPending.value"
         :person="client"
+        :form-button-text="'Actualizar cliente'"
         @person-submit="onClientSubmit"
       />
     </template>

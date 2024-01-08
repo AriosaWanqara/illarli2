@@ -1,23 +1,38 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import useUsers from "../../composables/user/useUsers";
-import useUserMutations from "../../composables/user/useUserMutations";
-import { watch } from "vue";
 import type { AxiosError } from "axios";
-import type { Header } from "vue3-easy-data-table";
-import { Icon } from "@iconify/vue";
+import { watch } from "vue";
+import UsersTableList from "../../components/user/UsersTableList.vue";
+import useUserMutations from "../../composables/user/useUserMutations";
+import useUsers from "../../composables/user/useUsers";
+import type { User } from "../../models/User";
+import { useRouter } from "vue-router";
+import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
+import { ref } from "vue";
 
-const { isUserLoading, users, usersHasError } = useUsers();
+const { users } = useUsers();
 const { deleteUserMutations } = useUserMutations();
+const router = useRouter();
+const selectedUser = ref<User>({} as User);
+const showConfirmDialog = ref(false);
 
-const onDelete = (id: string) => {
-  deleteUserMutations.mutate(id);
+const onDelete = (user: User) => {
+  selectedUser.value = user;
+  showConfirmDialog.value = true;
 };
 
-const headers: Header[] = [
-  { text: "Nombre", value: "name" },
-  { text: "", value: "actions", width: 110 },
-];
+const onConfirmReponse = (response: boolean) => {
+  if (response) {
+    try {
+      deleteUserMutations.mutate(selectedUser.value.id);
+    } catch (error) {}
+  }
+  showConfirmDialog.value = false;
+};
+
+const onUserSelected = (user: User) => {
+  router.push({ name: "users-update", params: { id: user.id } });
+};
 
 watch(deleteUserMutations.isError, () => {
   if (deleteUserMutations.isError.value) {
@@ -35,54 +50,28 @@ watch(deleteUserMutations.isSuccess, () => {
 </script>
 
 <template>
-  <ViewScaffold title="Usuario">
-    <template #action>
-      <RouterLink :to="{ name: 'users-add' }">
-        <v-btn flat color="success">Agregar</v-btn>
-      </RouterLink>
-    </template>
-
+  <ViewScaffold>
     <template #default>
-      <p v-if="isUserLoading">cargando..</p>
-      <p v-else-if="usersHasError">error</p>
-      <div v-else>
-        <EasyDataTable
-          :headers="headers"
-          :theme-color="'#f48225'"
-          :items="users"
-          :loading="isUserLoading"
-          alternating
-          class="customize-table"
-        >
-          <template #item-actions="item">
-            <v-tooltip text="Edit">
-              <template v-slot:activator="{ props }">
-                <RouterLink
-                  :to="{ name: 'users-update', params: { id: item.id } }"
-                >
-                  <v-btn icon flat v-bind="props" variant="text">
-                    <Icon icon="mdi:pencil" />
-                  </v-btn>
-                </RouterLink>
-              </template>
-            </v-tooltip>
-            <v-tooltip text="Delete">
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  icon
-                  flat
-                  v-bind="props"
-                  variant="text"
-                  @click="onDelete(item.id)"
-                  :loading="deleteUserMutations.isPending.value"
-                >
-                  <Icon icon="mdi:trash-can-outline" />
-                </v-btn>
-              </template>
-            </v-tooltip>
-          </template>
-        </EasyDataTable>
+      <div class="tw-flex tw-mb-1 tw-justify-between tw-items-center">
+        <p class="tw-font-semibold tw-text-gray-400">Todos los Usuarios</p>
+        <RouterLink :to="{ name: 'users-add' }">
+          <v-btn flat color="success" prepend-icon="mdi-plus">Nuevo</v-btn>
+        </RouterLink>
       </div>
+      <div>
+        <UsersTableList
+          :is-delete-loading="deleteUserMutations.isPending.value"
+          :is-update-loading="false"
+          @user-delete="onDelete"
+          @user-update="onUserSelected"
+        />
+      </div>
+      <ConfirmDeleteDialog
+        :show-modal="showConfirmDialog"
+        :title="'Desea borrar'"
+        :dialog-text="'Esta seguro que desea borrar el usuario?'"
+        @confirm-response="onConfirmReponse"
+      />
     </template>
   </ViewScaffold>
 </template>

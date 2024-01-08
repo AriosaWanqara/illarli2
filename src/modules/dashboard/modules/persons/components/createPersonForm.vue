@@ -9,9 +9,10 @@ import { ref } from "vue";
 interface props {
   person: Provider;
   isLoading: boolean;
+  formButtonText: string;
 }
 
-const { person } = defineProps<props>();
+const { person, formButtonText } = defineProps<props>();
 const emit = defineEmits(["person-submit"]);
 const personToSave = ref({ ...person });
 const { providersRules } = useProvidersRules();
@@ -27,47 +28,76 @@ const onPersonSubmit = () => {
 
 <template>
   <VRow>
-    <VCol cols="12" class="py-1 tw-mb-1">
-      <VDivider />
-    </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">Nombre de la persona</label>
-        <VTextField label="Nombre" v-model="personToSave.name" />
+        <label for="" class="tw-font-semibold tw-text-gray-400"
+          >Nombre de la persona</label
+        >
+        <VTextField
+          variant="solo-filled"
+          placeholder="Nombre"
+          v-model="personToSave.name"
+        />
       </div>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">Telefono de la persona</label>
-        <VTextField label="phone" v-model="personToSave.phones[0]" />
+        <label for="" class="tw-font-semibold tw-text-gray-400"
+          >Telefono de la persona</label
+        >
+        <VTextField
+          variant="solo-filled"
+          placeholder="phone"
+          v-model="personToSave.phones[0]"
+        />
       </div>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">Correo de la persona</label>
-        <VTextField label="emails" v-model="personToSave.emails[0]" />
+        <label for="" class="tw-font-semibold tw-text-gray-400"
+          >Correo de la persona</label
+        >
+        <VTextField
+          variant="solo-filled"
+          placeholder="emails"
+          v-model="personToSave.emails[0]"
+        />
       </div>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold"
+        <label for="" class="tw-font-semibold tw-text-gray-400"
           >Documento de identificacion</label
         >
-        <VTextField label="identity" v-model="personToSave.identity" />
+        <VTextField
+          variant="solo-filled"
+          placeholder="identity"
+          v-model="personToSave.identity"
+        />
       </div>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">Direccion</label>
-        <VTextField label="address" v-model="personToSave.address" />
+        <label for="" class="tw-font-semibold tw-text-gray-400"
+          >Direccion</label
+        >
+        <VTextField
+          variant="solo-filled"
+          placeholder="address"
+          v-model="personToSave.address"
+        />
       </div>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">Estado civil</label>
+        <label for="" class="tw-font-semibold tw-text-gray-400"
+          >Estado civil</label
+        >
         <VSelect
+          variant="solo-filled"
+          flat
           :items="allCivilStatusEnum"
-          label="Civil status"
+          placeholder="Civil status"
           v-model="personToSave.civil_status"
           item-title="label"
           item-value="value"
@@ -76,10 +106,14 @@ const onPersonSubmit = () => {
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold">Genero de la persona</label>
+        <label for="" class="tw-font-semibold tw-text-gray-400"
+          >Genero de la persona</label
+        >
         <VSelect
+          variant="solo-filled"
+          flat
           :items="allGenders"
-          label="gender"
+          placeholder="gender"
           v-model="personToSave.gender"
           item-title="label"
           item-value="value"
@@ -87,9 +121,16 @@ const onPersonSubmit = () => {
       </div>
     </VCol>
     <VCol cols="12" class="py-0">
-      <VBtn color="primary" @click="onPersonSubmit" :loading="isLoading"
-        >Crear</VBtn
-      >
+      <div class="tw-flex tw-justify-end">
+        <VBtn
+          color="primary"
+          @click="onPersonSubmit"
+          :loading="isLoading"
+          variant="elevated"
+          :prepend-icon="person.id ? 'mdi-content-save-outline' : 'mdi-plus'"
+          >{{ formButtonText }}</VBtn
+        >
+      </div>
     </VCol>
   </VRow>
 </template>

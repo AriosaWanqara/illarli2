@@ -49,6 +49,7 @@ watch(saveRolMutations.isSuccess, () => {
         :is-loading="saveRolMutations.isPending.value"
         :rol="rol"
         @rol-submit="onRolSubmit"
+        :form-button-text="'Añadir rol'"
       />
     </template>
   </ViewScaffold>
