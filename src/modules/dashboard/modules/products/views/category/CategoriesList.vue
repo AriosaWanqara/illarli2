@@ -10,6 +10,7 @@ import type { Category } from "../../models/Category";
 import { computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import FormListContainer from "@/modules/dashboard/components/shared/FormListContainer.vue";
+import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
 
 const { width } = useWindowSize();
 const { categories } = useCategories();
@@ -19,6 +20,7 @@ const { deleteCategoryMutation, updateCategoryMutation, saveCategoryMutation } =
 const search = ref("");
 const category = ref<Category>({} as Category);
 const showFormModal = ref(false);
+const showConfirmModal = ref(false);
 const isCategoryFormLoading = ref(
   computed(
     () =>
@@ -29,7 +31,17 @@ const isCategoryFormLoading = ref(
 const buttonText = ref("Añadir categoria");
 
 const onDelete = (categoryToSave: Category) => {
-  deleteCategoryMutation.mutate(categoryToSave.id);
+  // deleteCategoryMutation.mutate(categoryToSave.id);
+  category.value = categoryToSave;
+  showConfirmModal.value = true;
+};
+
+const onConfirmReponse = (response: boolean) => {
+  if (response) {
+    deleteCategoryMutation.mutate(category.value.id);
+  }
+  showConfirmModal.value = false;
+  resetForm();
 };
 
 const onNewCategory = () => {
@@ -62,8 +74,7 @@ watch(saveCategoryMutation.isError, () => {
 
 watch(saveCategoryMutation.isSuccess, () => {
   if (saveCategoryMutation.isSuccess.value) {
-    category.value = {} as Category;
-    showFormModal.value = false;
+    resetForm();
     let response = saveCategoryMutation.data.value;
     if (response) {
       categories.value = [response, ...categories.value];
@@ -82,9 +93,7 @@ watch(updateCategoryMutation.isError, () => {
 
 watch(updateCategoryMutation.isSuccess, () => {
   if (updateCategoryMutation.isSuccess.value) {
-    category.value = {} as Category;
-    buttonText.value = "Añadir categoria";
-    showFormModal.value = false;
+    resetForm();
     let response = updateCategoryMutation.data.value;
     if (response) {
       categories.value.filter((x) => x.id == response?.id);
@@ -92,6 +101,11 @@ watch(updateCategoryMutation.isSuccess, () => {
     }
   }
 });
+function resetForm() {
+  category.value = {} as Category;
+  buttonText.value = "Añadir categoria";
+  showFormModal.value = false;
+}
 
 watch(deleteCategoryMutation.isError, () => {
   if (deleteCategoryMutation.isError.value) {
@@ -104,8 +118,7 @@ watch(deleteCategoryMutation.isError, () => {
 
 watch(deleteCategoryMutation.isSuccess, () => {
   if (deleteCategoryMutation.isSuccess.value) {
-    category.value = {} as Category;
-    buttonText.value = "Añadir categoria";
+    resetForm();
     categories.value = categories.value.filter(
       (x) => x.id != deleteCategoryMutation.variables.value
     );
@@ -191,6 +204,12 @@ watch(deleteCategoryMutation.isSuccess, () => {
                 </template>
               </ViewScaffold>
             </VDialog>
+            <ConfirmDeleteDialog
+              :dialog-text="'Esta seguro que desa borrar la categoria?'"
+              :show-modal="showConfirmModal"
+              :title="'Desea borrar'"
+              @confirm-response="onConfirmReponse"
+            />
           </div>
         </template>
       </ViewScaffold>

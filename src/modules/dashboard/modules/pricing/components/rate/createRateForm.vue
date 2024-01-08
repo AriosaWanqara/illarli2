@@ -95,6 +95,7 @@ const onRateSubmit = () => {
         <VBtn
           @click="onRateSubmit"
           color="info"
+          density="default"
           variant="elevated"
           :loading="isLoading"
           prepend-icon="mdi-plus"

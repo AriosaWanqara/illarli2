@@ -62,7 +62,7 @@ watch(updateCompanyConfigsDomainMutations.isSuccess, () => {
       <p>cargando..</p>
     </VRow>
     <VRow v-else-if="companyConfigsHasError">
-      <p>cargando..</p>
+      <p>error..</p>
     </VRow>
     <VRow v-else>
       <VCol cols="12" md="6">

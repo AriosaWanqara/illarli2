@@ -9,6 +9,7 @@ import CreateCashDrawerForm from "../../component/cashdrawer/createCashDrawerFor
 import useCashdrawers from "../../composables/cashdrawer/useCashdrawers";
 import useCashdrawersMutations from "../../composables/cashdrawer/useCashdrawersMutations";
 import type { Cashdrawer } from "../../models/Cashdrawer";
+import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
 
 const { width } = useWindowSize();
 const { cashdrawers } = useCashdrawers();
@@ -26,9 +27,19 @@ const isFormLoading = computed(
 );
 const formButtonText = ref("Añadir Caja");
 const showFormModal = ref(false);
+const showConfirmModal = ref(false);
 
 const onDelete = (cashdrawerToDelete: Cashdrawer) => {
-  deleteCashdrawerMutations.mutate(cashdrawerToDelete.id);
+  cashdrawer.value = cashdrawerToDelete;
+  showConfirmModal.value = true;
+};
+
+const onConfirmReponse = (response: boolean) => {
+  if (response) {
+    deleteCashdrawerMutations.mutate(cashdrawer.value.id);
+  }
+  showConfirmModal.value = false;
+  resetForm();
 };
 
 const onCashDrawerSubmit = (cashdrawerToSave: Cashdrawer) => {
@@ -165,6 +176,12 @@ watch(updateCashdrawerMutations.isSuccess, () => {
           />
         </ViewScaffold>
       </VDialog>
+      <ConfirmDeleteDialog
+        :dialog-text="'Esta seguro que desa borrar la caja?'"
+        :show-modal="showConfirmModal"
+        :title="'Desea borrar'"
+        @confirm-response="onConfirmReponse"
+      />
     </template>
   </FormListContainer>
 </template>

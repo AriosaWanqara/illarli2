@@ -9,6 +9,7 @@ import RatesTableList from "../../components/rate/ratesTableList.vue";
 import useRateMutations from "../../compossables/rate/useRateMutations";
 import useRates from "../../compossables/rate/useRates";
 import type { Rate } from "../../models/Rate";
+import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
 
 const { rates } = useRates();
 const { deleteRateMutations, saveRateMutations, updateRateMutations } =
@@ -19,14 +20,25 @@ const isFormLoading = computed(
 const { width } = useWindowSize();
 const formButtonText = ref("Añadir tarifa");
 const showFormModal = ref(false);
+const showConfirmModal = ref(false);
 const rate = ref<Rate>({
   operation: "0",
   type: "0",
 } as Rate);
 
 const onDelete = (rateToDelete: Rate) => {
-  deleteRateMutations.mutate(rateToDelete.id);
+  rate.value = rateToDelete;
+  showConfirmModal.value = true;
 };
+
+const onConfirmReponse = (response: boolean) => {
+  if (response) {
+    deleteRateMutations.mutate(rate.value.id);
+  }
+  showConfirmModal.value = false;
+  resetForm();
+};
+
 const resetForm = () => {
   rate.value = {
     operation: "0",
@@ -169,6 +181,12 @@ watch(updateRateMutations.isSuccess, () => {
                 </template>
               </ViewScaffold>
             </VDialog>
+            <ConfirmDeleteDialog
+              :dialog-text="'Esta seguro que desa borrar la tarifa?'"
+              :show-modal="showConfirmModal"
+              :title="'Desea borrar'"
+              @confirm-response="onConfirmReponse"
+            />
           </div>
         </template>
       </ViewScaffold>

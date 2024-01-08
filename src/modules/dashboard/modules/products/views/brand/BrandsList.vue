@@ -9,6 +9,7 @@ import CreateBrandForm from "../../component/brand/createBrandForm.vue";
 import useBrands from "../../composables/brand/useBrands";
 import useBrandsMutations from "../../composables/brand/useBrandsMutations";
 import type { Brand } from "../../models/Brand";
+import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
 
 const { deleteBrandMutation, saveBrandMutation, updateBrandMutation } =
   useBrandsMutations();
@@ -18,6 +19,7 @@ const { width } = useWindowSize();
 const brand = ref<Brand>({} as Brand);
 const buttonText = ref("Añadir marca");
 const showFormModal = ref(false);
+const showConfirmModal = ref(false);
 const isCategoryFormLoading = ref(
   computed(
     () =>
@@ -25,8 +27,18 @@ const isCategoryFormLoading = ref(
   )
 );
 
-const onDelete = (brand: Brand) => {
-  deleteBrandMutation.mutate(brand.id);
+const onDelete = (brandToDelete: Brand) => {
+  // deleteBrandMutation.mutate(brand.id);
+  brand.value = brandToDelete;
+  showConfirmModal.value = true;
+};
+
+const onConfirmReponse = (response: boolean) => {
+  if (response) {
+    deleteBrandMutation.mutate(brand.value.id);
+  }
+  showConfirmModal.value = false;
+  resetFormState();
 };
 
 const onBrandSelected = (selectedBrand: Brand) => {
@@ -176,6 +188,12 @@ watch(updateBrandMutation.isSuccess, () => {
               </template>
             </ViewScaffold>
           </VDialog>
+          <ConfirmDeleteDialog
+            :dialog-text="'Esta seguro que desa borrar la Marca?'"
+            :show-modal="showConfirmModal"
+            :title="'Desea borrar'"
+            @confirm-response="onConfirmReponse"
+          />
         </template>
       </ViewScaffold>
     </template>
