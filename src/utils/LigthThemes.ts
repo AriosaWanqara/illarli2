@@ -183,7 +183,7 @@ const ORANGE_THEME: ThemeTypes = {
     textSecondary: "#2A3547",
     borderColor: "#e5eaef",
     inputBorder: "#D9D9D9",
-    containerBg: "#ffffff",
+    containerBg: "#fafafa",
     background: "#f6f6f6",
     hoverColor: "#f6f9fc",
     surface: "#fff",

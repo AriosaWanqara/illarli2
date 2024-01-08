@@ -9,6 +9,7 @@ import type {
 import useBrands from "../../composables/brand/useBrands";
 import type { Brand } from "../../models/Brand";
 import { computed } from "vue";
+import { getPrimaryColor } from "@/utils/getColors";
 
 interface props {
   isDeleteLoading: boolean;
@@ -65,7 +66,7 @@ watch(page, () => {
   <div>
     <EasyDataTable
       :headers="headers"
-      :theme-color="'#f48225'"
+      :theme-color="getPrimaryColor()"
       :items="brands"
       :body-row-class-name="bodyRowClassNameFunction"
       :loading="isBrandsLoading"

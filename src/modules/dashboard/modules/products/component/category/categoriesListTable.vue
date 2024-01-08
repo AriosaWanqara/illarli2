@@ -9,6 +9,7 @@ import type {
 } from "vue3-easy-data-table";
 import useCategories from "../../composables/category/useCategories";
 import type { Category } from "../../models/Category";
+import { getPrimaryColor } from "@/utils/getColors";
 
 interface props {
   category: Category;
@@ -65,7 +66,7 @@ watch(page, () => {
   <div class="tw-flex tw-flex-col">
     <EasyDataTable
       :headers="headers"
-      :theme-color="'#f48225'"
+      :theme-color="getPrimaryColor()"
       :items="categories"
       ref="dataTable"
       :body-row-class-name="bodyRowClassNameFunction"

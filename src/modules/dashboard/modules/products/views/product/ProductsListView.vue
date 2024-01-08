@@ -10,6 +10,7 @@ import type { Header } from "vue3-easy-data-table";
 import useProductMutations from "../../composables/product/useProductMutations";
 import useProducts from "../../composables/product/useProducts";
 import type { Product } from "../../models/products/Product";
+import { getPrimaryColor } from "@/utils/getColors";
 
 const { isProductsLoading, products, productsHasError } = useProducts();
 const { deleteProductMutation } = useProductMutations();
@@ -53,7 +54,7 @@ watch(deleteProductMutation.isSuccess, () => {
     </template>
     <EasyDataTable
       :headers="headers"
-      :theme-color="'#f48225'"
+      :theme-color="getPrimaryColor()"
       :items="products"
       alternating
       class="customize-table"

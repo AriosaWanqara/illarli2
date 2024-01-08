@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Customizer from "../components/shared/Customizer.vue";
+import Customizer from "./customizer/Customizer.vue";
 import MobileSideBar from "./mobileSidebar/MobileSideBar.vue";
 import SideBar from "./sidebar/SideBar.vue";
 import TopBar from "./topbar/TopBar.vue";

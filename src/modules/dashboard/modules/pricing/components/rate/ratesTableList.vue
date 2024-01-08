@@ -8,6 +8,7 @@ import type {
 } from "vue3-easy-data-table";
 import useRates from "../../compossables/rate/useRates";
 import type { Rate } from "../../models/Rate";
+import { getPrimaryColor } from "@/utils/getColors";
 
 interface props {
   isDeleteLoading: boolean;
@@ -61,7 +62,7 @@ const onDelete = (rate: Rate) => {
 <template>
   <EasyDataTable
     :headers="headers"
-    :theme-color="'#f48225'"
+    :theme-color="getPrimaryColor()"
     :items="rates"
     :loading="isRatesLoading"
     alternating

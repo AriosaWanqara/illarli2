@@ -9,6 +9,7 @@ import type { User } from "../../models/User";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { computed } from "vue";
+import { getPrimaryColor } from "@/utils/getColors";
 
 interface props {
   isDeleteLoading: boolean;
@@ -63,7 +64,7 @@ const onUserUpdate = (user: User) => {
 <template>
   <EasyDataTable
     :headers="headers"
-    :theme-color="'#f48225'"
+    :theme-color="getPrimaryColor()"
     :items="users"
     :loading="isUserLoading"
     alternating

@@ -5,6 +5,7 @@ import useWareHouses from "../../composables/warehouse/useWareHouses";
 import useWareHousesMutations from "../../composables/warehouse/useWareHousesMutations";
 import type { Header } from "vue3-easy-data-table";
 import { Icon } from "@iconify/vue";
+import { getPrimaryColor } from "@/utils/getColors";
 
 const { wareHouses, isWareHousesLoading, wareHousesHasError } = useWareHouses();
 const { deleteWareHouseMutation } = useWareHousesMutations();
@@ -45,7 +46,7 @@ watch(deleteWareHouseMutation.isSuccess, () => {
       <div v-else>
         <EasyDataTable
           :headers="headers"
-          :theme-color="'#f48225'"
+          :theme-color="getPrimaryColor()"
           :items="wareHouses"
           alternating
           class="customize-table"

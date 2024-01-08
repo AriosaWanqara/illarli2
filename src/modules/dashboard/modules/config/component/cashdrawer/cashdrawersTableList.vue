@@ -9,6 +9,7 @@ import type { Cashdrawer } from "../../models/Cashdrawer";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { computed } from "vue";
+import { getPrimaryColor } from "@/utils/getColors";
 
 interface props {
   isDeleteLoading: boolean;
@@ -61,7 +62,7 @@ const onDelete = (cashdrawer: Cashdrawer) => {
   <EasyDataTable
     :headers="headers"
     :loading="isCashdrawersLoading"
-    :theme-color="'#f48225'"
+    :theme-color="getPrimaryColor()"
     :items="cashdrawers"
     alternating
     ref="dataTable"

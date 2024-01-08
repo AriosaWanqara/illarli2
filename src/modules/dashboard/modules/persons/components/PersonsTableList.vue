@@ -8,6 +8,7 @@ import type { Provider } from "../models/Provider";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { computed } from "vue";
+import { getPrimaryColor } from "@/utils/getColors";
 
 interface props {
   persons: Provider[];
@@ -62,7 +63,7 @@ const onPersonSelected = (person: Provider) => {
 <template>
   <EasyDataTable
     :headers="headers"
-    :theme-color="'#f48225'"
+    :theme-color="getPrimaryColor()"
     :items="props.persons"
     :loading="props.isTableLoading"
     alternating

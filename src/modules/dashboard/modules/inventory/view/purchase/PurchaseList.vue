@@ -2,6 +2,7 @@
 import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
 import { type Header } from "vue3-easy-data-table";
 import usePurcheses from "../../composables/purchase/usePurcheses";
+import { getPrimaryColor } from "@/utils/getColors";
 
 const { isPurchasesLoading, purchases, purchasesHasError } = usePurcheses();
 
@@ -27,7 +28,7 @@ const headers: Header[] = [
     <template #default>
       <EasyDataTable
         :headers="headers"
-        :theme-color="'#f48225'"
+        :theme-color="getPrimaryColor()"
         :items="purchases"
         :loading="isPurchasesLoading"
         alternating
