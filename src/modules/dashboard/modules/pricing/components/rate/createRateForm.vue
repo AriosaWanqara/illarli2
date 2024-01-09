@@ -30,15 +30,15 @@ const onRateSubmit = () => {
           >Caracteristicas de la tarifa
           <span class="tw-text-red-300">*</span></label
         >
-        <div class="tw-flex tw-gap-2">
+        <div class="tw-flex tw-gap-2 tw-flex-col md:tw-flex-row">
           <v-btn-toggle
             v-model="props.rate.operation"
             color="primary"
             mandatory
             density="compact"
           >
-            <v-btn value="1" variant="tonal">suma</v-btn>
-            <v-btn value="0" variant="tonal">resta</v-btn>
+            <v-btn value="1" variant="tonal">Aumentar</v-btn>
+            <v-btn value="0" variant="tonal">Disminuir</v-btn>
           </v-btn-toggle>
           <v-btn-toggle
             v-model="props.rate.type"
@@ -46,8 +46,8 @@ const onRateSubmit = () => {
             mandatory
             density="compact"
           >
-            <v-btn value="0" variant="tonal">%</v-btn>
-            <v-btn value="1" variant="tonal">cash</v-btn>
+            <v-btn value="0" variant="tonal">porcentage</v-btn>
+            <v-btn value="1" variant="tonal">En Valor</v-btn>
           </v-btn-toggle>
         </div>
       </div>

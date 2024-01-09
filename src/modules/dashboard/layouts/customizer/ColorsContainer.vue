@@ -15,7 +15,7 @@ const setNewTheme = (theme: string) => {
 </script>
 
 <template>
-  <div class="tw-grid tw-grid-cols-3 tw-gap-y-4 tw-gap-x-2 tw-mt-1 tw-px-2">
+  <div class="tw-grid tw-grid-cols-3 tw-gap-y-4 tw-gap-x-2 tw-mt-1">
     <ColorsCard
       v-for="item in getPrimariesColors()"
       :color="item.color!"

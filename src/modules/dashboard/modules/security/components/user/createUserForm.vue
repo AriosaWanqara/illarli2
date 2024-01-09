@@ -78,7 +78,11 @@ const onUserSubmit = () => {
         <label for="" class="tw-font-semibold tw-text-gray-400">
           Nombre del usuario
         </label>
-        <VTextField placeholder="name" v-model="userToSave.name" />
+        <VTextField
+          variant="solo-filled"
+          placeholder="name"
+          v-model="userToSave.name"
+        />
       </div>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
@@ -86,14 +90,22 @@ const onUserSubmit = () => {
         <label for="" class="tw-font-semibold tw-text-gray-400">
           Correo del usuario
         </label>
-        <VTextField placeholder="email" v-model="userToSave.email" />
+        <VTextField
+          variant="solo-filled"
+          placeholder="email"
+          v-model="userToSave.email"
+        />
       </div>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
       <div class="tw-flex tw-flex-col tw-gap-1">
         <label for="" class="tw-font-semibold tw-text-gray-400">
           Username del usuario
-          <VTextField placeholder="username" v-model="userToSave.username" />
+          <VTextField
+            variant="solo-filled"
+            placeholder="username"
+            v-model="userToSave.username"
+          />
         </label>
       </div>
     </VCol>
@@ -101,7 +113,11 @@ const onUserSubmit = () => {
       <div class="tw-flex tw-flex-col tw-gap-1">
         <label for="" class="tw-font-semibold tw-text-gray-400">
           Contraseña del usuario
-          <VTextField placeholder="contraseña" v-model="userToSave.password" />
+          <VTextField
+            variant="solo-filled"
+            placeholder="contraseña"
+            v-model="userToSave.password"
+          />
         </label>
       </div>
     </VCol>
@@ -111,6 +127,8 @@ const onUserSubmit = () => {
           Rol del usuario
         </label>
         <VSelect
+          variant="solo-filled"
+          flat
           placeholder="rol"
           :items="rolesDropdown"
           item-title="label"
@@ -131,6 +149,8 @@ const onUserSubmit = () => {
           Sucursal del usuario
         </label>
         <VSelect
+          variant="solo-filled"
+          flat
           placeholder="sucursal"
           :items="subsidiaryDropdown"
           item-title="label"

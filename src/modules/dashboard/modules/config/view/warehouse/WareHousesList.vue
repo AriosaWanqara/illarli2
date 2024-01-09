@@ -8,6 +8,8 @@ import useWareHousesMutations from "../../composables/warehouse/useWareHousesMut
 import type { WareHouse } from "../../models/WareHouse";
 import { ref } from "vue";
 import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
+import FormListContainer from "@/modules/dashboard/components/shared/FormListContainer.vue";
+import CreateWareHouseForm from "../../component/warehouse/createWareHouseForm.vue";
 
 const { wareHouses } = useWareHouses();
 const { deleteWareHouseMutation } = useWareHousesMutations();
@@ -51,30 +53,48 @@ watch(deleteWareHouseMutation.isSuccess, () => {
 });
 </script>
 <template>
-  <ViewScaffold>
-    <template #default>
-      <div>
-        <div class="tw-flex tw-items-center tw-justify-between tw-mb-2">
-          <p class="tw-font-semibold tw-text-gray-400">Todas las bodegas</p>
-          <RouterLink :to="{ name: 'config-warehouses-add' }">
-            <v-btn flat color="success" prepend-icon="mdi-plus">Nueva</v-btn>
-          </RouterLink>
-        </div>
-        <WareHouseTableList
-          :is-delete-loading="deleteWareHouseMutation.isPending.value"
-          :is-update-loading="false"
-          @warehouse-delete="onDelete"
-          @warehouse-update="onSelectWareHouse"
-        />
-        <ConfirmDeleteDialog
-          :show-modal="showConfirmDialog"
-          :title="'Desea borrar'"
-          :dialog-text="'Esta seguro que desea borrar la bodega?'"
-          @confirm-response="onConfirmReponse"
-        />
-      </div>
+  <FormListContainer>
+    <template #form>
+      <ViewScaffold title="Crear Bodega">
+        <template #default>
+          <div class="tw-mb-3"></div>
+          <CreateWareHouseForm
+            :form-button-text="'Añadir Bodega'"
+            :is-loading="false"
+            :ware-house="selectedWareHouse"
+          />
+        </template>
+      </ViewScaffold>
     </template>
-  </ViewScaffold>
+    <template #default>
+      <ViewScaffold title="Bodegas">
+        <template #default>
+          <div>
+            <div class="tw-flex tw-items-center tw-justify-between tw-mb-2">
+              <p class="tw-font-semibold tw-text-gray-400">Todas las bodegas</p>
+              <RouterLink :to="{ name: 'config-warehouses-add' }">
+                <v-btn flat color="success" prepend-icon="mdi-plus"
+                  >Nueva</v-btn
+                >
+              </RouterLink>
+            </div>
+            <WareHouseTableList
+              :is-delete-loading="deleteWareHouseMutation.isPending.value"
+              :is-update-loading="false"
+              @warehouse-delete="onDelete"
+              @warehouse-update="onSelectWareHouse"
+            />
+            <ConfirmDeleteDialog
+              :show-modal="showConfirmDialog"
+              :title="'Desea borrar'"
+              :dialog-text="'Esta seguro que desea borrar la bodega?'"
+              @confirm-response="onConfirmReponse"
+            />
+          </div>
+        </template>
+      </ViewScaffold>
+    </template>
+  </FormListContainer>
 </template>
 
 <style scoped></style>

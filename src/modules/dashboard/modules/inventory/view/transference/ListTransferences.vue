@@ -7,6 +7,8 @@ import { watch } from "vue";
 import type { AxiosError } from "axios";
 import { useUserStore } from "@/stores/userStore";
 import moment from "moment";
+import ViewScaffold from "@/modules/dashboard/components/shared/ViewScaffold.vue";
+import TransferenceTableList from "../../components/transference/TransferenceTableList.vue";
 
 const { user } = useUserStore();
 const {
@@ -65,45 +67,22 @@ watch(updateTransferenceMutations.isSuccess, () => {
 </script>
 
 <template>
-  <UIScaffold title="Transferencias">
-    <template #left-action> Transferencias </template>
-    <template #right-action>
-      <RouterLink :to="{ name: 'transference-reception' }">
-        <VBtn> Recibir </VBtn>
-      </RouterLink>
-      <RouterLink :to="{ name: 'transference-add' }">
-        <VBtn color="success"> agregar </VBtn>
-      </RouterLink>
-    </template>
+  <ViewScaffold>
+    <template #action> </template>
     <template #default>
-      <p v-if="isTransferencesLoading">cargando..</p>
-      <p v-else-if="transferencesHasError">error</p>
-      <div
-        class="tw-flex tw-gap-1 tw-items-center"
-        v-else
-        v-for="item in transferences"
-      >
-        <p>{{ item.status }}</p>
-        <div v-if="item.status == 'REGISTRADO'">
-          <VBtn
-            @click="onAproved(item)"
-            :loading="updateTransferenceMutations.isPending.value"
-            >Aprobar</VBtn
-          >
+      <div>
+        <div class="tw-flex tw-justify-end tw-gap-2 tw-mb-2">
+          <RouterLink :to="{ name: 'transference-reception' }">
+            <VBtn> Recibir </VBtn>
+          </RouterLink>
+          <RouterLink :to="{ name: 'transference-add' }">
+            <VBtn color="success"> agregar </VBtn>
+          </RouterLink>
         </div>
-        <div v-if="item.status == 'PENDIENTE'">
-          <VBtn
-            @click="onReception(item)"
-            :loading="updateTransferenceMutations.isPending.value"
-            >Recibir</VBtn
-          >
-        </div>
-        <div v-else>
-          {{ item.id }}
-        </div>
+        <TransferenceTableList />
       </div>
     </template>
-  </UIScaffold>
+  </ViewScaffold>
 </template>
 
 <style scoped></style>

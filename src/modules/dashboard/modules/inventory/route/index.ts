@@ -35,7 +35,10 @@ export const invetoryRoutes: RouteRecordRaw[] = [
       {
         path: "adjuste",
         name: "adjust-list",
-        meta: { permission: "list characteristics" },
+        meta: {
+          permission: "list characteristics",
+          name: "Ajustes de inventario",
+        },
         component: () =>
           import("@dashboard/modules/inventory/view/adjust/AdjustList.vue"),
       },
@@ -49,7 +52,7 @@ export const invetoryRoutes: RouteRecordRaw[] = [
       {
         path: "compras",
         name: "purchase-list",
-        meta: { permission: "list characteristics" },
+        meta: { permission: "list characteristics", name: "Mis Compras" },
         component: () =>
           import("@dashboard/modules/inventory/view/purchase/PurchaseList.vue"),
       },

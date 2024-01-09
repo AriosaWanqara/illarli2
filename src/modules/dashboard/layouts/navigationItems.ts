@@ -49,12 +49,12 @@ const navigationsItems: menu[] = [
     children: [
       {
         title: "Compras",
-        icon: "arcticons:purchased-apps",
+        icon: "carbon:purchase",
         to: "purchase-list",
       },
       {
         title: "Ajustes",
-        icon: "arcticons:purchased-apps",
+        icon: "bi:wrench-adjustable",
         to: "adjust-list",
       },
       {

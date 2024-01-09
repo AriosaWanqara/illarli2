@@ -4,6 +4,9 @@ import { ref } from "vue";
 export const usethemeCustomizer = defineStore(
   "theme",
   () => {
+    const themeConfig = ref({
+      cardHasShadow: true,
+    });
     const theme = ref<string>("");
     const isDark = ref(false);
     const setTheme = (newTheme: string) => {
@@ -15,6 +18,7 @@ export const usethemeCustomizer = defineStore(
     return {
       theme,
       isDark,
+      themeConfig,
 
       setTheme,
       setDark,

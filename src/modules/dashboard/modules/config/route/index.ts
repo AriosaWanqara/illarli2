@@ -32,7 +32,7 @@ export const configRouter: RouteRecordRaw[] = [
   {
     path: "bodegas",
     name: "config-warehouses-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Mis Bodegas" },
     component: () =>
       import("@dashboard/modules/config/view/warehouse/WareHousesList.vue"),
   },

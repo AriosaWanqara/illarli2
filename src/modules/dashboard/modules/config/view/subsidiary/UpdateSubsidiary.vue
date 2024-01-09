@@ -12,7 +12,7 @@ const { subsidiaryRules } = useSubsidiaryRules();
 const params = useRoute().params;
 const { isSubsidiaryLoading, subsidiary, subsidiaryHasError, subsidiaryError } =
   useSubsidiary(params.id.toString());
-const brandToSave = ref(subsidiary);
+const brandToSave = ref({ ...subsidiary.value });
 const subsidiaryValidator = useVuelidate(subsidiaryRules, brandToSave);
 const { updateSubsidiaryMutations } = useSubsidiariesMutations();
 const router = useRouter();
