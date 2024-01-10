@@ -8,10 +8,12 @@ const client = new Client({
 
 const balanceMessage = ref<balanceRead[]>([]);
 const isCloserTimeOutDispatched = ref(false);
+const isConnectionReady = ref(true);
 
 const connectToBalance = () => {
   client.activate();
-  client.onConnect = (frame) => {
+  client.onConnect = (_) => {
+    isConnectionReady.value = false;
     client.subscribe("/balance/read", (message) => {
       try {
         balanceMessage.value.push(JSON.parse(message.body));
@@ -36,12 +38,16 @@ const connectToBalance = () => {
 const disconnect = () => {
   isCloserTimeOutDispatched.value = false;
   client.deactivate();
+  client.onDisconnect = (_) => {
+    isConnectionReady.value = true;
+  };
 };
 
 const useBalanceReader = () => {
   return {
-    connectToBalance,
     balanceMessage,
+    isConnectionReady,
+    connectToBalance,
     disconnect,
   };
 };
