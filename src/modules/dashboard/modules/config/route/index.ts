@@ -11,7 +11,7 @@ export const configRouter: RouteRecordRaw[] = [
   {
     path: "sucursales",
     name: "config-subsidiaries-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Mis Sucursales" },
     component: () =>
       import("@dashboard/modules/config/view/subsidiary/SubsidiariesList.vue"),
   },

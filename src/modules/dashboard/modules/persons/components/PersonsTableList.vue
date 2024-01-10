@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import type {
-  BodyRowClassNameFunction,
-  Header,
-  Item,
-} from "vue3-easy-data-table";
-import type { Provider } from "../models/Provider";
+import BaseTableComponent from "@/modules/dashboard/components/shared/BaseTableComponent.vue";
 import { Icon } from "@iconify/vue";
-import { ref } from "vue";
-import { computed } from "vue";
-import { getPrimaryColor } from "@/utils/getColors";
+import type { Header } from "vue3-easy-data-table";
+import type { Provider } from "../models/Provider";
 
 interface props {
   persons: Provider[];
@@ -21,30 +15,6 @@ interface props {
 
 const props = defineProps<props>();
 const emits = defineEmits(["person-update", "person-delete"]);
-
-const dataTable = ref();
-const currentPageLastIndex = computed(
-  () => dataTable.value?.currentPageLastIndex
-);
-const clientItemsLength = computed(() => dataTable.value?.clientItemsLength);
-const maxPaginationNumber = computed(
-  () => dataTable.value?.maxPaginationNumber
-);
-const page = ref(1);
-
-const bodyRowClassNameFunction: BodyRowClassNameFunction = (
-  item: Item,
-  _: number
-): string => {
-  if (props.person) {
-    if (props.person.id) {
-      if (props.person.id == item.id) {
-        return "selected-row";
-      }
-    }
-  }
-  return "";
-};
 
 const headers: Header[] = [
   { text: "Nombre", value: "name" },
@@ -61,21 +31,13 @@ const onPersonSelected = (person: Provider) => {
 </script>
 
 <template>
-  <EasyDataTable
+  <BaseTableComponent
+    :is-table-loading="isTableLoading"
+    :item="person"
+    :items="persons"
     :headers="headers"
-    :theme-color="getPrimaryColor()"
-    :items="props.persons"
-    :loading="props.isTableLoading"
-    alternating
-    ref="dataTable"
-    :body-row-class-name="bodyRowClassNameFunction"
-    :search-field="['name', 'description']"
-    :search-value="props.search"
-    :rows-per-page="10"
-    hide-footer
-    class="customize-table"
   >
-    <template #item-actions="item">
+    <template #actions="{ item }">
       <v-tooltip text="Edit">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -107,22 +69,7 @@ const onPersonSelected = (person: Provider) => {
         </template>
       </v-tooltip>
     </template>
-  </EasyDataTable>
-  <div
-    class="tw-flex tw-justify-between tw-items-center"
-    v-if="props.persons.length > 10"
-  >
-    <p class="tw-text-sm">
-      Mostrando {{ currentPageLastIndex }} de {{ clientItemsLength }} resultados
-    </p>
-    <v-pagination
-      :length="maxPaginationNumber"
-      density="compact"
-      color="primary"
-      v-model="page"
-      class="tw-flex-1"
-    />
-  </div>
+  </BaseTableComponent>
 </template>
 
 <style scoped></style>

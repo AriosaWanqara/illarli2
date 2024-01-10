@@ -1,15 +1,9 @@
 <script setup lang="ts">
+import BaseTableComponent from "@/modules/dashboard/components/shared/BaseTableComponent.vue";
 import { Icon } from "@iconify/vue";
-import { ref, watch } from "vue";
-import type {
-  BodyRowClassNameFunction,
-  Header,
-  Item,
-} from "vue3-easy-data-table";
+import type { Header } from "vue3-easy-data-table";
 import useBrands from "../../composables/brand/useBrands";
 import type { Brand } from "../../models/Brand";
-import { computed } from "vue";
-import { getPrimaryColor } from "@/utils/getColors";
 
 interface props {
   isDeleteLoading: boolean;
@@ -22,15 +16,6 @@ const props = defineProps<props>();
 const emits = defineEmits(["brand-update", "brand-delete"]);
 const { brands, isBrandsLoading } = useBrands();
 
-const dataTable = ref();
-const currentPageLastIndex = computed(
-  () => dataTable.value?.currentPageLastIndex
-);
-const clientItemsLength = computed(() => dataTable.value?.clientItemsLength);
-const maxPaginationNumber = computed(
-  () => dataTable.value?.maxPaginationNumber
-);
-const page = ref(1);
 const headers: Header[] = [
   { text: "Nombre", value: "name", sortable: true },
   { text: "Acciones", value: "actions", width: 110 },
@@ -43,52 +28,17 @@ const onDelete = (brand: Brand) => {
 const onBrandSelected = (brand: Brand) => {
   emits("brand-update", brand);
 };
-
-const bodyRowClassNameFunction: BodyRowClassNameFunction = (
-  item: Item,
-  _: number
-): string => {
-  if (props.brand.id) {
-    if (props.brand.id == item.id) {
-      return "selected-row";
-    }
-  }
-  return "";
-};
-watch(page, () => {
-  if (page.value > 0) {
-    dataTable.value.updatePage(page.value);
-  }
-});
 </script>
 
 <template>
   <div>
-    <EasyDataTable
+    <BaseTableComponent
       :headers="headers"
-      :theme-color="getPrimaryColor()"
+      :item="brand"
       :items="brands"
-      :body-row-class-name="bodyRowClassNameFunction"
-      :loading="isBrandsLoading"
-      ref="dataTable"
-      alternating
-      :search-field="['name', 'description']"
-      :search-value="props.search"
-      :rows-per-page="10"
-      hide-footer
-      class="customize-table"
+      :is-table-loading="isBrandsLoading"
     >
-      <template #item-name="item">
-        <div class="tw-flex tw-flex-col">
-          <p class="tw-font-semibold tw-leading-4">{{ item.name }}</p>
-          <p
-            class="tw-font-semibold tw-leading-4 tw-text-gray-400 tw-w-[15ch] tw-truncate"
-          >
-            {{ item.observation }}
-          </p>
-        </div>
-      </template>
-      <template #item-actions="item">
+      <template #actions="{ item }">
         <v-tooltip text="Edit">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -120,23 +70,7 @@ watch(page, () => {
           </template>
         </v-tooltip>
       </template>
-    </EasyDataTable>
-    <div
-      class="tw-flex tw-justify-between tw-items-center"
-      v-if="brands.length > 10"
-    >
-      <p class="tw-text-sm">
-        Mostrando {{ currentPageLastIndex }} de
-        {{ clientItemsLength }} resultados
-      </p>
-      <v-pagination
-        :length="maxPaginationNumber"
-        density="compact"
-        color="primary"
-        v-model="page"
-        class="tw-flex-1"
-      />
-    </div>
+    </BaseTableComponent>
   </div>
 </template>
 

@@ -32,7 +32,7 @@ const buttonText = ref("Añadir categoria");
 
 const onDelete = (categoryToSave: Category) => {
   // deleteCategoryMutation.mutate(categoryToSave.id);
-  category.value = categoryToSave;
+  category.value = { ...categoryToSave };
   showConfirmModal.value = true;
 };
 

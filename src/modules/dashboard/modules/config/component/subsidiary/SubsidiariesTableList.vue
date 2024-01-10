@@ -1,15 +1,9 @@
 <script setup lang="ts">
-import type {
-  BodyRowClassNameFunction,
-  Header,
-  Item,
-} from "vue3-easy-data-table";
-import useSubsidiaries from "../../composables/subsidiary/useSubsidiaries";
-import { ref } from "vue";
-import { computed } from "vue";
-import type { Subsidiary } from "../../models/Subsidiary";
-import { getPrimaryColor } from "@/utils/getColors";
+import BaseTableComponent from "@/modules/dashboard/components/shared/BaseTableComponent.vue";
 import { Icon } from "@iconify/vue";
+import type { Header } from "vue3-easy-data-table";
+import useSubsidiaries from "../../composables/subsidiary/useSubsidiaries";
+import type { Subsidiary } from "../../models/Subsidiary";
 
 interface props {
   isDeleteLoading: boolean;
@@ -28,30 +22,6 @@ const headers: Header[] = [
   { value: "actions", text: "Acciones", width: 110 },
 ];
 
-const dataTable = ref();
-const currentPageLastIndex = computed(
-  () => dataTable.value?.currentPageLastIndex
-);
-const clientItemsLength = computed(() => dataTable.value?.clientItemsLength);
-const maxPaginationNumber = computed(
-  () => dataTable.value?.maxPaginationNumber
-);
-const page = ref(1);
-
-const bodyRowClassNameFunction: BodyRowClassNameFunction = (
-  item: Item,
-  _: number
-): string => {
-  if (props.subsidiary) {
-    if (props.subsidiary.id) {
-      if (props.subsidiary.id == item.id) {
-        return "selected-row";
-      }
-    }
-  }
-  return "";
-};
-
 const onDelete = (subsidiary: Subsidiary) => {
   emits("subsidiary-delete", subsidiary);
 };
@@ -61,21 +31,13 @@ const onSelect = (subsidiary: Subsidiary) => {
 </script>
 
 <template>
-  <EasyDataTable
+  <BaseTableComponent
     :headers="headers"
-    :loading="isSubsidiariesLoading"
-    :theme-color="getPrimaryColor()"
+    :is-table-loading="isSubsidiariesLoading"
+    :item="subsidiary"
     :items="subsidiaries"
-    alternating
-    ref="dataTable"
-    :body-row-class-name="bodyRowClassNameFunction"
-    :search-field="['name', 'description']"
-    :search-value="props.search"
-    :rows-per-page="10"
-    hide-footer
-    class="customize-table"
   >
-    <template #item-actions="item">
+    <template #actions="{ item }">
       <v-tooltip text="Edit">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -107,22 +69,7 @@ const onSelect = (subsidiary: Subsidiary) => {
         </template>
       </v-tooltip>
     </template>
-  </EasyDataTable>
-  <div
-    class="tw-flex tw-justify-between tw-items-center"
-    v-if="subsidiaries.length > 10"
-  >
-    <p class="tw-text-sm">
-      Mostrando {{ currentPageLastIndex }} de {{ clientItemsLength }} resultados
-    </p>
-    <v-pagination
-      :length="maxPaginationNumber"
-      density="compact"
-      color="primary"
-      v-model="page"
-      class="tw-flex-1"
-    />
-  </div>
+  </BaseTableComponent>
 </template>
 
 <style scoped></style>

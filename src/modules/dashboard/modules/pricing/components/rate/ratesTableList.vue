@@ -1,14 +1,9 @@
 <script setup lang="ts">
+import BaseTableComponent from "@/modules/dashboard/components/shared/BaseTableComponent.vue";
 import { Icon } from "@iconify/vue";
-import { computed, ref } from "vue";
-import type {
-  BodyRowClassNameFunction,
-  Header,
-  Item,
-} from "vue3-easy-data-table";
+import type { Header } from "vue3-easy-data-table";
 import useRates from "../../compossables/rate/useRates";
 import type { Rate } from "../../models/Rate";
-import { getPrimaryColor } from "@/utils/getColors";
 
 interface props {
   isDeleteLoading: boolean;
@@ -21,34 +16,12 @@ const props = defineProps<props>();
 const emits = defineEmits(["update-rate", "delete-rate"]);
 const { isRatesLoading, rates } = useRates();
 
-const dataTable = ref();
-const currentPageLastIndex = computed(
-  () => dataTable.value?.currentPageLastIndex
-);
-const clientItemsLength = computed(() => dataTable.value?.clientItemsLength);
-const maxPaginationNumber = computed(
-  () => dataTable.value?.maxPaginationNumber
-);
-const page = ref(1);
-
 const headers: Header[] = [
   { text: "Nombre", value: "name" },
   { text: "operation", value: "operation" },
   { text: "type", value: "type" },
   { text: "", value: "actions", width: 110 },
 ];
-
-const bodyRowClassNameFunction: BodyRowClassNameFunction = (
-  item: Item,
-  _: number
-): string => {
-  if (props.rate.id) {
-    if (props.rate.id == item.id) {
-      return "selected-row";
-    }
-  }
-  return "";
-};
 
 const onRateSelected = (rate: Rate) => {
   emits("update-rate", rate);
@@ -60,29 +33,21 @@ const onDelete = (rate: Rate) => {
 </script>
 
 <template>
-  <EasyDataTable
+  <BaseTableComponent
     :headers="headers"
-    :theme-color="getPrimaryColor()"
+    :is-table-loading="isRatesLoading"
+    :item="rate"
     :items="rates"
-    :loading="isRatesLoading"
-    alternating
-    ref="dataTable"
-    :body-row-class-name="bodyRowClassNameFunction"
-    :search-field="['name', 'description']"
-    :search-value="props.search"
-    :rows-per-page="10"
-    hide-footer
-    class="customize-table"
   >
-    <template #item-type="item">
+    <template #type="{ item }">
       <p v-if="item.type == 1">Valor</p>
       <p v-else>Porcentage</p>
     </template>
-    <template #item-operation="item">
+    <template #operation="{ item }">
       <p v-if="item.operation == 1">Positivo</p>
       <p v-else>Negativo</p>
     </template>
-    <template #item-actions="item">
+    <template #actions="{ item }">
       <v-tooltip text="Edit">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -114,22 +79,7 @@ const onDelete = (rate: Rate) => {
         </template>
       </v-tooltip>
     </template>
-  </EasyDataTable>
-  <div
-    class="tw-flex tw-justify-between tw-items-center"
-    v-if="rates.length > 10"
-  >
-    <p class="tw-text-sm">
-      Mostrando {{ currentPageLastIndex }} de {{ clientItemsLength }} resultados
-    </p>
-    <v-pagination
-      :length="maxPaginationNumber"
-      density="compact"
-      color="primary"
-      v-model="page"
-      class="tw-flex-1"
-    />
-  </div>
+  </BaseTableComponent>
 </template>
 
 <style scoped></style>
