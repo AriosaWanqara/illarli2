@@ -23,7 +23,7 @@ const BLUE_THEME: ThemeTypes = {
     textSecondary: "#2A3547",
     borderColor: "#DEDEDE",
     inputBorder: "#DEDEDE",
-    containerBg: "#ffffff",
+    containerBg: "#FAFAFA",
     background: "#EBEBEB",
     hoverColor: "#f6f9fc",
     surface: "#fff",

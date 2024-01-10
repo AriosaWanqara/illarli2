@@ -1,0 +1,25 @@
+.custome .filepond--root {
+  font-family: Montserrat !important;
+  min-height: 100px !important;
+  cursor: pointer;
+  border: 1px solid !important;
+  border-color: rgba(var(--v-theme-borderColor)) !important;
+  overflow: hidden !important;
+  border-radius: 6px;
+}
+
+.custome .filepond--drop-label {
+  height: 100% !important;
+  color: rgba(var(--v-theme-textPrimary)) !important;
+  font-size: 0.875rem !important;
+  & p {
+    opacity: 0.6;
+  }
+  & * {
+    cursor: pointer !important;
+  }
+}
+
+.custome .filepond--panel-root {
+  background-color: rgba(var(--v-theme-containerBg)) !important;
+}

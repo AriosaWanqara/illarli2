@@ -2,16 +2,7 @@
 import useVuelidate from "@vuelidate/core";
 import useCategoryRules from "../../composables/category/useCategoryRules";
 import type { Category } from "../../models/Category";
-import vueFilePond from "vue-filepond";
-import "filepond/dist/filepond.min.css";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
-import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-
-const FilePond = vueFilePond(
-  FilePondPluginFileValidateType,
-  FilePondPluginImagePreview
-);
+import FileUpload from "@/modules/dashboard/components/shared/FileUpload.vue";
 
 interface props {
   isLoading: boolean;
@@ -20,9 +11,20 @@ interface props {
 }
 
 const props = defineProps<props>();
+const myFiles: any[] = [];
 
 const emit = defineEmits(["category-submit"]);
 const { categoryRules } = useCategoryRules();
+
+if (props.category.image) {
+  myFiles.push({
+    source: props.category.image,
+    // "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-vii/icons/25.png",
+    options: {
+      type: "local",
+    },
+  });
+}
 
 const onCategorySubmit = () => {
   const categoryValidator = useVuelidate(categoryRules, props.category);
@@ -38,19 +40,10 @@ const onCategorySubmit = () => {
   }
 };
 
-const handleLoad = async (event: any) => {
-  if (event.length > 0) {
-    const file = event[0].file;
-    const reader = new FileReader();
-    let blob = await fetch(file.objectURL).then((r) => r.blob()); //blob:url
-
-    reader.readAsDataURL(blob);
-
-    reader.onloadend = function () {
-      const base64data = reader.result;
-      console.log(base64data);
-      props.category.image = base64data as string;
-    };
+const handleLoad = (img: string) => {
+  if (img) {
+    console.log(img);
+    props.category.image = img;
   }
 };
 </script>
@@ -84,15 +77,14 @@ const handleLoad = async (event: any) => {
         />
       </div>
     </VCol>
-    <!-- <VCol cols="12" class="py-0">
-      <file-pond
-        name="test"
-        ref="pond"
-        label-idle="Drag & Drop una Imagen o da click"
-        accepted-file-types="image/jpeg, image/png"
-        v-on:updatefiles="handleLoad"
+    <VCol cols="12" class="py-0">
+      <FileUpload
+        :files="myFiles"
+        :img-name="props.category.image"
+        :image-preview-height="100"
+        @load-base64="handleLoad"
       />
-    </VCol> -->
+    </VCol>
     <VCol cols="12" class="py-0">
       <div class="tw-flex tw-w-full tw-justify-end tw-mt-2">
         <VBtn
