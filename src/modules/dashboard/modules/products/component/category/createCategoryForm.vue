@@ -3,6 +3,7 @@ import useVuelidate from "@vuelidate/core";
 import useCategoryRules from "../../composables/category/useCategoryRules";
 import type { Category } from "../../models/Category";
 import FileUpload from "@/modules/dashboard/components/shared/FileUpload.vue";
+import { smallFormFileUploadTempla } from "@/modules/dashboard/const/FileUploadTemplate";
 
 interface props {
   isLoading: boolean;
@@ -42,7 +43,6 @@ const onCategorySubmit = () => {
 
 const handleLoad = (img: string) => {
   if (img) {
-    console.log(img);
     props.category.image = img;
   }
 };
@@ -80,6 +80,7 @@ const handleLoad = (img: string) => {
     <VCol cols="12" class="py-0">
       <FileUpload
         :files="myFiles"
+        :label-template="smallFormFileUploadTempla"
         :img-name="props.category.image"
         :image-preview-height="100"
         @load-base64="handleLoad"

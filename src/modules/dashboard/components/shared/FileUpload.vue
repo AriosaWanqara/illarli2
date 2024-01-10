@@ -6,12 +6,12 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFilePoster from "filepond-plugin-file-poster";
 import FilePondPluginImageResize from "filepond-plugin-image-resize";
-import { Icon } from "@iconify/vue";
 
 interface props {
   files: any[];
   imagePreviewHeight: number;
   imgName: string | null;
+  labelTemplate: string;
 }
 
 const props = defineProps<props>();
@@ -73,14 +73,7 @@ const handleLoad = async (event: any) => {
     class="custome"
     :server="server"
     :files="files"
-    label-idle="<div class='tw-w-full tw-flex tw-flex-col tw-items-center tw-gap-2'>
-      <div>
-        <img src='/src/modules/dashboard/assets/icons/ic_upload.svg' />
-      </div>    
-    	<p>
-        Drag & Drop una Imagen o da click
-      </p>
-    </div>"
+    :label-idle="props.labelTemplate"
     accepted-file-types="image/jpeg, image/png"
     v-on:updatefiles="handleLoad"
   />
