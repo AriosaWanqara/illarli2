@@ -59,7 +59,7 @@ export const invetoryRoutes: RouteRecordRaw[] = [
       {
         path: "pedidos",
         name: "purchase-order-list",
-        meta: { permission: "list characteristics" },
+        meta: { permission: "list characteristics", name: "Mis pedidos" },
         component: () =>
           import(
             "@dashboard/modules/inventory/view/purchase/PurchaseOrderList.vue"
