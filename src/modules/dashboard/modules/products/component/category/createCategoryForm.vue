@@ -43,6 +43,8 @@ const onCategorySubmit = () => {
 
 const handleLoad = (img: string) => {
   if (img) {
+    console.log(img);
+
     props.category.image = img;
   }
 };
