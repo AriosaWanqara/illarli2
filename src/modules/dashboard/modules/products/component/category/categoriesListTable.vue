@@ -36,6 +36,8 @@ const onDeleteCategory = (category: Category) => {
       :headers="headers"
       :item="category"
       :items="categories"
+      :search="props.search"
+      :search-field="['name', 'description']"
       :is-table-loading="isCategoriesLoading"
     >
       <template #name="{ item }">

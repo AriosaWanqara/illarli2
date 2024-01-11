@@ -11,6 +11,7 @@ import { computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import FormListContainer from "@/modules/dashboard/components/shared/FormListContainer.vue";
 import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
+import { Icon } from "@iconify/vue";
 
 const { width } = useWindowSize();
 const { categories } = useCategories();
@@ -20,7 +21,7 @@ const { deleteCategoryMutation, updateCategoryMutation, saveCategoryMutation } =
 const search = ref("");
 const category = ref<Category>({} as Category);
 const showFormModal = ref(false);
-const showConfirmModal = ref(true);
+const showConfirmModal = ref(false);
 const isCategoryFormLoading = ref(
   computed(
     () =>
@@ -31,7 +32,6 @@ const isCategoryFormLoading = ref(
 const buttonText = ref("Añadir categoria");
 
 const onDelete = (categoryToSave: Category) => {
-  // deleteCategoryMutation.mutate(categoryToSave.id);
   category.value = { ...categoryToSave };
   showConfirmModal.value = true;
 };
@@ -147,6 +147,15 @@ watch(deleteCategoryMutation.isSuccess, () => {
     </template>
     <template #default>
       <ViewScaffold title="Categorias" :is-flat="false" class="tw-flex-1">
+        <template #action>
+          <div class="tw-w-[200px]">
+            <VTextField label="Buscar categoria" v-model="search" hide-details>
+              <template #append-inner>
+                <Icon icon="mingcute:search-3-line" height="18" />
+              </template>
+            </VTextField>
+          </div>
+        </template>
         <template #default>
           <div>
             <div
