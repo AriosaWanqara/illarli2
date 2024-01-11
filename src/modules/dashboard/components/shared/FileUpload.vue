@@ -49,7 +49,6 @@ const props = defineProps<props>();
 const emits = defineEmits(["load-base64"]);
 
 const FilePond = vueFilePond(
-  FilePondPluginImageEditor,
   FilePondPluginFilePoster,
   FilePondPluginFileValidateType,
   FilePondPluginImagePreview
