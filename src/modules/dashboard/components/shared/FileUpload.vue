@@ -70,6 +70,7 @@ const handleLoad = async (event: any) => {
     }
   } else {
     uploadBlob.value = null;
+    emits("load-base64", null);
   }
 };
 
@@ -113,7 +114,7 @@ const onReOpenEditor = () => {
       ref="pond"
       :filePosterHeight="imagePreviewHeight"
       :imagePreviewHeight="imagePreviewHeight"
-      :credits="false"
+      :credits="''"
       class="custome"
       @click="onReOpenEditor"
       :server="server"
