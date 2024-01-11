@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import ViewScaffold from "./ViewScaffold.vue";
 
 interface props {
@@ -13,20 +14,31 @@ const emits = defineEmits(["confirm-response"]);
 
 <template>
   <VDialog max-width="350" v-model="props.showModal">
-    <ViewScaffold :title="props.title">
-      <div class="tw-flex tw-flex-col tw-gap-5">
+    <ViewScaffold>
+      <div
+        class="tw-flex tw-flex-col tw-gap-5 tw-items-center tw-pb-5 tw-text-center"
+      >
+        <Icon
+          icon="ph:warning-circle-fill"
+          class="tw-text-yellow-400"
+          height="70"
+        />
+        <h1 class="tw-font-semibold">{{ props.title }}</h1>
         <p>
           {{ dialogText }}
         </p>
         <div class="tw-flex tw-justify-end tw-gap-3">
-          <VBtn color="success" @click="emits('confirm-response', true)"
-            >Si</VBtn
+          <VBtn
+            variant="elevated"
+            color="info"
+            @click="emits('confirm-response', true)"
+            >Si, Eliminar item</VBtn
           >
           <VBtn
             color="error"
-            variant="text"
+            variant="elevated"
             @click="emits('confirm-response', false)"
-            >No</VBtn
+            >Cancelar</VBtn
           >
         </div>
       </div>

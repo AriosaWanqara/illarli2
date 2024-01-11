@@ -20,7 +20,7 @@ const { deleteCategoryMutation, updateCategoryMutation, saveCategoryMutation } =
 const search = ref("");
 const category = ref<Category>({} as Category);
 const showFormModal = ref(false);
-const showConfirmModal = ref(false);
+const showConfirmModal = ref(true);
 const isCategoryFormLoading = ref(
   computed(
     () =>
@@ -153,12 +153,6 @@ watch(deleteCategoryMutation.isSuccess, () => {
               class="tw-flex tw-mb-5 tw-justify-between tw-items-center tw-px-2"
             >
               <div class="tw-max-w-sm tw-min-w-[200px]">
-                <!-- <VTextField
-                  label="search"
-                  hide-details
-                  v-model="search"
-                  prepend-inner-icon="mdi-magnify"
-                /> -->
                 <p class="tw-font-semibold">Todas las categorias</p>
               </div>
               <div class="tw-hidden md:tw-block">
@@ -207,7 +201,7 @@ watch(deleteCategoryMutation.isSuccess, () => {
             <ConfirmDeleteDialog
               :dialog-text="'Esta seguro que desa borrar la categoria?'"
               :show-modal="showConfirmModal"
-              :title="'Desea borrar'"
+              :title="'¿Estás seguro de Eliminar este Item?'"
               @confirm-response="onConfirmReponse"
             />
           </div>
