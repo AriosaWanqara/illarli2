@@ -85,6 +85,8 @@ const handleLoad = (img: string) => {
         :label-template="smallFormFileUploadTempla"
         :img-name="props.category.image"
         :image-preview-height="100"
+        :aspect-fatio="4 / 4"
+        :is-corp-circular="true"
         @load-base64="handleLoad"
       />
     </VCol>

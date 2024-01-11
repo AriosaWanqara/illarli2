@@ -19,6 +19,8 @@ interface props {
   imagePreviewHeight: number;
   imgName: string | null;
   labelTemplate: string;
+  aspectFatio: number;
+  isCorpCircular: boolean;
 }
 
 const props = defineProps<props>();
@@ -54,6 +56,38 @@ const server = {
   },
 };
 
+const willRenderCanvas = (shapes: any, state: any) => {
+  const { utilVisibility, selectionRect, lineColor, backgroundColor } = state;
+
+  // Exit if crop utils is not visible
+  if (utilVisibility.crop <= 0) return shapes;
+
+  // Get variable shortcuts to the crop selection rect
+  const { x, y, width, height } = selectionRect;
+
+  return {
+    // Copy all props from current shapes
+    ...shapes,
+
+    // Now we add an inverted ellipse shape to the interface shapes array
+    interfaceShapes: [
+      {
+        x: x + width * 0.5,
+        y: y + height * 0.5,
+        rx: width * 0.5,
+        ry: height * 0.5,
+        opacity: utilVisibility.crop,
+        inverted: true,
+        backgroundColor: [...backgroundColor, 0.5],
+        strokeWidth: 1,
+        strokeColor: [...lineColor],
+      },
+      // Spread all existing interface shapes onto the array
+      ...shapes.interfaceShapes,
+    ],
+  };
+};
+
 const handleLoad = async (event: any) => {
   if (event.length > 0) {
     const file = event[0].file;
@@ -76,7 +110,6 @@ const handleLoad = async (event: any) => {
 
 const edit = getEditorDefaults();
 
-const handleLoaded = (event: any) => {};
 const handleProcess = (event: any) => {
   converBase64(event.detail.dest);
 };
@@ -94,12 +127,6 @@ async function converBase64(newFile: any) {
     emits("load-base64", base64data);
   };
 }
-const handleShow = () => {
-  console.log("show");
-};
-const handleClose = () => {
-  showEditor.value = true;
-};
 
 const onReOpenEditor = () => {
   if (uploadBlob.value) {
@@ -123,17 +150,29 @@ const onReOpenEditor = () => {
       accepted-file-types="image/jpeg, image/png"
       v-on:updatefiles="handleLoad"
     />
-    <PinturaEditorModal
-      :src="uploadBlob"
-      v-if="showEditor"
-      v-bind="edit"
-      :imageCropAspectRatio="4 / 3"
-      @pintura:hide="showEditor = false"
-      @pintura:show="handleShow()"
-      @pintura:close="handleClose()"
-      @pintura:load="handleLoaded($event)"
-      @pintura:process="handleProcess($event)"
-    ></PinturaEditorModal>
+    <div class="" v-if="props.isCorpCircular">
+      <PinturaEditorModal
+        :src="uploadBlob"
+        v-if="showEditor"
+        cropImageSelectionCornerStyle="circle"
+        v-bind="edit"
+        :imageCropAspectRatio="props.aspectFatio"
+        @pintura:hide="showEditor = false"
+        @pintura:process="handleProcess($event)"
+        :willRenderCanvas="willRenderCanvas"
+      ></PinturaEditorModal>
+    </div>
+    <div class="" v-else>
+      <PinturaEditorModal
+        :src="uploadBlob"
+        v-if="showEditor"
+        cropImageSelectionCornerStyle="circle"
+        v-bind="edit"
+        :imageCropAspectRatio="props.aspectFatio"
+        @pintura:hide="showEditor = false"
+        @pintura:process="handleProcess($event)"
+      ></PinturaEditorModal>
+    </div>
   </div>
 </template>
 
