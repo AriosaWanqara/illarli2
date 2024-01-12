@@ -10,6 +10,22 @@ import { ref } from "vue";
 
 import { PinturaEditorModal } from "@pqina/vue-pintura";
 import { getEditorDefaults } from "@pqina/pintura";
+//@ts-ignore
+import es_crop from "@pqina/pintura/locale/es_ES/crop/es_ES";
+//@ts-ignore
+import es_filter from "@pqina/pintura/locale/es_ES/filter/es_ES";
+//@ts-ignore
+import es_finetune from "@pqina/pintura/locale/es_ES/finetune/es_ES";
+//@ts-ignore
+import es_annotate from "@pqina/pintura/locale/es_ES/annotate/es_ES";
+//@ts-ignore
+import es_decorate from "@pqina/pintura/locale/es_ES/decorate/es_ES";
+//@ts-ignore
+import es_frame from "@pqina/pintura/locale/es_ES/frame/es_ES";
+//@ts-ignore
+import es_redact from "@pqina/pintura/locale/es_ES/redact/es_ES";
+//@ts-ignore
+import es_resize from "@pqina/pintura/locale/es_ES/resize/es_ES";
 
 // Import Pintura styles
 import "@pqina/pintura/pintura.css";
@@ -100,8 +116,17 @@ const handleLoad = async (event: any) => {
     emits("load-base64", null);
   }
 };
-
-const edit = getEditorDefaults();
+const locale = {
+  ...es_crop,
+  ...es_filter,
+  ...es_finetune,
+  ...es_annotate,
+  ...es_decorate,
+  ...es_frame,
+  ...es_redact,
+  ...es_resize,
+};
+const edit = getEditorDefaults({ locale: locale });
 
 const handleProcess = (event: any) => {
   converBase64(event.detail.dest);
