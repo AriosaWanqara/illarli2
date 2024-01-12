@@ -86,7 +86,7 @@ const handleLoad = (img: string) => {
         :img-name="props.category.image"
         :image-preview-height="100"
         :aspect-fatio="4 / 4"
-        :is-corp-circular="true"
+        :is-corp-circular="false"
         @load-base64="handleLoad"
       />
     </VCol>
