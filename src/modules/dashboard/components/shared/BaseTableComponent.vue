@@ -8,6 +8,8 @@ import type {
   Header,
   Item,
 } from "vue3-easy-data-table";
+import TableLoading from "./table/TableLoading.vue";
+import TableEmpty from "./table/TableEmpty.vue";
 
 interface props {
   items: Object[];
@@ -72,6 +74,12 @@ const bodyRowClassNameFunction: BodyRowClassNameFunction = (
     hide-footer
     class="customize-table"
   >
+    <template #loading>
+      <TableLoading />
+    </template>
+    <template #empty-message>
+      <TableEmpty />
+    </template>
     <template
       v-for="head in props.headers"
       v-slot:[`item-${head.value}`]="item"
