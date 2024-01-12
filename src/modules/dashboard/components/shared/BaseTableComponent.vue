@@ -5,6 +5,7 @@ import { computed, watch } from "vue";
 import { ref } from "vue";
 import type {
   BodyRowClassNameFunction,
+  FilterOption,
   Header,
   Item,
 } from "vue3-easy-data-table";
@@ -18,6 +19,7 @@ interface props {
   headers: Header[];
   searchField?: string[];
   search?: string;
+  filterOptions?: FilterOption[];
   item?: Object;
 }
 const slots = useSlots();
@@ -25,7 +27,7 @@ const hasSlot = (name: string) => {
   return !!slots[name];
 };
 const props = defineProps<props>();
-
+const totalItemsShowed = ref(10);
 const dataTable = ref();
 const currentPageLastIndex = computed(
   () => dataTable.value?.currentPageLastIndex
@@ -71,7 +73,8 @@ const bodyRowClassNameFunction: BodyRowClassNameFunction = (
     :body-row-class-name="bodyRowClassNameFunction"
     :search-field="searchField"
     :search-value="props.search"
-    :rows-per-page="10"
+    :rows-per-page="totalItemsShowed"
+    :filter-options="filterOptions"
     hide-footer
     class="customize-table"
   >
@@ -93,9 +96,19 @@ const bodyRowClassNameFunction: BodyRowClassNameFunction = (
     class="tw-flex tw-justify-between tw-items-center"
     v-if="props.items.length > 10"
   >
-    <p class="tw-text-sm">
-      Mostrando {{ currentPageLastIndex }} de {{ clientItemsLength }} resultados
-    </p>
+    <div class="tw-flex tw-gap-1 tw-items-center tw-justify-center">
+      <p class="tw-text-sm">Mostrando</p>
+      <VSelect
+        v-model="totalItemsShowed"
+        density="compact"
+        hide-spin-buttons
+        hide-details
+        :items="[10, 20, 30, 40, 50]"
+        class="min-select"
+        menu-icon=""
+      />
+      <p class="tw-text-gray-400">items por página</p>
+    </div>
     <v-pagination
       :length="maxPaginationNumber"
       density="compact"
