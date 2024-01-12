@@ -14,7 +14,7 @@ interface props {
 
 const props = defineProps<props>();
 const emits = defineEmits(["brand-update", "brand-delete"]);
-const { brands, isBrandsLoading } = useBrands();
+const { brands, isBrandsLoading, brandsHasError } = useBrands();
 
 const headers: Header[] = [
   { text: "Nombre", value: "name", sortable: true },
@@ -37,6 +37,7 @@ const onBrandSelected = (brand: Brand) => {
       :item="brand"
       :items="brands"
       :is-table-loading="isBrandsLoading"
+      :is-error="brandsHasError"
     >
       <template #actions="{ item }">
         <v-tooltip text="Edit">

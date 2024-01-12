@@ -15,7 +15,8 @@ interface props {
 const props = defineProps<props>();
 const emits = defineEmits(["update-cashdrawer", "delete-cashdrawer"]);
 
-const { cashdrawers, isCashdrawersLoading } = useCashdrawers();
+const { cashdrawers, isCashdrawersLoading, cashdrawersHasError } =
+  useCashdrawers();
 
 const headers: Header[] = [
   { text: "Nombre", value: "code" },
@@ -36,6 +37,7 @@ const onDelete = (cashdrawer: Cashdrawer) => {
     :is-table-loading="isCashdrawersLoading"
     :item="cashdrawer"
     :items="cashdrawers"
+    :is-error="cashdrawersHasError"
   >
     <template #actions="{ item }">
       <v-tooltip text="Edit">

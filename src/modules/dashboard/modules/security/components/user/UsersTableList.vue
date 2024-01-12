@@ -15,7 +15,7 @@ interface props {
 const props = defineProps<props>();
 const emits = defineEmits(["user-delete", "user-update"]);
 
-const { isUserLoading, users } = useUsers();
+const { isUserLoading, users, usersHasError } = useUsers();
 
 const headers: Header[] = [
   { text: "Nombre", value: "name" },
@@ -37,6 +37,7 @@ const onUserUpdate = (user: User) => {
     :is-table-loading="isUserLoading"
     :item="user"
     :items="users"
+    :is-error="usersHasError"
   >
     <template #actions="{ item }">
       <v-tooltip text="Edit">

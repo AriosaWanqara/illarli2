@@ -11,6 +11,7 @@ interface props {
   isUpdateLoading: boolean;
   search?: string;
   person?: Provider;
+  hasError: boolean;
 }
 
 const props = defineProps<props>();
@@ -36,6 +37,7 @@ const onPersonSelected = (person: Provider) => {
     :item="person"
     :items="persons"
     :headers="headers"
+    :is-error="props.hasError"
   >
     <template #actions="{ item }">
       <v-tooltip text="Edit">

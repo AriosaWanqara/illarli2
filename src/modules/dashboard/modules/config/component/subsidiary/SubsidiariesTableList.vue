@@ -36,6 +36,7 @@ const onSelect = (subsidiary: Subsidiary) => {
     :is-table-loading="isSubsidiariesLoading"
     :item="subsidiary"
     :items="subsidiaries"
+    :is-error="subsidiariesHasError"
   >
     <template #actions="{ item }">
       <v-tooltip text="Edit">

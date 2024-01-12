@@ -4,7 +4,7 @@ import type { Header } from "vue3-easy-data-table";
 import useAdjust from "../../composables/adjust/useAdjust";
 import type { Adjust } from "../../models/Adjust";
 
-const { adjust, isAdjustLoading } = useAdjust();
+const { adjust, isAdjustLoading, adjustHasError } = useAdjust();
 
 interface props {
   search?: string;
@@ -27,6 +27,7 @@ const headers: Header[] = [
     :is-table-loading="isAdjustLoading"
     :item="propsAdjust"
     :items="adjust"
+    :is-error="adjustHasError"
   ></BaseTableComponent>
 </template>
 

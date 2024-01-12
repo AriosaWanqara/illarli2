@@ -15,7 +15,7 @@ interface props {
 
 const props = defineProps<props>();
 const emits = defineEmits(["delete-handle", "update-handle"]);
-const { categories, isCategoriesLoading } = useCategories();
+const { categories, isCategoriesLoading, categoriesHasError } = useCategories();
 
 const headers: Header[] = [
   { text: "Nombre de la categoría", value: "name", sortable: true },
@@ -39,6 +39,7 @@ const onDeleteCategory = (category: Category) => {
       :search="props.search"
       :search-field="['name', 'description']"
       :is-table-loading="isCategoriesLoading"
+      :is-error="categoriesHasError"
     >
       <template #name="{ item }">
         <div class="tw-flex tw-gap-2">

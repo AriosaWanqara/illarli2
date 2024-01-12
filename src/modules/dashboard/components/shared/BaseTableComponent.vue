@@ -14,6 +14,7 @@ import TableEmpty from "./table/TableEmpty.vue";
 interface props {
   items: Object[];
   isTableLoading: boolean;
+  isError: boolean;
   headers: Header[];
   searchField?: string[];
   search?: string;
@@ -78,7 +79,7 @@ const bodyRowClassNameFunction: BodyRowClassNameFunction = (
       <TableLoading />
     </template>
     <template #empty-message>
-      <TableEmpty />
+      <TableEmpty :has-error="props.isError" />
     </template>
     <template
       v-for="head in props.headers"

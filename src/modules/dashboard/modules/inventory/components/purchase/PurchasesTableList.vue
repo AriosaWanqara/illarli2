@@ -11,7 +11,7 @@ interface props {
 
 const props = defineProps<props>();
 
-const { isPurchasesLoading, purchases } = usePurcheses();
+const { isPurchasesLoading, purchases, purchasesHasError } = usePurcheses();
 
 const headers: Header[] = [
   { text: "Codigo", value: "sequential" },
@@ -27,6 +27,7 @@ const headers: Header[] = [
     :is-table-loading="isPurchasesLoading"
     :item="purchase"
     :items="purchases"
+    :is-error="purchasesHasError"
   ></BaseTableComponent>
 </template>
 

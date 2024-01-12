@@ -15,7 +15,7 @@ interface props {
 const props = defineProps<props>();
 const emits = defineEmits(["warehouse-delete", "warehouse-update"]);
 
-const { wareHouses, isWareHousesLoading } = useWareHouses();
+const { wareHouses, isWareHousesLoading, wareHousesHasError } = useWareHouses();
 
 const headers: Header[] = [
   { text: "Nombre", value: "name" },
@@ -37,6 +37,7 @@ const onWareHouseSelected = (wareHouse: WareHouse) => {
     :is-table-loading="isWareHousesLoading"
     :item="wareHouse"
     :items="wareHouses"
+    :is-error="wareHousesHasError"
   >
     <template #actions="{ item }">
       <v-tooltip text="Edit">

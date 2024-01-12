@@ -15,7 +15,7 @@ interface props {
 const props = defineProps<props>();
 const emits = defineEmits(["product-update", "product-delete"]);
 
-const { isProductsLoading, products } = useProducts();
+const { isProductsLoading, products, productsHasError } = useProducts();
 
 const headers: Header[] = [
   { text: "Nombre", value: "name" },
@@ -39,6 +39,7 @@ const onSelectProduct = (product: Product) => {
     :is-table-loading="isProductsLoading"
     :item="product"
     :items="products"
+    :is-error="productsHasError"
   >
     <template #actions="{ item }">
       <v-tooltip text="Edit">

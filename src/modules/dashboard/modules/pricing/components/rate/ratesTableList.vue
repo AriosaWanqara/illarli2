@@ -14,7 +14,7 @@ interface props {
 
 const props = defineProps<props>();
 const emits = defineEmits(["update-rate", "delete-rate"]);
-const { isRatesLoading, rates } = useRates();
+const { isRatesLoading, rates, ratesHasErro } = useRates();
 
 const headers: Header[] = [
   { text: "Nombre", value: "name" },
@@ -38,6 +38,7 @@ const onDelete = (rate: Rate) => {
     :is-table-loading="isRatesLoading"
     :item="rate"
     :items="rates"
+    :is-error="ratesHasErro"
   >
     <template #type="{ item }">
       <p v-if="item.type == 1">Valor</p>

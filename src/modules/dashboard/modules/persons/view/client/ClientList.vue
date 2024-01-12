@@ -9,7 +9,7 @@ import { useRouter } from "vue-router";
 import { ref } from "vue";
 import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
 
-const { clients, isClientsLoading } = useClients();
+const { clients, isClientsLoading, clientsHasError } = useClients();
 const { deleteClientMutations } = useClientsMutations();
 const router = useRouter();
 const selectedClient = ref<Provider>({} as Provider);
@@ -63,6 +63,7 @@ watch(deleteClientMutations.isSuccess, () => {
           :is-table-loading="isClientsLoading"
           :is-update-loading="false"
           :persons="clients"
+          :has-error="clientsHasError"
           @person-delete="onDelete"
           @person-update="onClientSelected"
         />

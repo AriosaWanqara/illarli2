@@ -11,7 +11,8 @@ interface props {
 
 const props = defineProps<props>();
 
-const { isTransferencesLoading, transferences } = useTransferences();
+const { isTransferencesLoading, transferences, transferencesHasError } =
+  useTransferences();
 
 const headers: Header[] = [
   { text: "Codigo", value: "sequential" },
@@ -28,6 +29,7 @@ const headers: Header[] = [
     :is-table-loading="isTransferencesLoading"
     :item="transference"
     :items="transferences"
+    :is-error="transferencesHasError"
   ></BaseTableComponent>
 </template>
 

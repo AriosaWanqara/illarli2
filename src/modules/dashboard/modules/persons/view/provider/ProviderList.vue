@@ -65,6 +65,7 @@ watch(deleteProviderMutation.isSuccess, () => {
           :persons="providers"
           @person-delete="onDelete"
           @person-update="onClientSelected"
+          :has-error="providersHasError"
         />
         <ConfirmDeleteDialog
           :show-modal="showConfirmDialog"

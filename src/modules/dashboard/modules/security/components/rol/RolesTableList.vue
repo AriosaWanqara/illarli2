@@ -15,7 +15,7 @@ interface props {
 const props = defineProps<props>();
 const emits = defineEmits(["rol-delete", "rol-update"]);
 
-const { isRolesLoading, roles } = useRoles();
+const { isRolesLoading, roles, rolesHasError } = useRoles();
 
 const headers: Header[] = [
   { text: "Nombre", value: "name" },
@@ -37,6 +37,7 @@ const onRolUpdate = (rol: Rol) => {
     :is-table-loading="isRolesLoading"
     :item="rol"
     :items="roles"
+    :is-error="rolesHasError"
   >
     <template #actions="{ item }">
       <v-tooltip text="Edit">
