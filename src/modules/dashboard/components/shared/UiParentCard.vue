@@ -16,7 +16,7 @@ const store = usethemeCustomizer();
         <div class="tw-flex tw-items-center tw-gap-1">
           <slot name="actionBack"></slot>
           <v-card-title>
-            <h1 class="tw-font-semibold">{{ title }}</h1>
+            <h2 class="tw-font-semibold title-1">{{ title }}</h2>
           </v-card-title>
         </div>
         <!-- <template v-slot:append> -->

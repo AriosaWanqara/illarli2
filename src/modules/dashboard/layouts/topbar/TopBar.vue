@@ -43,7 +43,7 @@ const route = useRoute();
         >
           <Icon icon="solar:list-outline" height="24" />
         </VBtn>
-        <h1 class="tw-font-Noto">{{ route.meta.name ?? "logo" }}</h1>
+        <h1 class="tw-font-Noto headline-6">{{ route.meta.name ?? "logo" }}</h1>
       </div>
       <div class="tw-flex tw-gap-5 tw-items-center">
         <RouterLink :to="{ name: 'pos-home' }">
