@@ -2,7 +2,7 @@
 import NavItem from "../NavItem/index.vue";
 import { Icon } from "@iconify/vue";
 
-const props = defineProps({ item: Object, level: Number });
+const props = defineProps({ item: Object, level: Number, fatherSize: Number });
 </script>
 
 <template>
@@ -38,8 +38,18 @@ const props = defineProps({ item: Object, level: Number });
       :key="i"
       v-if="item.children"
     >
-      <NavCollapse :item="subitem" v-if="subitem.children" :level="level + 1" />
-      <NavItem :item="subitem" :level="level + 1" v-else></NavItem>
+      <NavCollapse
+        :item="subitem"
+        v-if="subitem.children"
+        :level="level + 1"
+        :father-size="fatherSize"
+      />
+      <NavItem
+        :item="subitem"
+        :level="level + 1"
+        v-else
+        :father-size="fatherSize"
+      ></NavItem>
     </template>
   </v-list-group>
 

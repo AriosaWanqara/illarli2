@@ -26,7 +26,7 @@ const { width: windowsWidth } = useWindowSize();
     :mobile-breakpoint="600"
     class="tw-pl-[1vw] tw-py-[2vh] leftSidebar"
     elevation="0"
-    rail-width="68"
+    rail-width="67"
     :width="windowsWidth * 0.155"
     :class="mdAndDown || layoutState.isRail ? 'mini-asidebar' : ''"
     expand-on-hover
@@ -50,9 +50,15 @@ const { width: windowsWidth } = useWindowSize();
               :item="item"
               :level="0"
               v-else-if="item.children"
+              :father-size="width"
             />
             <!---Single Item-->
-            <NavItem :item="item" v-else class="leftPadding" />
+            <NavItem
+              :item="item"
+              v-else
+              class="leftPadding"
+              :father-size="width"
+            />
             <!---End Single Item-->
           </template>
         </v-list>

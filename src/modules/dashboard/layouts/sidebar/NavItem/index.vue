@@ -1,7 +1,7 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 
-const props = defineProps({ item: Object, level: Number });
+const props = defineProps({ item: Object, level: Number, fatherSize: Number });
 </script>
 
 <template>
@@ -25,7 +25,9 @@ const props = defineProps({ item: Object, level: Number });
     <template v-slot:prepend>
       <Icon :icon="item.icon" height="16" />
     </template>
-    <v-list-item-title>{{ item.title }}</v-list-item-title>
+    <v-list-item-title v-if="fatherSize > 63">{{
+      item.title
+    }}</v-list-item-title>
     <!---If Caption-->
     <v-list-item-subtitle
       v-if="item.subCaption"
