@@ -8,7 +8,7 @@ import NavItem from "./NavItem/index.vue";
 import { PerfectScrollbar } from "vue3-perfect-scrollbar";
 import navigationsItems from "../navigationItems";
 import { shallowRef } from "vue";
-import { useElementSize } from "@vueuse/core";
+import { useElementSize, useWindowSize } from "@vueuse/core";
 import { ref } from "vue";
 import Isotipo from "../Isotipo.vue";
 
@@ -17,6 +17,7 @@ const { layoutState } = useLayoutState();
 const sidebarMenu = shallowRef(navigationsItems);
 const el = ref(null);
 const { width } = useElementSize(el);
+const { width: windowsWidth } = useWindowSize();
 </script>
 
 <template>
@@ -26,7 +27,7 @@ const { width } = useElementSize(el);
     class="tw-pl-[1vw] tw-py-[2vh] leftSidebar"
     elevation="0"
     rail-width="68"
-    width="220"
+    :width="windowsWidth * 0.155"
     :class="mdAndDown || layoutState.isRail ? 'mini-asidebar' : ''"
     expand-on-hover
     color="background"
