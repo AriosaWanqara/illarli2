@@ -32,19 +32,7 @@
 .shadow-none .v-field--variant-solo {
   box-shadow: none !important;
 }
-.v-input--density-compact.v-select .v-input__control {
-  min-height: 2.91px;
-}
-.v-text-field:not(.v-textarea) .v-input__control .v-field {
-  min-height: 2.91rem;
-  height: 2.91rem;
-  & .v-field__field {
-    & .v-field__input {
-      height: 100% !important;
-      min-height: fit-content !important;
-    }
-  }
-}
+
 .min-select.v-input--density-compact.v-select .v-input__control {
   min-height: 20px !important;
   & .v-field__input {
