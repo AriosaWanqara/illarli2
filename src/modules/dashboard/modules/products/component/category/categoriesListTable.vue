@@ -2,7 +2,7 @@
 import imageNotFound from "@/assets/Image-not-found.png";
 import BaseTableComponent from "@/modules/dashboard/components/shared/BaseTableComponent.vue";
 import { Icon } from "@iconify/vue";
-import type { Header } from "vue3-easy-data-table";
+import type { FilterOption, Header } from "vue3-easy-data-table";
 import useCategories from "../../composables/category/useCategories";
 import type { Category } from "../../models/Category";
 
@@ -11,10 +11,11 @@ interface props {
   isModifyLoading: boolean;
   isDeleteLoading: boolean;
   search?: string;
+  filterOptions?: FilterOption[];
 }
 
 const props = defineProps<props>();
-const emits = defineEmits(["delete-handle", "update-handle"]);
+const emits = defineEmits(["delete-handle", "update-handle", "filter-update"]);
 const { categories, isCategoriesLoading, categoriesHasError } = useCategories();
 
 const headers: Header[] = [
@@ -28,6 +29,9 @@ const onUpdateCategory = (category: Category) => {
 const onDeleteCategory = (category: Category) => {
   emits("delete-handle", category);
 };
+const onCategoriesFilterUpdate = (categories: Category[]) => {
+  emits("filter-update", categories);
+};
 </script>
 
 <template>
@@ -37,9 +41,11 @@ const onDeleteCategory = (category: Category) => {
       :item="category"
       :items="categories"
       :search="props.search"
+      :filter-options="props.filterOptions"
       :search-field="['name', 'description']"
       :is-table-loading="isCategoriesLoading"
       :is-error="categoriesHasError"
+      @filter-update="onCategoriesFilterUpdate"
     >
       <template #name="{ item }">
         <div class="tw-flex tw-gap-2">

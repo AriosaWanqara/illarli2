@@ -27,6 +27,7 @@ const hasSlot = (name: string) => {
   return !!slots[name];
 };
 const props = defineProps<props>();
+const emits = defineEmits(["filter-update"]);
 const totalItemsShowed = ref(10);
 const dataTable = ref();
 const currentPageLastIndex = computed(
@@ -60,6 +61,9 @@ const bodyRowClassNameFunction: BodyRowClassNameFunction = (
   }
   return "";
 };
+const updateItems = (items: Object) => {
+  emits("filter-update", items);
+};
 </script>
 
 <template>
@@ -76,6 +80,7 @@ const bodyRowClassNameFunction: BodyRowClassNameFunction = (
     :rows-per-page="totalItemsShowed"
     :filter-options="filterOptions"
     hide-footer
+    @update-page-items="updateItems"
     class="customize-table"
   >
     <template #loading>
