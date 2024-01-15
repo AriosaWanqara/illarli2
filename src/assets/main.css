@@ -1,9 +1,23 @@
 @import './base.css';
+/* 1920 */
 :root{
-    font-size: 14px;
+    font-size: 16px;
 }
-@media (max-width: 1366px) {
+/* 1600 */
+@media ( 1367px <= width <= 1600px) {
+    :root{
+        font-size: 14px;
+    }
+}
+/* 1366 */
+@media (width <= 1366px) {
     :root{
         font-size: 12px;
+    }
+}
+/* 1024 */
+@media (width <= 1024px) {
+    :root{
+        font-size: 10px;
     }
 }
