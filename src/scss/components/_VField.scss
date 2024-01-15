@@ -32,9 +32,9 @@
   }
   color: #2d384d;
 }
-.v-field__input::placeholder {
-  vertical-align: middle !important;
-  font-size: 0.91rem;
+
+.v-field__input {
+  font-size: 0.91rem !important;
 }
 .v-pagination__list {
   justify-content: end !important;
