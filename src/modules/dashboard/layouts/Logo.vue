@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
-
+<!-- tw-pl-2 2xl:tw-pl-1  -->
 <template>
-  <div class="logo tw-pl-2 2xl:tw-pl-1">
+  <div class="logo tw-flex tw-justify-center">
     <RouterLink to="/">
       <img
         src="@/assets/logo/LOGO-ILLARLI-BLANCO.png"
