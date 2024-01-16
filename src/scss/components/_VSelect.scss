@@ -1,3 +1,15 @@
 .v-input--density-compact.v-select .v-input__control {
   min-height: 2.91px;
 }
+.min-select.v-input--density-compact.v-select .v-input__control {
+  min-height: 20px !important;
+  & .v-field__input {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    min-height: 20px !important;
+  }
+  & .v-field {
+    min-height: 20px !important;
+    height: 25px !important;
+  }
+}

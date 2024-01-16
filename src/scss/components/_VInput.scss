@@ -33,14 +33,6 @@
   box-shadow: none !important;
 }
 
-.min-select.v-input--density-compact.v-select .v-input__control {
-  min-height: 20px !important;
-  & .v-field__input {
-    padding-top: 5px !important;
-    padding-bottom: 5px !important;
-    min-height: 20px !important;
-  }
-}
 .v-input--density-comfortable.v-select .v-input__control {
   min-height: 48px;
 }

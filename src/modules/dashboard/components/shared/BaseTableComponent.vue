@@ -117,8 +117,9 @@ const updateItems = (items: Object) => {
     <v-pagination
       :length="maxPaginationNumber"
       density="compact"
-      color="primary"
+      active-color="secondary"
       v-model="page"
+      variant="outlined"
       class="tw-flex-1"
     />
   </div>
