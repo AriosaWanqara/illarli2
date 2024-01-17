@@ -73,6 +73,15 @@ export const invetoryRoutes: RouteRecordRaw[] = [
           import("@dashboard/modules/inventory/view/purchase/AddPurchase.vue"),
       },
       {
+        path: "compras/add2",
+        name: "purchase-add2",
+        meta: { permission: "list characteristics" },
+        component: () =>
+          import(
+            "@dashboard/modules/inventory/view/purchase/CreatePurchase.vue"
+          ),
+      },
+      {
         path: "compras/:id",
         name: "purchase-update",
         meta: { permission: "list characteristics" },

@@ -9,7 +9,7 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      redirect: { name: "dashboard-home" },
+      redirect: { onButtonClick: "dashboard-home" },
     },
     ...authRoutes,
     ...posRoutes,

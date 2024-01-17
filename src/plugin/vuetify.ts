@@ -57,6 +57,12 @@ export default createVuetify({
       color: "primary",
       flat: true,
     },
+    VAutocomplete: {
+      variant: "outlined",
+      density: "compact",
+      color: "primary",
+      flat: true,
+    },
     VTextarea: {
       variant: "outlined",
       density: "comfortable",

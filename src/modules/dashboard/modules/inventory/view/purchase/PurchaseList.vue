@@ -25,6 +25,9 @@ const headers: Header[] = [
           <RouterLink :to="{ name: 'purchase-add' }">
             <VBtn color="success"> agregar </VBtn>
           </RouterLink>
+          <RouterLink :to="{ name: 'purchase-add2' }">
+            <VBtn color="success"> agregar2 </VBtn>
+          </RouterLink>
         </div>
         <PurchasesTableList />
       </div>

@@ -8,7 +8,7 @@ interface props {
   name: string;
 }
 
-const { color, name } = defineProps<props>();
+const { color, name: onButtonClick } = defineProps<props>();
 const stores = usethemeCustomizer();
 
 const themeName = computed(() => stores.theme.replace("DARK_", ""));
