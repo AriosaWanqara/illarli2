@@ -3,6 +3,7 @@ import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { PerfectScrollbar } from "vue3-perfect-scrollbar";
+import ProductTypeCard from "../component/product/ProductTypeCard.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -64,19 +65,12 @@ const navegate = (to: string) => {
     <VRow>
       <VCol cols="12">
         <PerfectScrollbar class="card-container">
-          <VCard
-            variant="outlined"
-            class="text-center card-item"
+          <ProductTypeCard
             v-for="item in ProductType"
-            :class="{ 'item-selected': item.to == route.name }"
-            @click="navegate(item.to)"
-          >
-            <v-card-item>
-              <div class="tw-text-center">
-                {{ item.label }}
-              </div>
-            </v-card-item>
-          </VCard>
+            :img="item.icon"
+            :to="item.to"
+            :label="item.label"
+          />
         </PerfectScrollbar>
       </VCol>
       <VCol cols="12">
