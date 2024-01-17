@@ -85,3 +85,12 @@ export interface Tax {
   value: number;
   percentage: string;
 }
+
+export interface baseProduct {
+  id: string;
+  name: string;
+  description: string;
+  categoriesId: string[];
+  brand_id: string;
+  image_file: string;
+}

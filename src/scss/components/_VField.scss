@@ -19,6 +19,9 @@
   opacity: 1;
 }
 
+.v-input--error .v-field--variant-solo-filled {
+  border-color: rgba(var(--v-theme-error)) !important;
+}
 .v-field--variant-solo-filled {
   border: 1px solid;
   overflow: hidden !important;

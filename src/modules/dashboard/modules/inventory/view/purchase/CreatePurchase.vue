@@ -2,6 +2,8 @@
 import ButtonFileUploader from "@/modules/dashboard/components/shared/ButtonFileUploader.vue";
 import ViewScaffold from "@/modules/dashboard/components/shared/ViewScaffold.vue";
 import { ref } from "vue";
+import ProductGeneralInfo from "../../../products/component/product/create/ProductGeneralInfo.vue";
+import type { ComboProduct } from "../../../products/models/products/ComboProduct";
 
 const fileName = ref();
 
@@ -9,6 +11,9 @@ const onFileChanged = (e: any) => {
   console.log(e);
   fileName.value = e.name;
 };
+const combo = ref<ComboProduct>({
+  categoriesId: [] as string[],
+} as ComboProduct);
 </script>
 
 <template>
@@ -30,7 +35,9 @@ const onFileChanged = (e: any) => {
         />
       </div>
     </template>
-    <template #default> </template>
+    <template #default>
+      <ProductGeneralInfo :product="combo" />
+    </template>
   </ViewScaffold>
 </template>
 

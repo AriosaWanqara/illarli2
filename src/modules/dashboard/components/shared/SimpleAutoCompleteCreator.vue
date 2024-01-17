@@ -14,6 +14,7 @@ interface props {
     | "underlined"
     | "filled";
   isFlat?: boolean;
+  isMultiple?: boolean;
   items: Object[];
   isLoading: boolean;
   itemTitle: string;
@@ -70,6 +71,7 @@ const onItemCreate = () => {
 const onKeyPress = (params: any) => {
   if (params.keyCode == 13) {
     if (canCreateWithEnter.value) {
+      el.value?.blur();
       emits("not-exist-item-create", search.value);
     } else {
       if (props.itemTitle != "") {
@@ -104,11 +106,15 @@ const onKeyPress = (params: any) => {
     @update:modelValue="handleValueChange"
     @keydown="onKeyPress"
     v-model="value"
+    :readonly="props.isLoading"
     :placeholder="props.placeholder"
     :color="props.color"
     :variant="props.variant"
     :flat="props.isFlat"
+    :multiple="props.isMultiple"
     :items="props.items"
+    :chips="props.isMultiple"
+    :clearable="true"
     :loading="props.isLoading"
     :item-title="props.itemTitle"
     :item-value="props.itemValue"

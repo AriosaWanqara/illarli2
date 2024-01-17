@@ -1,17 +1,14 @@
-export interface ComboProduct {
-  id: string;
-  name: string;
+import type { baseProduct } from "./Product";
+
+export interface ComboProduct extends baseProduct {
   sku: string;
   upc: string;
   mmu: string;
-  description: string;
   price: number;
   unit_id: string;
   stock_min: number;
   stock_max: number;
   product_type_id: string;
-  categoriesId: string[];
-  brand_id: string;
   warehouse_id: string;
   taxes: string[];
   products: ComboProductChild[];
