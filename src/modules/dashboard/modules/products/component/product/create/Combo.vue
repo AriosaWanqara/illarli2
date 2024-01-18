@@ -15,6 +15,9 @@ import type { Product } from "../../../models/products/Product";
 import useBrands from "../../../composables/brand/useBrands";
 import useCategories from "../../../composables/category/useCategories";
 import useComboPoductRules from "../../../composables/product/combo/useComboPoductRules";
+import { usethemeCustomizer } from "@/stores/themeCustomizer";
+
+const store = usethemeCustomizer();
 
 interface props {
   productProps?: Product;
@@ -148,63 +151,73 @@ function setChild() {
 }
 </script>
 <template>
-  <v-row class="mt-2">
-    <VCol cols="6" class="py-1">
-      <VTextField label="name" v-model="product.name" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VTextField label="sku" v-model="product.sku" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VTextField label="unit_id**" v-model="product.unit_id" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VTextField label="price" v-model="product.price" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VSelect
-        :loading="isStandarProductsLoading"
-        :items="standarProductsDropdown"
-        item-title="label"
-        multiple
-        item-value="value"
-        label="child"
-        v-model="selectedChilds"
-      />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VSelect
-        label="categories"
-        multiple
-        v-model="product.categoriesId"
-        :items="categoriesDropdown"
-        :loading="isCategoriesLoading"
-        item-title="label"
-        item-value="value"
-      />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VSelect
-        label="Brand"
-        v-model="product.brand_id"
-        :items="brandsDropdown"
-        item-title="label"
-        item-value="value"
-        :loading="isBrandsLoading"
-      />
-    </VCol>
-    <v-col cols="12">
-      <v-btn
-        color="primary"
-        @click="onComboProductSubmit"
-        :loading="
-          saveComboProductMutation.isPending.value ||
-          updateComboProductMutation.isPending.value
-        "
-        >crear</v-btn
-      >
-    </v-col>
-  </v-row>
+  <VCard
+    class="py-0 px-0"
+    :class="store.themeConfig.cardHasShadow ? 'box-card' : ''"
+    variant="flat"
+  >
+    <VCardItem class="py-0 px-0">
+      <div class="tw-py-7 tw-px-5">
+        <v-row class="mt-2">
+          <VCol cols="6" class="py-1">
+            <VTextField label="name" v-model="product.name" />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VTextField label="sku" v-model="product.sku" />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VTextField label="unit_id**" v-model="product.unit_id" />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VTextField label="price" v-model="product.price" />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VSelect
+              :loading="isStandarProductsLoading"
+              :items="standarProductsDropdown"
+              item-title="label"
+              multiple
+              item-value="value"
+              label="child"
+              v-model="selectedChilds"
+            />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VSelect
+              label="categories"
+              multiple
+              v-model="product.categoriesId"
+              :items="categoriesDropdown"
+              :loading="isCategoriesLoading"
+              item-title="label"
+              item-value="value"
+            />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VSelect
+              label="Brand"
+              v-model="product.brand_id"
+              :items="brandsDropdown"
+              item-title="label"
+              item-value="value"
+              :loading="isBrandsLoading"
+            />
+          </VCol>
+          <v-col cols="12">
+            <v-btn
+              color="primary"
+              @click="onComboProductSubmit"
+              :loading="
+                saveComboProductMutation.isPending.value ||
+                updateComboProductMutation.isPending.value
+              "
+              >crear</v-btn
+            >
+          </v-col>
+        </v-row>
+      </div>
+    </VCardItem>
+  </VCard>
 </template>
 
 <style></style>

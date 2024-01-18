@@ -1,0 +1,142 @@
+<script setup lang="ts">
+import FileUpload from "@/modules/dashboard/components/shared/FileUpload.vue";
+import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
+import { smallFormFileUploadTempla } from "@/modules/dashboard/const/FileUploadTemplate";
+import product from "@dashboard/assets/images/product-creat.png";
+import ProductTypeCard from "../component/product/ProductTypeCard.vue";
+import { ref } from "vue";
+import { usethemeCustomizer } from "@/stores/themeCustomizer";
+import standar from "@dashboard/assets/images/ic_standar.png";
+import combo from "@dashboard/assets/images/ic_combo.png";
+import subproduct from "@dashboard/assets/images/ic_subproduct.png";
+
+const myFiles: any[] = [];
+
+const store = usethemeCustomizer();
+
+const ProductType = ref([
+  {
+    label: "Estandar",
+    to: "product-add-standar",
+    icon: standar,
+  },
+  // {
+  //     label: 'Serie',
+  //     to: 'product-add-serie',
+  //     icon: ''
+  // },
+  {
+    label: "Combo",
+    to: "product-add-combo",
+    icon: combo,
+  },
+  // {
+  //     label: 'Tallas y Colores',
+  //     to: 'product-add-size-color',
+  //     icon: ''
+  // },
+  {
+    label: "Subproducto",
+    to: "product-add-subproduct",
+    icon: subproduct,
+  },
+  // {
+  //     label: 'Receta',
+  //     to: 'product-add-recipe',
+  //     icon: ''
+  // },
+  // {
+  //     label: 'Lote',
+  //     to: 'product-add-lote',
+  //     icon: ''
+  // },
+  // {
+  //     label: 'Servicio',
+  //     to: 'product-add-service',
+  //     icon: ''
+  // }
+]);
+</script>
+
+<template>
+  <VCard
+    class="py-0 px-0 border-r-20"
+    :class="store.themeConfig.cardHasShadow ? 'box-card' : ''"
+    variant="flat"
+  >
+    <VCardTitle class="py-0 px-0 overflow-visible">
+      <div
+        class="tw-relative bg-secondary tw-h-[60px] tw-flex tw-overflow-visible tw-justify-center"
+      >
+        <div
+          class="tw-absolute tw-bg-white tw-top-4 tw-overflow-hidden tw-rounded-full tw-w-[82px] border-secondary tw-h-[82px] tw-flex tw-justify-center tw-items-center"
+        >
+          <img :src="product" alt="" />
+        </div>
+      </div>
+    </VCardTitle>
+    <VCardItem class="px-0 tw-mt-4">
+      <div class="tw-px-5">
+        <head
+          class="tw-w-full tw-flex tw-justify-center tw-items-center tw-flex-col"
+        >
+          <h2 class="title-1">
+            <span class="title-1 tw-font-semibold">Creando Producto:</span>
+            Iphon 13 pro
+          </h2>
+          <p class="tw-text-sm tw-text-gray-400">Codigo: asdimo1920</p>
+        </head>
+        <FormSeccion title="Descripcion" class="tw-mt-2">
+          <VRow>
+            <VCol cols="12" class="py-0">
+              <div class="tw-flex tw-flex-col tw-gap-2">
+                <label for="" class="tw-text-gray-400 tw-uppercase">
+                  nombre del producto<span class="tw-text-red-300">*</span>
+                </label>
+                <VTextField
+                  variant="solo-filled"
+                  placeholder="Ingrese el nombre del producto"
+                />
+              </div>
+            </VCol>
+            <VCol cols="12" class="py-0">
+              <div class="tw-flex tw-flex-col tw-gap-2">
+                <label for="" class="tw-text-gray-400 tw-uppercase"
+                  >IMAGEN del producto</label
+                >
+                <FileUpload
+                  :aspect-fatio="1"
+                  :image-preview-height="100"
+                  :label-template="smallFormFileUploadTempla"
+                  :is-corp-circular="false"
+                  :img-name="''"
+                  :files="myFiles"
+                />
+              </div>
+            </VCol>
+          </VRow>
+        </FormSeccion>
+        <section class="tw-flex tw-flex-col tw-gap-2 tw-mt-3 tw-px-2">
+          <h2 class="title-1 tw-font-semibold">Tipo de producto</h2>
+          <div class="tw-flex tw-flex-wrap tw-gap-x-4 tw-gap-y-2">
+            <ProductTypeCard
+              v-for="item in ProductType"
+              :img="item.icon"
+              :to="item.to"
+              :label="item.label"
+            />
+          </div>
+        </section>
+      </div>
+    </VCardItem>
+  </VCard>
+</template>
+
+<style scoped>
+.border-r-20 {
+  border-radius: 20px !important;
+}
+.overflow-visible {
+  overflow: visible !important;
+}
+</style>

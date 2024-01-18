@@ -12,11 +12,12 @@ import { useRouter } from "vue-router";
 import type { Product } from "../../../models/products/Product";
 import useCategories from "../../../composables/category/useCategories";
 import useBrands from "../../../composables/brand/useBrands";
+import { usethemeCustomizer } from "@/stores/themeCustomizer";
 
 interface props {
   productProps?: Product;
 }
-
+const store = usethemeCustomizer();
 const { isStandarProductsLoading, standarProductsDropdown } =
   useStandarProducts();
 const { subproductRules } = useSubproductRules();
@@ -96,73 +97,83 @@ watch(updateSubproductMutation.isSuccess, () => {
 </script>
 
 <template>
-  <VRow class="mt-2">
-    <VCol cols="6" class="py-1">
-      <VTextField
-        label="name"
-        v-model="product.name"
-        :error-messages="
-          productValidator.name.$errors.map((x) => x.$message.toString())
-        "
-      />
-    </VCol>
+  <VCard
+    class="py-0 px-0"
+    :class="store.themeConfig.cardHasShadow ? 'box-card' : ''"
+    variant="flat"
+  >
+    <VCardItem class="py-0 px-0">
+      <div class="tw-py-7 tw-px-5">
+        <VRow class="mt-2">
+          <VCol cols="6" class="py-1">
+            <VTextField
+              label="name"
+              v-model="product.name"
+              :error-messages="
+                productValidator.name.$errors.map((x) => x.$message.toString())
+              "
+            />
+          </VCol>
 
-    <VCol cols="6" class="py-1">
-      <VTextField label="unit_id**" v-model="product.unit_id" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VTextField label="price" v-model="product.price" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VTextField label="amount" v-model="product.amount" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VTextField label="sku" v-model="product.sku" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VSelect
-        :disable="props.productProps"
-        :loading="isStandarProductsLoading"
-        :items="standarProductsDropdown"
-        item-title="label"
-        item-value="value"
-        label="parent"
-        v-model="product.parent_product_id"
-      />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VSelect
-        label="categories"
-        multiple
-        v-model="product.categoriesId"
-        :items="categoriesDropdown"
-        :loading="isCategoriesLoading"
-        item-title="label"
-        item-value="value"
-      />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VSelect
-        label="Brand"
-        v-model="product.brand_id"
-        :items="brandsDropdown"
-        item-title="label"
-        item-value="value"
-        :loading="isBrandsLoading"
-      />
-    </VCol>
-    <VCol cols="12">
-      <VBtn
-        color="primary"
-        @click="onSubproductSubmit"
-        :loading="
-          saveSubproductMutation.isPending.value ||
-          updateSubproductMutation.isPending.value
-        "
-        >crear</VBtn
-      >
-    </VCol>
-  </VRow>
+          <VCol cols="6" class="py-1">
+            <VTextField label="unit_id**" v-model="product.unit_id" />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VTextField label="price" v-model="product.price" />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VTextField label="amount" v-model="product.amount" />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VTextField label="sku" v-model="product.sku" />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VSelect
+              :disable="props.productProps"
+              :loading="isStandarProductsLoading"
+              :items="standarProductsDropdown"
+              item-title="label"
+              item-value="value"
+              label="parent"
+              v-model="product.parent_product_id"
+            />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VSelect
+              label="categories"
+              multiple
+              v-model="product.categoriesId"
+              :items="categoriesDropdown"
+              :loading="isCategoriesLoading"
+              item-title="label"
+              item-value="value"
+            />
+          </VCol>
+          <VCol cols="6" class="py-1">
+            <VSelect
+              label="Brand"
+              v-model="product.brand_id"
+              :items="brandsDropdown"
+              item-title="label"
+              item-value="value"
+              :loading="isBrandsLoading"
+            />
+          </VCol>
+          <VCol cols="12">
+            <VBtn
+              color="primary"
+              @click="onSubproductSubmit"
+              :loading="
+                saveSubproductMutation.isPending.value ||
+                updateSubproductMutation.isPending.value
+              "
+              >crear</VBtn
+            >
+          </VCol>
+        </VRow>
+      </div>
+    </VCardItem>
+  </VCard>
 </template>
 
 <style scoped></style>

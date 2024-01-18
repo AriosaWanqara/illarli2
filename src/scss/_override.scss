@@ -54,7 +54,13 @@ html {
 .text-bg-primary {
   color: rgb(var(--v-theme-primary));
 }
-
+.bg-secondary {
+  background-color: rgba(var(--v-theme-secondary)) !important;
+}
+.border-secondary {
+  border: 1px solid;
+  border-color: rgba(var(--v-theme-secondary)) !important;
+}
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

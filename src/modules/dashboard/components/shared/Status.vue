@@ -10,7 +10,7 @@ const { message, type } = defineProps<props>();
 </script>
 
 <template>
-  <div>
+  <div class="tw-w-min">
     <p :class="type" class="tw-text-xs">{{ message }}</p>
   </div>
 </template>

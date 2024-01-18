@@ -10,10 +10,13 @@ import { productTypeEnum } from "../../../const/productTypeEnum";
 import type { Product } from "../../../models/products/Product";
 import useCategories from "../../../composables/category/useCategories";
 import useBrands from "../../../composables/brand/useBrands";
+import { usethemeCustomizer } from "@/stores/themeCustomizer";
+import ProductGeneralInfo from "./ProductGeneralInfo.vue";
 
 interface props {
   productProps?: Product;
 }
+const store = usethemeCustomizer();
 
 const { standarPoductRules } = useStandarPoductRules();
 const { saveStandarProductMutation, updateStandarProductMutation } =
@@ -87,53 +90,65 @@ watch(updateStandarProductMutation.isSuccess, () => {
 });
 </script>
 <template>
-  <VRow class="mt-2">
-    <VCol cols="6" class="py-1">
-      <VTextField label="name" v-model="product.name" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VTextField label="sku" v-model="product.sku" />
-    </VCol>
-
-    <VCol cols="6" class="py-1">
-      <VTextField label="unit_id**" v-model="product.unit_id" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VTextField label="price" v-model="product.price" />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VSelect
-        label="categories"
-        multiple
-        v-model="product.categoriesId"
-        :items="categoriesDropdown"
-        :loading="isCategoriesLoading"
-        item-title="label"
-        item-value="value"
-      />
-    </VCol>
-    <VCol cols="6" class="py-1">
-      <VSelect
-        label="Brand"
-        v-model="product.brand_id"
-        :items="brandsDropdown"
-        item-title="label"
-        item-value="value"
-        :loading="isBrandsLoading"
-      />
-    </VCol>
-    <VCol cols="12">
-      <VBtn
-        color="primary"
-        @click="onStandarProductSubmit"
-        :loading="
-          saveStandarProductMutation.isPending.value ||
-          updateStandarProductMutation.isPending.value
-        "
-        >crear</VBtn
-      >
-    </VCol>
-  </VRow>
+  <VCard
+    class="py-0 px-0"
+    :class="store.themeConfig.cardHasShadow ? 'box-card' : ''"
+    variant="flat"
+  >
+    <VCardItem class="py-0 px-0">
+      <div class="tw-py-7 tw-px-5">
+        <ProductGeneralInfo :product="product" />
+      </div>
+    </VCardItem>
+  </VCard>
 </template>
 
 <style scoped></style>
+
+<!-- <VRow class="mt-2">
+  <VCol cols="6" class="py-1">
+    <VTextField label="name" v-model="product.name" />
+  </VCol>
+  <VCol cols="6" class="py-1">
+    <VTextField label="sku" v-model="product.sku" />
+  </VCol>
+
+  <VCol cols="6" class="py-1">
+    <VTextField label="unit_id**" v-model="product.unit_id" />
+  </VCol>
+  <VCol cols="6" class="py-1">
+    <VTextField label="price" v-model="product.price" />
+  </VCol>
+  <VCol cols="6" class="py-1">
+    <VSelect
+      label="categories"
+      multiple
+      v-model="product.categoriesId"
+      :items="categoriesDropdown"
+      :loading="isCategoriesLoading"
+      item-title="label"
+      item-value="value"
+    />
+  </VCol>
+  <VCol cols="6" class="py-1">
+    <VSelect
+      label="Brand"
+      v-model="product.brand_id"
+      :items="brandsDropdown"
+      item-title="label"
+      item-value="value"
+      :loading="isBrandsLoading"
+    />
+  </VCol>
+  <VCol cols="12">
+    <VBtn
+      color="primary"
+      @click="onStandarProductSubmit"
+      :loading="
+        saveStandarProductMutation.isPending.value ||
+        updateStandarProductMutation.isPending.value
+      "
+      >crear</VBtn
+    >
+  </VCol>
+</VRow> -->

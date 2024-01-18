@@ -21,7 +21,7 @@ const BLUE_THEME: ThemeTypes = {
     lightwarning: "#FEF5E5",
     textPrimary: "#2A3547",
     textSecondary: "#2A3547",
-    borderColor: "#DEDEDE",
+    borderColor: "#EBF0ED",
     inputBorder: "#DEDEDE",
     containerBg: "#FAFAFA",
     background: "#EBEBEB",

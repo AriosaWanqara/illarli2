@@ -28,7 +28,7 @@ const onRedirect = () => {
       <div
         class="tw-flex tw-flex-col tw-gap-2 tw-py-3 tw-items-center tw-cursor-pointer"
       >
-        <img src="/favicon.png" alt="" height="40" width="40" />
+        <img :src="props.img" alt="" height="40" width="40" />
         <p
           class="tw-uppercase tw-font-semibold text-bg-primary tw-text-[0.83rem]"
         >

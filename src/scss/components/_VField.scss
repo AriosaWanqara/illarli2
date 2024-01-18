@@ -48,3 +48,21 @@
     }
   }
 }
+
+.v-field__outline {
+  --v-field-border-opacity: 1 !important;
+  & * {
+    border-color: rgba(var(--v-theme-borderColor)) !important;
+  }
+  &:focus-within {
+    border-color: rgba(var(--v-theme-primary)) !important;
+  }
+}
+
+.v-input--density-compact
+  .v-field--variant-outlined:focus-within
+  .v-field__outline {
+  & * {
+    border-color: rgba(var(--v-theme-primary)) !important;
+  }
+}

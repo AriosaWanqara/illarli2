@@ -32,7 +32,7 @@ export const ProductRouter: RouteRecordRaw[] = [
   {
     path: "add",
     name: "product-add",
-    redirect: { onButtonClick: "product-add-standar" },
+    redirect: { name: "product-add-standar" },
     meta: { name: "Agregar Producto" },
     component: () =>
       import("@dashboard/modules/products/layouts/AddProductLayout.vue"),

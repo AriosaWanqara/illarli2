@@ -21,19 +21,20 @@ interface props {
   search?: string;
   filterOptions?: FilterOption[];
   item?: Object;
+  itemsSelected?: Object;
 }
 const slots = useSlots();
 const hasSlot = (name: string) => {
   return !!slots[name];
 };
 const props = defineProps<props>();
-const emits = defineEmits(["filter-update"]);
+const emits = defineEmits(["filter-update", "item-selected-update"]);
 const totalItemsShowed = ref(10);
 const dataTable = ref();
-const currentPageLastIndex = computed(
-  () => dataTable.value?.currentPageLastIndex
-);
-const clientItemsLength = computed(() => dataTable.value?.clientItemsLength);
+const selectedItem = computed({
+  get: () => props.itemsSelected,
+  set: (val) => emits("item-selected-update", val),
+});
 const maxPaginationNumber = computed(
   () => dataTable.value?.maxPaginationNumber
 );
@@ -69,6 +70,7 @@ const updateItems = (items: Object) => {
 <template>
   <EasyDataTable
     :headers="headers"
+    v-model:items-selected="selectedItem"
     :theme-color="getPrimaryColor()"
     :items="props.items"
     :loading="props.isTableLoading"
