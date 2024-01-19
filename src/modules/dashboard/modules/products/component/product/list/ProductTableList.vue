@@ -2,7 +2,7 @@
 import BaseTableComponent from "@/modules/dashboard/components/shared/BaseTableComponent.vue";
 import imageNotFound from "@/assets/Image-not-found.png";
 import { Icon } from "@iconify/vue";
-import type { Header } from "vue3-easy-data-table";
+import type { FilterOption, Header } from "vue3-easy-data-table";
 import useProducts from "../../../composables/product/useProducts";
 import type { Product } from "../../../models/products/Product";
 import Status from "@/modules/dashboard/components/shared/Status.vue";
@@ -14,10 +14,16 @@ interface props {
   isUpdateLoading: boolean;
   search?: string;
   product?: Product;
+  filterOptions?: FilterOption[];
 }
 
 const props = defineProps<props>();
-const emits = defineEmits(["product-update", "product-delete"]);
+const emits = defineEmits([
+  "product-update",
+  "product-delete",
+  "products-selected",
+  "products-filters",
+]);
 
 const { isProductsLoading, products, productsHasError } = useProducts();
 const itemsSelected = ref([]);
@@ -40,6 +46,9 @@ const onSelectProduct = (product: Product) => {
 const onItemSelected = (params: any) => {
   itemsSelected.value = params;
 };
+const onItemFilter = (params: any) => {
+  emits("products-filters", params);
+};
 </script>
 
 <template>
@@ -51,7 +60,9 @@ const onItemSelected = (params: any) => {
     :items="products"
     :is-error="productsHasError"
     :items-selected="itemsSelected"
+    :filter-options="props.filterOptions"
     @item-selected-update="onItemSelected"
+    @filter-update="onItemFilter"
   >
     <template #name="{ item }">
       <div class="tw-flex tw-gap-2 tw-items-center">

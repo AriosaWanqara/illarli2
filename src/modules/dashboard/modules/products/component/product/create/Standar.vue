@@ -98,6 +98,10 @@ watch(updateStandarProductMutation.isSuccess, () => {
     <VCardItem class="py-0 px-0">
       <div class="tw-py-7 tw-px-5">
         <ProductGeneralInfo :product="product" />
+        <div class="tw-flex tw-justify-end tw-gap-2 tw-mt-2">
+          <VBtn @click="router.push({ name: 'product-list' })">cancelar</VBtn>
+          <VBtn prepend-icon="mdi-plus">Añadir producto</VBtn>
+        </div>
       </div>
     </VCardItem>
   </VCard>

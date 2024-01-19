@@ -74,7 +74,6 @@ const updateItems = (items: Object) => {
     :theme-color="getPrimaryColor()"
     :items="props.items"
     :loading="props.isTableLoading"
-    alternating
     ref="dataTable"
     :body-row-class-name="bodyRowClassNameFunction"
     :search-field="searchField"

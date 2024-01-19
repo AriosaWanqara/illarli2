@@ -8,10 +8,6 @@ import "@dashboard/scss/style.scss";
 
 <template>
   <div class="tw-relative tw-h-full">
-    <Customizer />
-    <SideBar />
-    <MobileSideBar />
-    <TopBar class="md:tw-pt-[2vh] tw-pt-0" />
     <VMain class="tw-h-full">
       <router-view
         v-slot="{ Component }"
@@ -22,6 +18,10 @@ import "@dashboard/scss/style.scss";
         </transition>
       </router-view>
     </VMain>
+    <Customizer />
+    <SideBar />
+    <MobileSideBar />
+    <TopBar class="md:tw-pt-[2vh] tw-pt-0" />
   </div>
 </template>
 
