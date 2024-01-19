@@ -12,6 +12,7 @@ import useCategories from "../../../composables/category/useCategories";
 import useBrands from "../../../composables/brand/useBrands";
 import { usethemeCustomizer } from "@/stores/themeCustomizer";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
+import useCreateProduct from "../../../composables/product/useCreateProduct";
 
 interface props {
   productProps?: Product;
@@ -19,42 +20,56 @@ interface props {
 const store = usethemeCustomizer();
 
 const { standarPoductRules } = useStandarPoductRules();
+const { product, nameError } = useCreateProduct();
 const { saveStandarProductMutation, updateStandarProductMutation } =
   useStandarPoductMutations();
 const { categoriesDropdown, isCategoriesLoading } = useCategories();
 const { brandsDropdown, isBrandsLoading } = useBrands();
 const props = defineProps<props>();
-const product = ref<StandarProduct>({
+const standarProduct = ref<StandarProduct>({
   product_type_id: productTypeEnum.STANDAR,
   taxes: [
     // '9aaede03-d462-412b-b007-317fef91cf11'
     "9aaede03-d617-47bc-b264-74d1e0519177",
   ],
 } as StandarProduct);
-const productValidator = useVuelidate(standarPoductRules, product);
+const productValidator = useVuelidate(standarPoductRules, standarProduct);
 const router = useRouter();
 
 // 9aaede03-d617-47bc-b264-74d1e0519177 12
 // 9aaede03-d462-412b-b007-317fef91cf11 0
 
 if (props.productProps) {
-  product.value.id = props.productProps.id;
   product.value.name = props.productProps.name;
   product.value.sku = props.productProps.sku;
-  product.value.price = parseFloat(props.productProps.price);
-  product.value.unit_id = props.productProps.unit_id.toString();
-  product.value.brand_id = props.productProps.brand_id;
-  product.value.categoriesId = props.productProps.categories.map((x) => x.id);
+  standarProduct.value.id = props.productProps.id;
+  standarProduct.value.name = props.productProps.name;
+  standarProduct.value.sku = props.productProps.sku;
+  standarProduct.value.price = parseFloat(props.productProps.price);
+  standarProduct.value.unit_id = props.productProps.unit_id.toString();
+  standarProduct.value.brand_id = props.productProps.brand_id;
+  standarProduct.value.categoriesId = props.productProps.categories.map(
+    (x) => x.id
+  );
 }
 
+watch(
+  () => standarProduct.value.sku,
+  () => {
+    product.value.sku = standarProduct.value.sku;
+  }
+);
+
 const onStandarProductSubmit = () => {
+  standarProduct.value.name = product.value.name;
+  standarProduct.value.unit_id = "1";
+  standarProduct.value.price = 4;
   productValidator.value.$validate();
   if (!productValidator.value.$error) {
-    product.value.unit_id = "1";
     if (props.productProps) {
-      updateStandarProductMutation.mutate(product.value);
+      updateStandarProductMutation.mutate(standarProduct.value);
     } else {
-      saveStandarProductMutation.mutate(product.value);
+      saveStandarProductMutation.mutate(standarProduct.value);
     }
   } else {
     alert(
@@ -97,10 +112,25 @@ watch(updateStandarProductMutation.isSuccess, () => {
   >
     <VCardItem class="py-0 px-0">
       <div class="tw-py-7 tw-px-5">
-        <ProductGeneralInfo :product="product" />
+        <ProductGeneralInfo :product="standarProduct" />
         <div class="tw-flex tw-justify-end tw-gap-2 tw-mt-2">
-          <VBtn @click="router.push({ name: 'product-list' })">cancelar</VBtn>
-          <VBtn prepend-icon="mdi-plus">Añadir producto</VBtn>
+          <VBtn
+            @click="router.push({ name: 'product-list' })"
+            variant="outlined"
+            color="borderColor"
+          >
+            <p class="textPrimary">cancelar</p>
+          </VBtn>
+          <VBtn
+            prepend-icon="mdi-plus"
+            color="success"
+            :loading="
+              saveStandarProductMutation.isPending.value ||
+              updateStandarProductMutation.isPending.value
+            "
+            @click="onStandarProductSubmit"
+            >Añadir producto</VBtn
+          >
         </div>
       </div>
     </VCardItem>
@@ -118,10 +148,10 @@ watch(updateStandarProductMutation.isSuccess, () => {
   </VCol>
 
   <VCol cols="6" class="py-1">
-    <VTextField label="unit_id**" v-model="product.unit_id" />
+    <VTextField label="unit_id**" v-model="product.unit_id" /> /// falta este
   </VCol>
   <VCol cols="6" class="py-1">
-    <VTextField label="price" v-model="product.price" />
+    <VTextField label="price" v-model="product.price" /> /// falta este
   </VCol>
   <VCol cols="6" class="py-1">
     <VSelect

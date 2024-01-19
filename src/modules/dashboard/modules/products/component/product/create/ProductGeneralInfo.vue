@@ -37,7 +37,11 @@ const onCategoryAutocompleteModelUpdate = (params: any) => {
 
 const onBrandAutocompleteModelUpdate = (params: any) => {
   if (params) {
-    props.product.brand_id = params.id;
+    if (params.id) {
+      props.product.brand_id = params.id;
+    } else {
+      props.product.brand_id = params;
+    }
   } else {
     props.product.brand_id = params;
   }
@@ -99,7 +103,7 @@ watch(saveBrandMutation.isError, () => {
             variant="solo-filled"
             flat
             placeholder="Ingrese el codigo del producto"
-            v-model="props.product.name"
+            v-model="props.product.sku"
           />
         </div>
       </VCol>

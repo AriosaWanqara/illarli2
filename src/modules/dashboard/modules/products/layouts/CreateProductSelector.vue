@@ -2,17 +2,19 @@
 import FileUpload from "@/modules/dashboard/components/shared/FileUpload.vue";
 import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
 import { smallFormFileUploadTempla } from "@/modules/dashboard/const/FileUploadTemplate";
-import product from "@dashboard/assets/images/product-creat.png";
+import productBanerImg from "@dashboard/assets/images/product-creat.png";
 import ProductTypeCard from "../component/product/ProductTypeCard.vue";
 import { ref } from "vue";
 import { usethemeCustomizer } from "@/stores/themeCustomizer";
 import standar from "@dashboard/assets/images/ic_standar.png";
 import combo from "@dashboard/assets/images/ic_combo.png";
 import subproduct from "@dashboard/assets/images/ic_subproduct.png";
+import useCreateProduct from "../composables/product/useCreateProduct";
 
 const myFiles: any[] = [];
 
 const store = usethemeCustomizer();
+const { nameError, product } = useCreateProduct();
 
 const ProductType = ref([
   {
@@ -71,7 +73,7 @@ const ProductType = ref([
         <div
           class="tw-absolute tw-bg-white tw-top-4 tw-overflow-hidden tw-rounded-full tw-w-[82px] border-secondary tw-h-[82px] tw-flex tw-justify-center tw-items-center"
         >
-          <img :src="product" alt="" />
+          <img :src="productBanerImg" alt="" />
         </div>
       </div>
     </VCardTitle>
@@ -82,9 +84,9 @@ const ProductType = ref([
         >
           <h2 class="title-1">
             <span class="title-1 tw-font-semibold">Creando Producto:</span>
-            Iphon 13 pro
+            {{ product.name }}
           </h2>
-          <p class="tw-text-sm tw-text-gray-400">Codigo: asdimo1920</p>
+          <p class="tw-text-sm tw-text-gray-400">Codigo: {{ product.sku }}</p>
         </head>
         <FormSeccion title="Descripcion" class="tw-mt-2">
           <VRow>
@@ -95,7 +97,9 @@ const ProductType = ref([
                 </label>
                 <VTextField
                   variant="solo-filled"
+                  v-model="product.name"
                   placeholder="Ingrese el nombre del producto"
+                  :error-messages="nameError"
                 />
               </div>
             </VCol>

@@ -11,6 +11,7 @@ import type { Product } from "../../models/products/Product";
 import { Icon } from "@iconify/vue";
 import type { FilterOption } from "vue3-easy-data-table";
 import ProductFilternavegationDrawer from "../../component/product/ProductFilternavegationDrawer.vue";
+import exportFromJSON from "export-from-json";
 
 const { products, activeProduct, inactiveProduct, totalProduct } =
   useProducts();
@@ -18,7 +19,6 @@ const { deleteProductMutation } = useProductMutations();
 const router = useRouter();
 const showConfirmModal = ref(false);
 const selectedProduct = ref<Product>({} as Product);
-// const isTable = ref(true);
 const search = ref();
 const statusCriteria = ref("all");
 const openFilter = ref(false);
@@ -83,6 +83,19 @@ const onProductStateSetFilter = (filter: any) => {
 const onFilterReturn = (params: any[]) => {
   newFilters.value = params;
 };
+
+const exportFile = () => {
+  if (selectedItems.value.length > 0) {
+    const data = [...selectedItems.value];
+    const fileName = "download";
+    const exportType = exportFromJSON.types.xls;
+    exportFromJSON({
+      data,
+      fileName,
+      exportType,
+    });
+  }
+};
 </script>
 <template>
   <ViewScaffold>
@@ -117,6 +130,7 @@ const onFilterReturn = (params: any[]) => {
               variant="elevated"
               flat
               prepend-icon="mdi-download"
+              @click="exportFile"
             >
               Exportar</VBtn
             >
@@ -150,30 +164,6 @@ const onFilterReturn = (params: any[]) => {
             </p>
           </div>
           <div class="tw-flex tw-gap-5">
-            <!-- <VBtn
-              variant="outlined"
-              color="borderColor"
-              class="px-0"
-              @click="isTable = false"
-            >
-              <Icon
-                icon="bi:grid"
-                :class="!isTable ? 'tw-text-[#036666]' : 'tw-text-black'"
-                height="16"
-              />
-            </VBtn>
-            <VBtn
-              variant="outlined"
-              color="borderColor"
-              class="px-0"
-              @click="isTable = true"
-            >
-              <Icon
-                icon="material-symbols:format-list-bulleted"
-                :class="isTable ? 'tw-text-[#036666]' : 'tw-text-black'"
-                height="16"
-              />
-            </VBtn> -->
             <VBtn
               variant="tonal"
               :color="newFilters.length > 0 ? 'info' : 'primary'"
@@ -188,7 +178,7 @@ const onFilterReturn = (params: any[]) => {
               />
               <Icon
                 icon="mdi:filter"
-                :class="'tw-text-black'"
+                :class="'textPrimary'"
                 height="16"
                 v-else
               />

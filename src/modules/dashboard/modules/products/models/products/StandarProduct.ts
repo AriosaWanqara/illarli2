@@ -1,7 +1,6 @@
 import type { baseProduct } from "./Product";
 
 export interface StandarProduct extends baseProduct {
-  sku: string;
   price: number;
   unit_id: string;
   stock_min: number;

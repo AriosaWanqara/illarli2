@@ -1,7 +1,6 @@
 import type { baseProduct } from "./Product";
 
 export interface Subproduct extends baseProduct {
-  sku: string;
   upc: string;
   mmu: string;
   slug: string;

@@ -88,6 +88,7 @@ export interface Tax {
 
 export interface baseProduct {
   id: string;
+  sku: string;
   name: string;
   description: string;
   categoriesId: string[];

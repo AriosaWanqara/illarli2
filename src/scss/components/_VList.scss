@@ -1,0 +1,12 @@
+.filter-list {
+  padding: 0 !important;
+  .v-list-item {
+    padding: 0 !important;
+  }
+  .v-list-item__overlay {
+    display: none !important;
+  }
+  .v-list-item:hover {
+    background-color: transparent !important;
+  }
+}
