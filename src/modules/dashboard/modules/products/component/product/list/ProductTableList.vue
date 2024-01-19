@@ -45,6 +45,7 @@ const onSelectProduct = (product: Product) => {
 
 const onItemSelected = (params: any) => {
   itemsSelected.value = params;
+  emits("products-selected", params);
 };
 const onItemFilter = (params: any) => {
   emits("products-filters", params);

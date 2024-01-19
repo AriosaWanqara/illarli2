@@ -12,6 +12,7 @@ import { Icon } from "@iconify/vue";
 import type { FilterOption } from "vue3-easy-data-table";
 import ProductFilternavegationDrawer from "../../component/product/ProductFilternavegationDrawer.vue";
 import exportFromJSON from "export-from-json";
+import ProductActionMenu from "../../component/product/ProductActionMenu.vue";
 
 const { products, activeProduct, inactiveProduct, totalProduct } =
   useProducts();
@@ -23,6 +24,7 @@ const search = ref();
 const statusCriteria = ref("all");
 const openFilter = ref(false);
 const newFilters = ref<any[]>([]);
+const filterItems = ref<Product[]>([]);
 const selectedItems = ref<Product[]>([]);
 
 const onDeleteProduct = (product: Product) => {
@@ -85,8 +87,8 @@ const onFilterReturn = (params: any[]) => {
 };
 
 const exportFile = () => {
-  if (selectedItems.value.length > 0) {
-    const data = [...selectedItems.value];
+  if (filterItems.value.length > 0) {
+    const data = [...filterItems.value];
     const fileName = "download";
     const exportType = exportFromJSON.types.xls;
     exportFromJSON({
@@ -116,15 +118,25 @@ const exportFile = () => {
             </VTextField>
           </div>
           <div class="tw-flex tw-gap-3">
-            <VBtn color="borderColor" variant="outlined" flat>
-              <template #prepend>
-                <Icon
-                  icon="humbleicons:dots-vertical"
-                  class="tw-text-[#036666]"
-                />
+            <ProductActionMenu :products="selectedItems">
+              <template #default="{ activator }">
+                <VBtn
+                  color="borderColor"
+                  variant="outlined"
+                  flat
+                  v-bind="activator"
+                  :disabled="selectedItems.length == 0"
+                >
+                  <template #prepend>
+                    <Icon
+                      icon="humbleicons:dots-vertical"
+                      class="tw-text-[#036666]"
+                    />
+                  </template>
+                  <p class="tw-text-[#036666]">Acciones</p>
+                </VBtn>
               </template>
-              <p class="tw-text-[#036666]">Acciones</p>
-            </VBtn>
+            </ProductActionMenu>
             <VBtn
               color="info"
               variant="elevated"
@@ -192,7 +204,8 @@ const exportFile = () => {
           :filter-options="filterOptions"
           @product-delete="onDeleteProduct"
           @product-update="onSelectProduct"
-          @products-filters="(params) => (selectedItems = params)"
+          @products-filters="(params) => (filterItems = params)"
+          @products-selected="(params) => (selectedItems = params)"
         />
         <ConfirmDeleteDialog
           :dialog-text="'Esta seguro que desa borrar el producto?'"
@@ -210,8 +223,4 @@ const exportFile = () => {
   </ViewScaffold>
 </template>
 
-<style scoped>
-.search-w {
-  max-width: 400px;
-}
-</style>
+<style scoped></style>
