@@ -22,6 +22,7 @@ const isBrandAutocompleteLoading = computed(
 
 interface props {
   product: baseProduct;
+  codeError: string[];
 }
 const props = defineProps<props>();
 
@@ -102,8 +103,22 @@ watch(saveBrandMutation.isError, () => {
           <VTextField
             variant="solo-filled"
             flat
+            :error-messages="props.codeError"
             placeholder="Ingrese el codigo del producto"
             v-model="props.product.sku"
+          />
+        </div>
+      </VCol>
+      <VCol class="py-0" cols="12">
+        <div class="tw-flex tw-flex-col tw-gap-1">
+          <label for="" class="tw-uppercase tw-font-semibold tw-text-gray-400"
+            >Precio <span class="tw-text-red-300">*</span></label
+          >
+          <VTextField
+            variant="solo-filled"
+            flat
+            placeholder="Ingrese el codigo del producto"
+            v-model="props.product.price"
           />
         </div>
       </VCol>

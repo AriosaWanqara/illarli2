@@ -17,7 +17,9 @@ const {} = useProductActionsMutations();
       <slot :activator="props" />
     </template>
     <VCard>
-      <VCardItem> </VCardItem>
+      <VCardItem>
+        <VBtn>aumentar precio</VBtn>
+      </VCardItem>
     </VCard>
   </VMenu>
 </template>

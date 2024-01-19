@@ -5,7 +5,7 @@ interface product {
   sku: string;
 }
 
-const nameError = ref("");
+const nameError = ref<string[]>([]);
 const product = ref<product>({} as product);
 const useCreateProduct = () => {
   return {
