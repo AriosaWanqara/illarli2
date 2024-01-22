@@ -5,7 +5,7 @@ import { ref } from "vue";
 interface props {
   placeholder: string;
   color: string;
-  variant:
+  variant?:
     | "solo-filled"
     | "outlined"
     | "plain"

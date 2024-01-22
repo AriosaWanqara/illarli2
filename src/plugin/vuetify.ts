@@ -52,26 +52,28 @@ export default createVuetify({
       density: "comfortable",
     },
     VTextField: {
-      variant: "outlined",
+      variant: "solo-filled",
       density: "compact",
       color: "primary",
       flat: true,
     },
     VAutocomplete: {
-      variant: "outlined",
+      variant: "solo-filled",
       density: "compact",
       color: "primary",
       flat: true,
     },
     VTextarea: {
-      variant: "outlined",
+      variant: "solo-filled",
       density: "comfortable",
       color: "primary",
+      flat: true,
     },
     VSelect: {
-      variant: "outlined",
+      variant: "solo-filled",
       density: "compact",
       color: "primary",
+      flat: true,
     },
     VListItem: {
       minHeight: "37px",
