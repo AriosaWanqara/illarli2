@@ -10,7 +10,7 @@ export const dashboardRoutes: RouteRecordRaw[] = [
   {
     path: "/admin",
     name: "dashboard-layout",
-    redirect: { onButtonClick: "dashboard-home" },
+    redirect: { name: "dashboard-home" },
     component: () => import("@dashboard/layouts/AppLayout.vue"),
     children: [
       {
