@@ -8,10 +8,12 @@ import useProducts from "../../../products/composables/product/useProducts";
 import type { Product } from "../../../products/models/products/Product";
 import usePurchaseMutations from "../../composables/purchase/usePurchaseMutations";
 import type { PurchaseToSave2 } from "../../models/PurchaseOrder";
+import useXMLPurchaseUpload from "../../composables/purchase/useXMLPurchaseUpload";
 
 const { isProductsLoading, products } = useProducts();
 const { isProvidersLoading, providers } = useProviders();
 const { savePurchaseEMutations } = usePurchaseMutations();
+const { uploadXMLMutations } = useXMLPurchaseUpload();
 
 const selectedProvider = ref();
 const selectedProducts = ref<Product[]>([]);
@@ -22,7 +24,10 @@ const onPurchaseSubmit = () => {
   savePurchaseEMutations.mutate(purchase.value);
 };
 
-const onXMLUpload = (xml: File) => {};
+const onXMLUpload = (xml: File) => {
+  // uploadXMLMutations.mutate(xml)
+  console.log(xml);
+};
 
 watch(selectedProducts, () => {
   selectedProductsNotReadOnly.value = [];
@@ -53,7 +58,7 @@ watch(savePurchaseEMutations.isSuccess, () => {
         :append-icon="''"
         :button-text="'Subir xml'"
         :color="'success'"
-        :is-button-loading="false"
+        :is-button-loading="uploadXMLMutations.isPending.value"
         :prepend-icon="'mdi-upload'"
         :variant="'tonal'"
         @file-changed="onXMLUpload"

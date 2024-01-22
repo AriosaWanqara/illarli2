@@ -8,7 +8,7 @@ interface props {
   buttonText: string;
   appendIcon: string;
   prependIcon: string;
-  isButtonLoading: false;
+  isButtonLoading: boolean;
   accept: string;
 }
 
