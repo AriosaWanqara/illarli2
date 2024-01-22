@@ -9,7 +9,7 @@ interface props {
   appendIcon: string;
   prependIcon: string;
   isButtonLoading: false;
-  accept?: string;
+  accept: string;
 }
 
 const props = defineProps<props>();

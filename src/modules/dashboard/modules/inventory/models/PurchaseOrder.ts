@@ -46,3 +46,15 @@ export interface PurchaseToSave {
   supplier?: Provider;
   details?: Detail[];
 }
+export interface PurchaseToSave2 {
+  id: string;
+  date?: string;
+  status?: string;
+  items?: number;
+  user_id?: string;
+  observation?: string;
+  subsidiary_id?: string;
+  warehouse_id?: string;
+  supplier?: Provider;
+  details?: Detail[];
+}

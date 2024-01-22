@@ -18,7 +18,7 @@ const hasSlot = (name: string) => {
   <v-card :class="store.themeConfig.cardHasShadow ? 'box-card' : ''" flat>
     <v-card-item
       class="py-0 px-0"
-      v-if="hasSlot('actionBack') || hasSlot('action')"
+      v-if="hasSlot('actionBack') || hasSlot('action') || title"
     >
       <div class="tw-flex tw-items-center tw-justify-between tw-p-6">
         <div class="tw-flex tw-items-center tw-gap-1">

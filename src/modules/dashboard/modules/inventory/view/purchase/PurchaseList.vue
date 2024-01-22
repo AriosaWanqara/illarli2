@@ -1,17 +1,6 @@
 <script setup lang="ts">
 import ViewScaffold from "@/modules/dashboard/components/shared/ViewScaffold.vue";
-import { type Header } from "vue3-easy-data-table";
 import PurchasesTableList from "../../components/purchase/PurchasesTableList.vue";
-import usePurcheses from "../../composables/purchase/usePurcheses";
-
-const { isPurchasesLoading, purchases, purchasesHasError } = usePurcheses();
-
-const headers: Header[] = [
-  { text: "Codigo", value: "sequential" },
-  { text: "Proveedor", value: "supplier.name" },
-  { text: "subtotal", value: "subtotal" },
-  { text: "", value: "actions", width: 110 },
-];
 </script>
 
 <template>
