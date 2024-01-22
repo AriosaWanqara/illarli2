@@ -2,7 +2,7 @@
   border-color: rgba(var(--v-theme-borderColor)) !important;
   & .selected {
     border: 1px solid rgb(var(--v-theme-primary)) !important;
-    border-radius: 6px;
+    border-radius: inherit;
   }
 }
 .v-card--variant-elevated,
