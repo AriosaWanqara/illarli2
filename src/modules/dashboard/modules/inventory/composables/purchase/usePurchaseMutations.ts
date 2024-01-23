@@ -1,10 +1,9 @@
 import api from "@/api/axios";
+import { useMutation } from "@tanstack/vue-query";
 import type {
   PurchaseToSave,
   PurchaseToSave2,
 } from "../../models/PurchaseOrder";
-import { useMutation } from "@tanstack/vue-query";
-import axios from "axios";
 
 const savePurchase = async (purchase: PurchaseToSave): Promise<any> => {
   const { data } = await api.post("/accounting/purchases", purchase);
@@ -12,7 +11,7 @@ const savePurchase = async (purchase: PurchaseToSave): Promise<any> => {
 };
 
 const savePurchaseE = async (purchase: PurchaseToSave2): Promise<any> => {
-  const { data } = await axios.post("", purchase);
+  const { data } = await api.post("/accounting/purchases", purchase);
   return data;
 };
 

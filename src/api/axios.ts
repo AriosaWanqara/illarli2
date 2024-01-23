@@ -18,7 +18,7 @@ if (location.value.host) {
 }
 
 // const baseURL = `${urlStart}${urlDomain.value}${import.meta.env.VITE_API_URL}`;
-const baseURL = `http://avalle.illarli.local.com/api`;
+const baseURL = `http://novasolutions.illarli.local.com/api`;
 
 const api = axios.create({
   baseURL: baseURL,
@@ -27,7 +27,6 @@ const api = axios.create({
 api.interceptors.request.use((req) => {
   const { token } = useUserStore();
   req.headers!.Authorization = `Bearer ${token}`;
-  req.headers!["Content-Type"] = `application/json`;
   return req;
 });
 

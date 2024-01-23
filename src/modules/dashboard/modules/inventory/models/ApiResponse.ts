@@ -1,6 +1,6 @@
 import type { Adjust } from "./Adjust";
 import type { PurchaseOrder } from "./PurchaseOrder";
-import type { Purchases } from "./Purchases";
+import type { Purchases, Purchases2 } from "./Purchases";
 import type { Transference } from "./Transference";
 
 export interface AdjustApiResponse {
@@ -14,6 +14,9 @@ export interface PurchaseOrdersApiResponse {
 }
 export interface PurchasesApiResponse {
   data: Purchases[];
+}
+export interface XMLUploadApiResponse {
+  data: Purchases2;
 }
 export interface PurchaseOrderApiResponse {
   data: PurchaseOrder;

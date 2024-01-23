@@ -27,6 +27,8 @@ export interface Product {
   products: ProductChild[];
   inventory: Inventory[];
   amount: number;
+  spent?: boolean;
+  asociatedProduct?: Product;
 }
 
 interface Inventory {
@@ -80,10 +82,12 @@ interface Child {
 
 export interface Tax {
   id: string;
-  code: string;
+  tax: number;
   name: string;
-  value: number;
-  percentage: string;
+  rate: number;
+  tax_base: number;
+  tax_code: string;
+  rate_tax_code: string;
 }
 
 export interface baseProduct {

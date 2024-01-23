@@ -56,6 +56,7 @@ watch(
 const onStandarProductSubmit = () => {
   standarProduct.value.name = product.value.name;
   standarProduct.value.unit_id = "1";
+  standarProduct.value.price = 1;
   productValidator.value.$validate();
   if (!productValidator.value.$error) {
     if (props.productProps) {

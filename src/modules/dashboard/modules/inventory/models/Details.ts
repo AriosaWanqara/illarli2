@@ -10,3 +10,10 @@ export interface Detail {
   observation?: string;
   product: Product;
 }
+export interface Detail2 {
+  product_id: string;
+  amount: number;
+  price: string;
+  spent: boolean;
+  product: Product;
+}

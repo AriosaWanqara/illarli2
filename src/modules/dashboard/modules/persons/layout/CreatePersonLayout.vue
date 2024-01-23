@@ -1,0 +1,16 @@
+<script setup lang="ts"></script>
+
+<template>
+  <div class="tw-flex tw-gap-x-3 tw-flex-wrap">
+    <CreateProductSelector class="tw-max-w-[446px] tw-h-min" />
+    <div class="tw-flex-1">
+      <router-view v-slot="{ Component }">
+        <Transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </Transition>
+      </router-view>
+    </div>
+  </div>
+</template>
+
+<style scoped></style>

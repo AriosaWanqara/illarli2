@@ -21,7 +21,7 @@ const route = useRoute();
     class="shadow-none"
   >
     <div
-      class="tw-flex tw-justify-between tw-w-full tw-px-[1vw] md:tw-items-start tw-items-center tw-h-full tw-pt-1"
+      class="tw-flex tw-justify-between tw-w-full tw-px-[1vw] tw-items-center tw-h-full"
     >
       <div class="tw-flex tw-items-center tw-gap-2">
         <VBtn
