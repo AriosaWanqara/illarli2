@@ -14,7 +14,6 @@ import useXMLPurchaseUpload from "../../composables/purchase/useXMLPurchaseUploa
 import type { PurchaseToSave2 } from "../../models/PurchaseOrder";
 import moment from "moment";
 import type { Purchases2 } from "../../models/Purchases";
-import { isReadonly } from "vue";
 
 const { isProductsLoading, products } = useProducts();
 const { isProvidersLoading, providers } = useProviders();
