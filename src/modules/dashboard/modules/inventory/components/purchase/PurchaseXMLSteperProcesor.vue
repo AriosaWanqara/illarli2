@@ -30,7 +30,8 @@ const step = ref(1);
 
 const next = () => {
   step.value = 2;
-  mutableProducts.value = props.purchase.products;
+  mutableProducts.value = [];
+  props.purchase.products.map((x) => mutableProducts.value.push({ ...x }));
 };
 const back = () => {
   step.value = 1;
@@ -110,11 +111,11 @@ const onPurchaseSubmit = () => {
               <tr>
                 <th class="text-left">Name</th>
                 <th class="text-left">Asociado</th>
-                <th class="text-left">Tipo</th>
+                <th class="text-left">es gasto</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in props.purchase.products" :key="item.name">
+              <tr v-for="item in props.purchase.products">
                 <td>{{ item.name }}</td>
                 <td style="width: 340px">
                   <v-autocomplete
@@ -154,12 +155,23 @@ const onPurchaseSubmit = () => {
               <tr>
                 <th class="text-left">Name</th>
                 <th class="text-left">estado</th>
-                <th class="text-left">Tipo</th>
+                <th class="text-left">es gasto</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in mutableProducts" :key="item.name">
-                <td>{{ item.name }}</td>
+              <tr v-for="item in mutableProducts">
+                <td>
+                  <p v-if="item.asociatedProduct" class="tw-ml-5">
+                    {{ item.name }}
+                  </p>
+                  <VTextField
+                    v-else
+                    hide-details
+                    focused
+                    v-model="item.name"
+                    placeholder="nombre del producto"
+                  />
+                </td>
                 <td>
                   {{
                     item.asociatedProduct

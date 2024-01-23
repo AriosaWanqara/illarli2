@@ -33,11 +33,9 @@ const onPurchaseSubmit = () => {
   purchase.value.days = "0";
   purchase.value.subsidiary_id = user.subsidiaries[0].id;
   purchase.value.details = [];
-  purchase.value.subtotal = 0;
+  purchase.value.taxes = [];
   purchase.value.tip = 0;
   purchase.value.discount = 0;
-  purchase.value.total = 0;
-  purchase.value.taxes = [];
   purchase.value.date = moment(new Date()).format("YYYY-MM-DD HH:mm");
   selectedProductsNotReadOnly.value.map((x) => {
     purchase.value.details?.push({
@@ -48,7 +46,27 @@ const onPurchaseSubmit = () => {
       spent: false,
     });
   });
+  calculate();
   savePurchaseEMutations.mutate(purchase.value);
+};
+
+const calculate = () => {
+  selectedProductsNotReadOnly.value.map((x) => {
+    purchase.value.subtotal =
+      purchase.value.subtotal + parseFloat(x.price) * x.amount;
+    purchase.value.total =
+      purchase.value.total + parseFloat(x.price) * x.amount;
+    if (x.taxes.length > 0) {
+      x.taxes.map((y) => {
+        if (!purchase.value.taxes.some((i) => i.id == y.id)) {
+          purchase.value.taxes.push(y);
+        }
+        purchase.value.total =
+          purchase.value.total +
+          (parseFloat(x.price) * x.amount * y.rate) / 100;
+      });
+    }
+  });
 };
 
 const onXMLUpload = (xml: File) => {

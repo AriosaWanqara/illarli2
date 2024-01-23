@@ -1,4 +1,5 @@
 import type { Provider } from "../../persons/models/Provider";
+import type { Tax } from "../../products/models/products/Product";
 import type { Detail, Detail2 } from "./Details";
 import type { PurchaseOrderReception } from "./PurchaseOrderReception";
 import type { Purchases2 } from "./Purchases";
@@ -56,7 +57,7 @@ export interface PurchaseToSave2 {
   tip: number;
   discount: number;
   total: number;
-  taxes: any[];
+  taxes: Tax[];
   days: string;
   supplier_id: string | null;
   subsidiary_id: string;
@@ -89,7 +90,6 @@ export const createPurchaseToSaveFromPurchase = (purchase: Purchases2) => {
       x.id = x.asociatedProduct.id;
       id = x.asociatedProduct.id;
     }
-    delete x.asociatedProduct;
     purchaseToSave.details?.push({
       amount: x.amount,
       price: x.price,
