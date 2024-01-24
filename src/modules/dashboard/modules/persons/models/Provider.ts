@@ -1,3 +1,4 @@
+import type { Rate } from "../../pricing/models/Rate";
 import type { civilStatusEnum } from "../constant/civilStatusEnum";
 
 export interface Provider {
@@ -18,4 +19,5 @@ export interface Provider {
   gender: string;
   civil_status: civilStatusEnum;
   person_type: string | null;
+  rate: Rate;
 }

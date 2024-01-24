@@ -29,7 +29,7 @@ const onConfirmReponse = (response: boolean) => {
 };
 
 const onClientSelected = (person: Provider) => {
-  router.push({ name: "provider-update", params: { id: person.id } });
+  // router.push({ name: "provider-update", params: { id: person.id } });
 };
 
 watch(deleteProviderMutation.isError, () => {
@@ -54,7 +54,7 @@ watch(deleteProviderMutation.isSuccess, () => {
       <div>
         <div class="tw-flex tw-mb-2 tw-justify-between tw-items-center">
           <p class="tw-font-semibold tw-text-gray-400">Todos los clientes</p>
-          <RouterLink :to="{ name: 'provider-add' }">
+          <RouterLink :to="{ name: 'person-add' }">
             <v-btn flat color="success" prepend-icon="mdi-plus">Nuevo</v-btn>
           </RouterLink>
         </div>

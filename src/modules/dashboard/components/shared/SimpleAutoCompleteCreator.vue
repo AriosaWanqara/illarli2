@@ -14,6 +14,7 @@ interface props {
     | "underlined"
     | "filled";
   isFlat?: boolean;
+  returnObject?: boolean;
   isMultiple?: boolean;
   items: Object[];
   isLoading: boolean;
@@ -118,6 +119,7 @@ const onKeyPress = (params: any) => {
     :loading="props.isLoading"
     :item-title="props.itemTitle"
     :item-value="props.itemValue"
+    :return-object="props.returnObject"
   >
     <template #no-data>
       <div

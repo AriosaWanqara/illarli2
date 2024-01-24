@@ -12,5 +12,6 @@
 
 .v-field--variant-solo-filled .v-field__overlay {
   opacity: 1 !important;
+  z-index: -1;
   background-color: rgba(var(--v-theme-containerBg)) !important;
 }

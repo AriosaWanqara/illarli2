@@ -9,7 +9,7 @@ const clients = ref<Provider[]>([]);
 
 const fetchClients = async (): Promise<Provider[]> => {
   const { data } = await api.get<ProvidersApiResponse>(
-    `/general/persons?role=${personRolEnum.SUPPLIER}`
+    `/general/persons?role=${personRolEnum.CUSTOMER}`
   );
   return data.data;
 };

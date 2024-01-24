@@ -37,15 +37,7 @@ const onCategoryAutocompleteModelUpdate = (params: any) => {
 };
 
 const onBrandAutocompleteModelUpdate = (params: any) => {
-  if (params) {
-    if (params.id) {
-      props.product.brand_id = params.id;
-    } else {
-      props.product.brand_id = params;
-    }
-  } else {
-    props.product.brand_id = params;
-  }
+  props.product.brand_id = params;
 };
 
 const onCategoryCreate = (name: string) => {
@@ -66,7 +58,7 @@ watch(saveCategoryMutation.isSuccess, () => {
   if (saveCategoryMutation.isSuccess.value) {
     let response = saveCategoryMutation.data.value;
     if (response) {
-      props.product.categoriesId.push(response.id);
+      props.product.categoriesId.push(response);
       categories.value = [response, ...categories.value];
     }
   }
@@ -80,7 +72,7 @@ watch(saveBrandMutation.isSuccess, () => {
   if (saveBrandMutation.isSuccess.value) {
     let response = saveBrandMutation.data.value;
     if (response) {
-      props.product.brand_id = response.id;
+      props.product.brand_id = response;
       brands.value = [response, ...brands.value];
     }
   }
@@ -149,6 +141,7 @@ watch(saveBrandMutation.isError, () => {
             :items="categories"
             item-title="name"
             item-value="id"
+            :return-object="true"
             :value="props.product.categoriesId"
             :is-loading="isCategoryAutocompleteLoading"
             @model-update="onCategoryAutocompleteModelUpdate"
@@ -170,6 +163,7 @@ watch(saveBrandMutation.isError, () => {
             :items="brands"
             item-title="name"
             item-value="id"
+            :return-object="true"
             :value="props.product.brand_id"
             :is-loading="isBrandAutocompleteLoading"
             @model-update="onBrandAutocompleteModelUpdate"

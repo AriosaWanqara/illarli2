@@ -11,6 +11,7 @@ import useCreateProduct from "../../../composables/product/useCreateProduct";
 import { productTypeEnum } from "../../../const/productTypeEnum";
 import type { Product } from "../../../models/products/Product";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
+import type { Brand } from "../../../models/Brand";
 
 interface props {
   productProps?: Product;
@@ -40,10 +41,8 @@ if (props.productProps) {
   standarProduct.value.sku = props.productProps.sku;
   standarProduct.value.price = parseFloat(props.productProps.price);
   standarProduct.value.unit_id = props.productProps.unit_id.toString();
-  standarProduct.value.brand_id = props.productProps.brand_id;
-  standarProduct.value.categoriesId = props.productProps.categories.map(
-    (x) => x.id
-  );
+  standarProduct.value.brand_id = { id: props.productProps.brand_id } as Brand;
+  standarProduct.value.categoriesId = props.productProps.categories;
 }
 
 watch(
