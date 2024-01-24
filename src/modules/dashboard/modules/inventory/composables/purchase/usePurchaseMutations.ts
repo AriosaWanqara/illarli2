@@ -15,13 +15,22 @@ const savePurchaseE = async (purchase: PurchaseToSave2): Promise<any> => {
   return data;
 };
 
+const savePurchaseFromXML = async (purchase: PurchaseToSave2): Promise<any> => {
+  const { data } = await api.post("/accounting/purchases/xml", purchase);
+  return data;
+};
+
 const usePurchaseMutations = () => {
   const savePurchaseMutations = useMutation({ mutationFn: savePurchase });
   const savePurchaseEMutations = useMutation({ mutationFn: savePurchaseE });
+  const savePurchaseFromXMLMutations = useMutation({
+    mutationFn: savePurchaseFromXML,
+  });
 
   return {
     savePurchaseMutations,
     savePurchaseEMutations,
+    savePurchaseFromXMLMutations,
   };
 };
 

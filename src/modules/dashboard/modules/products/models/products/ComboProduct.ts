@@ -9,7 +9,7 @@ export interface ComboProduct extends baseProduct {
   stock_max: number;
   product_type_id: string;
   warehouse_id: string;
-  taxes: string[];
+  taxes: { id: string }[];
   products: ComboProductChild[];
 }
 

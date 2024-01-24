@@ -90,6 +90,9 @@ export const createPurchaseToSaveFromPurchase = (purchase: Purchases2) => {
       x.id = x.asociatedProduct.id;
       id = x.asociatedProduct.id;
     }
+    if (!x.id) {
+      x.id = "";
+    }
     purchaseToSave.details?.push({
       amount: x.amount,
       price: x.price,

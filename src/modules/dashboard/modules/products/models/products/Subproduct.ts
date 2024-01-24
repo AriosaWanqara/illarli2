@@ -9,7 +9,7 @@ export interface Subproduct extends baseProduct {
   stock_min: number;
   stock_max: number;
   product_type_id: string;
-  taxes: string[];
+  taxes: { id: string }[];
   warehouse_id: string;
   parent_product_id: string;
   amount: number;

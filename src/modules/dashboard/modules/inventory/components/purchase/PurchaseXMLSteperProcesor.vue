@@ -10,6 +10,10 @@ import {
 } from "../../models/PurchaseOrder";
 import useWareHouses from "../../../config/composables/warehouse/useWareHouses";
 import { useUserStore } from "@/stores/userStore";
+import usePurchaseMutations from "../../composables/purchase/usePurchaseMutations";
+import { watch } from "vue";
+import type { AxiosError } from "axios";
+import moment from "moment";
 
 interface props {
   purchase: Purchases2;
@@ -19,6 +23,7 @@ const props = defineProps<props>();
 const emits = defineEmits(["close"]);
 const { products, isProductsLoading } = useProducts();
 const { isWareHousesLoading, wareHouses } = useWareHouses();
+const { savePurchaseFromXMLMutations } = usePurchaseMutations();
 const { user } = useUserStore();
 
 const purchase = ref<PurchaseToSave2>({
@@ -27,6 +32,7 @@ const purchase = ref<PurchaseToSave2>({
 
 const mutableProducts = ref<Product[]>([]);
 const step = ref(1);
+let productsS: Product[] = [];
 
 const next = () => {
   step.value = 2;
@@ -39,6 +45,7 @@ const back = () => {
 };
 
 const onPurchaseSubmit = () => {
+  productsS = props.purchase.products;
   props.purchase.products = mutableProducts.value;
   let x = createPurchaseToSaveFromPurchase(props.purchase);
   purchase.value = {
@@ -46,8 +53,28 @@ const onPurchaseSubmit = () => {
     subsidiary_id: purchase.value.subsidiary_id,
     warehouse_id: purchase.value.warehouse_id,
   };
+  purchase.value.date = moment(purchase.value.date).format("YYYY-MM-DD HH:mm");
+  purchase.value.access_key = "test-2";
+  purchase.value.invoice = "123-123-1231238888";
+
   console.log(purchase.value);
+
+  savePurchaseFromXMLMutations.mutate(purchase.value);
 };
+
+watch(savePurchaseFromXMLMutations.isError, () => {
+  if (savePurchaseFromXMLMutations.isError.value) {
+    let x = savePurchaseFromXMLMutations.error.value as AxiosError;
+    props.purchase.products = productsS;
+    alert(JSON.stringify(x.response?.data));
+  }
+});
+
+watch(savePurchaseFromXMLMutations.isSuccess, () => {
+  if (savePurchaseFromXMLMutations.isSuccess.value) {
+    alert("OK");
+  }
+});
 </script>
 
 <template>
@@ -183,7 +210,11 @@ const onPurchaseSubmit = () => {
               </tr>
             </tbody>
           </v-table>
-          <VBtn @click="onPurchaseSubmit">Guardar</VBtn>
+          <VBtn
+            @click="onPurchaseSubmit"
+            :loading="savePurchaseFromXMLMutations.isPending.value"
+            >Guardar</VBtn
+          >
         </div>
       </VWindowItem>
     </VWindow>

@@ -37,7 +37,7 @@ const product = ref<ComboProduct>({
   product_type_id: productTypeEnum.COMBO,
   taxes: [
     // '9aaede03-d462-412b-b007-317fef91cf11'
-    "9aaede03-d617-47bc-b264-74d1e0519177",
+    { id: "9aaede03-d617-47bc-b264-74d1e0519177" },
   ],
 } as ComboProduct);
 const productValidator = useVuelidate(comboPoductRules, product);

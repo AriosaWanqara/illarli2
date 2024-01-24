@@ -69,6 +69,35 @@ const calculate = () => {
   });
 };
 
+const test = [
+  {
+    label: "asd",
+    child: [
+      {
+        label: "3-test",
+        value: "s",
+      },
+      {
+        label: "4-test",
+        value: "s",
+      },
+    ],
+  },
+  {
+    label: "lol",
+    child: [
+      {
+        label: "1-test",
+        value: "s",
+      },
+      {
+        label: "2-test",
+        value: "s",
+      },
+    ],
+  },
+];
+
 const onXMLUpload = (xml: File) => {
   uploadXMLMutations.mutate(xml);
 };
@@ -130,6 +159,12 @@ watch(uploadXMLMutations.isSuccess, () => {
     </template>
     <template #default>
       <VRow>
+        <VCol cols="12" class="py-0">
+          <VTextField
+            placeholder="Clave de acceso"
+            v-model="purchase.access_key"
+          />
+        </VCol>
         <VCol cols="6" class="py-0">
           <VSelect
             placeholder="Provider"

@@ -26,7 +26,7 @@ const standarProduct = ref<StandarProduct>({
   product_type_id: productTypeEnum.STANDAR,
   taxes: [
     // '9aaede03-d462-412b-b007-317fef91cf11' //0
-    "9aaede03-d617-47bc-b264-74d1e0519177", //12
+    { id: "9aaede03-d617-47bc-b264-74d1e0519177" }, //12
   ],
 } as StandarProduct);
 const productValidator = useVuelidate(standarPoductRules, standarProduct);

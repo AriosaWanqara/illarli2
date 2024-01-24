@@ -8,5 +8,5 @@ export interface StandarProduct extends baseProduct {
   stock: number;
   product_type_id: string;
   warehouse_id: string;
-  taxes: string[];
+  taxes: { id: string }[];
 }
