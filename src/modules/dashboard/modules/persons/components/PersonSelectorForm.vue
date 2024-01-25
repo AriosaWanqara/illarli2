@@ -8,14 +8,12 @@ import providerImg from "@dashboard/assets/images/ic_provider.png";
 import { personRolEnum } from "../constant/personRolEnum";
 import type { Provider } from "../models/Provider";
 import PersonTypeCard from "./PersonTypeCard.vue";
-import usePersonValidator from "../composables/usePersonValidator";
 
 interface props {
   person: Provider;
   nameError: string[];
   identityError: string[];
 }
-const a = usePersonValidator();
 
 const props = defineProps<props>();
 const store = usethemeCustomizer();

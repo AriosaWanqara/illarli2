@@ -6,6 +6,7 @@ import useProvidersRules from "../composables/provider/useProvidersRules";
 import { allCivilStatusEnum } from "../constant/civilStatusEnum";
 import { allGenders } from "../constant/genderEnum";
 import type { Provider } from "../models/Provider";
+import useRates from "../../pricing/compossables/rate/useRates";
 
 interface props {
   person: Provider;
@@ -19,6 +20,7 @@ const props = defineProps<props>();
 const emit = defineEmits(["person-submit"]);
 const { providersRules } = useProvidersRules();
 const personValidator = useVuelidate(providersRules, props.person);
+const { isRatesLoading, rates } = useRates();
 
 const onPersonSubmit = () => {
   personValidator.value.$validate();
@@ -163,6 +165,8 @@ const onPersonSubmit = () => {
             v-model="props.person.rate"
             return-object
             hide-details
+            :loading="isRatesLoading"
+            :items="rates"
             item-title="name"
             item-value="id"
           />
