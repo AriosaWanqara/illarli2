@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
+import PriceCalculatorComponent from "@/modules/dashboard/components/shared/PriceCalculatorComponent.vue";
+import useSRITaxes from "@/modules/dashboard/modules/pricing/compossables/SRI/useSRITaxes";
+import type { SRITaxe } from "@/modules/dashboard/modules/pricing/models/SRITaxe";
 import { usethemeCustomizer } from "@/stores/themeCustomizer";
 import type { StandarProduct } from "@dashboard/modules/products/models/products/StandarProduct";
 import { useVuelidate } from "@vuelidate/core";
@@ -9,17 +13,9 @@ import useStandarPoductMutations from "../../../composables/product/standar/useS
 import useStandarPoductRules from "../../../composables/product/standar/useStandarPoductRules";
 import useCreateProduct from "../../../composables/product/useCreateProduct";
 import { productTypeEnum } from "../../../const/productTypeEnum";
+import type { Brand } from "../../../models/Brand";
 import type { Product } from "../../../models/products/Product";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
-import type { Brand } from "../../../models/Brand";
-import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
-import useSRITaxes from "@/modules/dashboard/modules/pricing/compossables/SRI/useSRITaxes";
-import {
-  PriceCalculator,
-  PriceCalculatorType,
-} from "@/service/PriceCalculator";
-import type { SRITaxe } from "@/modules/dashboard/modules/pricing/models/SRITaxe";
-import PriceCalculatorComponent from "@/modules/dashboard/components/shared/PriceCalculatorComponent.vue";
 
 interface props {
   productProps?: Product;
@@ -39,6 +35,7 @@ const standarProduct = ref<StandarProduct>({
 const productValidator = useVuelidate(standarPoductRules, standarProduct);
 const router = useRouter();
 const selectedRatesPercentage = ref<number[]>([]);
+const showCalculator = ref(false);
 
 if (props.productProps) {
   product.value.name = props.productProps.name;
@@ -62,7 +59,6 @@ watch(
 const onStandarProductSubmit = () => {
   standarProduct.value.name = product.value.name;
   standarProduct.value.unit_id = "1";
-  standarProduct.value.price = 1;
   productValidator.value.$validate();
   if (!productValidator.value.$error) {
     if (props.productProps) {
@@ -70,10 +66,6 @@ const onStandarProductSubmit = () => {
     } else {
       saveStandarProductMutation.mutate(standarProduct.value);
     }
-  } else {
-    alert(
-      JSON.stringify(productValidator.value.$errors.map((x) => x.$message))
-    );
   }
 };
 watch(
@@ -130,11 +122,9 @@ const onProductCalculateHelp = () => {
       rates.push(parseFloat(x.rate));
     });
     showCalculator.value = true;
-    // standarProduct.value.cost ?? 0
     selectedRatesPercentage.value = rates;
   }
 };
-const showCalculator = ref(false);
 </script>
 <template>
   <VCard
@@ -150,7 +140,7 @@ const showCalculator = ref(false);
             productValidator.sku.$errors.map((x) => x.$message.toString())
           "
         />
-        <FormSeccion title="Valor-impuestos">
+        <FormSeccion title="Valor-impuestos" class="tw-mt-2">
           <VRow>
             <VCol cols="6" md="6" class="py-1">
               <div class="tw-flex tw-flex-col tw-gap-1">

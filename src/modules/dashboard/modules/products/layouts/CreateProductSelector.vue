@@ -90,20 +90,21 @@ const ProductType = ref([
         </head>
         <FormSeccion title="Descripcion" class="tw-mt-2">
           <VRow>
-            <VCol cols="12" class="py-0">
+            <VCol cols="12" class="py-1">
               <div class="tw-flex tw-flex-col tw-gap-2">
                 <label for="" class="tw-text-gray-400 tw-uppercase">
                   nombre del producto<span class="tw-text-red-300">*</span>
                 </label>
                 <VTextField
                   variant="solo-filled"
+                  hide-details
                   v-model="product.name"
                   placeholder="Ingrese el nombre del producto"
                   :error-messages="nameError"
                 />
               </div>
             </VCol>
-            <VCol cols="12" class="py-0">
+            <VCol cols="12" class="py-1">
               <div class="tw-flex tw-flex-col tw-gap-2">
                 <label for="" class="tw-text-gray-400 tw-uppercase"
                   >IMAGEN del producto</label
@@ -138,7 +139,7 @@ const ProductType = ref([
 
 <style scoped>
 .border-r-20 {
-  border-radius: 20px !important;
+  border-radius: 20px 20px 10px 10px !important;
 }
 .overflow-visible {
   overflow: visible !important;

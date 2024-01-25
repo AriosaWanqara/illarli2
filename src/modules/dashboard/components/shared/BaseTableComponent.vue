@@ -46,6 +46,10 @@ watch(page, () => {
   }
 });
 
+watch(totalItemsShowed, () => {
+  dataTable.value.updateRowsPerPageActiveOption(totalItemsShowed.value);
+});
+
 const bodyRowClassNameFunction: BodyRowClassNameFunction = (
   item: Item,
   _: number

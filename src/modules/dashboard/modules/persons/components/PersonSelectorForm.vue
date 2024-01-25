@@ -137,7 +137,7 @@ const personType = [
 
 <style scoped>
 .border-r-20 {
-  border-radius: 20px !important;
+  border-radius: 20px 20px 10px 10px !important;
 }
 .overflow-visible {
   overflow: visible !important;
