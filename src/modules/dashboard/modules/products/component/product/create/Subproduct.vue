@@ -50,8 +50,7 @@ if (props.productProps) {
   product.value.amount = parseFloat(props.productProps.products[0].amount);
   product.value.parent_product_id =
     props.productProps.products[0].child_product_id;
-  product.value.brand_id = props.productProps.brand_id;
-  product.value.categoriesId = props.productProps.categories.map((x) => x.id);
+  product.value.categoriesId = props.productProps.categories;
 }
 
 const onSubproductSubmit = () => {

@@ -267,6 +267,17 @@ const onProductCalculateHelp = () => {
       <PriceCalculatorComponent
         :price="standarProduct.cost ?? 0"
         :rates="selectedRatesPercentage"
+        @close="
+          () => {
+            showCalculator = false;
+          }
+        "
+        @calculate-end="
+          (params) => {
+            standarProduct.price = params;
+            showCalculator = false;
+          }
+        "
       />
     </VDialog>
   </VCard>

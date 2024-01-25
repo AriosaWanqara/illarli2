@@ -11,6 +11,7 @@ interface props {
 }
 
 const props = defineProps<props>();
+const emits = defineEmits(["calculate-end", "close"]);
 const type = ref(PriceCalculatorType.QUANTITY);
 const utility = ref(0);
 
@@ -31,6 +32,10 @@ const onUtilityChange = () => {
     up.value = unitPrice;
     upWithTaxes.value = parseFloat(unitPriceWithTaxes.toFixed(2));
   }
+};
+
+const onCalculateEnd = () => {
+  emits("calculate-end", upWithTaxes.value);
 };
 </script>
 
@@ -68,7 +73,7 @@ const onUtilityChange = () => {
           </div>
         </VCol>
         <VCol cols="12">
-          <VBtn>Aceptar</VBtn>
+          <VBtn @click="onCalculateEnd">Aceptar</VBtn>
         </VCol>
       </VRow>
     </VCardItem>

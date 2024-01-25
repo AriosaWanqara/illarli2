@@ -52,8 +52,7 @@ if (props.productProps) {
   product.value.sku = props.productProps.sku;
   product.value.price = parseFloat(props.productProps.price);
   product.value.unit_id = props.productProps.unit_id.toString();
-  product.value.brand_id = props.productProps.brand_id;
-  product.value.categoriesId = props.productProps.categories.map((x) => x.id);
+  product.value.categoriesId = props.productProps.categories;
   props.productProps.products.map((x) => {
     selectedChilds.value.push(x.child_product_id);
   });
