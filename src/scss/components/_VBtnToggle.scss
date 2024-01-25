@@ -5,3 +5,45 @@
 .dark .v-btn-toggle span.v-btn__content {
   color: rgba(var(--v-theme-textPrimary));
 }
+.v-btn-toggle {
+  border-radius: 15px !important;
+  .v-btn {
+    &.v-btn--active {
+      .v-btn__overlay {
+        border: 1px solid currentColor;
+        background-color: transparent !important;
+      }
+    }
+    &:not(.v-btn--active) {
+      .v-btn__content {
+        opacity: 0.5;
+      }
+      & .v-btn__underlay {
+        border-top: 1px solid rgba(var(--v-theme-borderColor));
+        border-bottom: 1px solid rgba(var(--v-theme-borderColor));
+        background-color: rgba(var(--v-theme-containerBg)) !important;
+        opacity: 1 !important;
+        z-index: -1;
+      }
+    }
+  }
+}
+
+.v-btn-toggle {
+  .v-btn:nth-child(1) {
+    &:not(.v-btn--active) {
+      & .v-btn__underlay {
+        border-left: 1px solid rgba(var(--v-theme-borderColor));
+        border-bottom: 1px solid rgba(var(--v-theme-borderColor));
+      }
+    }
+  }
+  .v-btn:last-child {
+    &:not(.v-btn--active) {
+      & .v-btn__underlay {
+        border-right: 1px solid rgba(var(--v-theme-borderColor));
+        border-bottom: 1px solid rgba(var(--v-theme-borderColor));
+      }
+    }
+  }
+}
