@@ -16,6 +16,7 @@ interface props {
   isFlat?: boolean;
   returnObject?: boolean;
   isMultiple?: boolean;
+  hideDetails?: true;
   items: Object[];
   isLoading: boolean;
   itemTitle: string;
@@ -116,6 +117,7 @@ const onKeyPress = (params: any) => {
     :items="props.items"
     :chips="props.isMultiple"
     :clearable="true"
+    :hide-details="props.hideDetails"
     :loading="props.isLoading"
     :item-title="props.itemTitle"
     :item-value="props.itemValue"

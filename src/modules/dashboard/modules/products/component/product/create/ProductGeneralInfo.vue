@@ -87,12 +87,13 @@ watch(saveBrandMutation.isError, () => {
 <template>
   <FormSeccion title="Información General">
     <VRow class="py-0">
-      <VCol class="py-0" cols="12">
+      <VCol class="py-1" cols="12">
         <div class="tw-flex tw-flex-col tw-gap-1">
           <label for="" class="tw-uppercase tw-font-semibold tw-text-gray-400"
             >Codigo <span class="tw-text-red-300">*</span></label
           >
           <VTextField
+            hide-details
             variant="solo-filled"
             flat
             :error-messages="props.codeError"
@@ -101,20 +102,7 @@ watch(saveBrandMutation.isError, () => {
           />
         </div>
       </VCol>
-      <VCol class="py-0" cols="12">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-uppercase tw-font-semibold tw-text-gray-400"
-            >Precio <span class="tw-text-red-300">*</span></label
-          >
-          <VTextField
-            variant="solo-filled"
-            flat
-            placeholder="Ingrese el codigo del producto"
-            v-model="props.product.price"
-          />
-        </div>
-      </VCol>
-      <VCol class="py-0" cols="12">
+      <VCol class="py-1" cols="12">
         <div class="tw-flex tw-flex-col tw-gap-1">
           <label for="" class="tw-uppercase tw-font-semibold tw-text-gray-400"
             >Observaciones</label
@@ -122,12 +110,13 @@ watch(saveBrandMutation.isError, () => {
           <VTextarea
             variant="solo-filled"
             flat
+            hide-details
             placeholder="Ingrese una observación del producto."
             v-model="props.product.description"
           />
         </div>
       </VCol>
-      <VCol class="py-0" cols="6">
+      <VCol class="py-1" cols="6">
         <div class="tw-flex tw-flex-col tw-gap-1">
           <label for="" class="tw-uppercase tw-font-semibold tw-text-gray-400"
             >sección / categoria
@@ -137,6 +126,7 @@ watch(saveBrandMutation.isError, () => {
             color="primary"
             variant="solo-filled"
             :is-flat="true"
+            hide-details
             :is-multiple="true"
             :items="categories"
             item-title="name"
@@ -149,7 +139,7 @@ watch(saveBrandMutation.isError, () => {
           />
         </div>
       </VCol>
-      <VCol class="py-0" cols="6">
+      <VCol class="py-1" cols="6">
         <div class="tw-flex tw-flex-col tw-gap-1">
           <label for="" class="tw-uppercase tw-font-semibold tw-text-gray-400"
             >marca
@@ -160,6 +150,7 @@ watch(saveBrandMutation.isError, () => {
             variant="solo-filled"
             :is-flat="true"
             :is-multiple="false"
+            hide-details
             :items="brands"
             item-title="name"
             item-value="id"

@@ -8,7 +8,9 @@ import type { SRIPaymentMethods } from "../../models/SRIPaymentMethods";
 const SRIPaymentMethodsDropdown = ref<Dropdown[]>([]);
 
 const fetchSRITaxes = async (): Promise<SRIPaymentMethods[]> => {
-  const { data } = await api.get<SRIPaymentMethodsApiResponse>("/taxes");
+  const { data } = await api.get<SRIPaymentMethodsApiResponse>(
+    "/general/sri/payment-methods"
+  );
   return data.data;
 };
 

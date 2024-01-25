@@ -96,6 +96,7 @@ export interface baseProduct {
   sku: string;
   name: string;
   price: number;
+  cost: number;
   description: string;
   categoriesId: Category[];
   brand_id: Brand;

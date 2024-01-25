@@ -6,7 +6,7 @@ export enum PriceCalculatorType {
 
 export const PriceCalculator = (
   cost: number,
-  rate: number,
+  rate: number[],
   utility: number,
   type: PriceCalculatorType
 ): { unitPrice: number; unitPriceWithTaxes: number } => {
@@ -28,11 +28,13 @@ export const PriceCalculator = (
 const calculatePriceByQuantity = (
   cost: number,
   utility: number,
-  rate: number
+  rate: number[]
 ) => {
   let unitPrice = cost + utility;
-  let unitPriceWithTaxes = unitPrice * (1 + rate / 100);
-
+  let unitPriceWithTaxes = 0;
+  rate.map((x) => {
+    unitPriceWithTaxes = unitPriceWithTaxes + unitPrice * (1 + x / 100);
+  });
   return {
     unitPrice,
     unitPriceWithTaxes,
@@ -42,10 +44,13 @@ const calculatePriceByQuantity = (
 const calculatePriceByMarkup = (
   cost: number,
   utility: number,
-  rate: number
+  rate: number[]
 ) => {
   let unitPrice = cost * (1 + utility / 100);
-  let unitPriceWithTaxes = unitPrice * (1 + rate / 100);
+  let unitPriceWithTaxes = 0;
+  rate.map((x) => {
+    unitPriceWithTaxes = unitPriceWithTaxes + unitPrice * (1 + x / 100);
+  });
 
   return {
     unitPrice,
@@ -56,10 +61,16 @@ const calculatePriceByMarkup = (
 const calculatePriceByMargin = (
   cost: number,
   utility: number,
-  rate: number
+  rate: number[]
 ) => {
+  if (utility >= 100) {
+    utility = 99;
+  }
   let unitPrice = cost / (1 - utility / 100);
-  let unitPriceWithTaxes = unitPrice * (1 + rate / 100);
+  let unitPriceWithTaxes = 0;
+  rate.map((x) => {
+    unitPriceWithTaxes = unitPriceWithTaxes + unitPrice * (1 + x / 100);
+  });
 
   return {
     unitPrice,

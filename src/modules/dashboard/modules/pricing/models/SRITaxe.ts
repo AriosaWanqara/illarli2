@@ -1,7 +1,7 @@
 export interface SRITaxe {
   id: string;
   name: string;
-  percentage: null | string;
+  rate: string;
   description: string;
 }
 
