@@ -25,9 +25,12 @@ const paymentMethodValidator = useVuelidate(
 );
 
 const onPaymentMethodSubmit = () => {
+  paymentMethodValidator.value.$reset();
   paymentMethodValidator.value.$validate();
   if (!paymentMethodValidator.value.$error) {
     emits("payment-method-submit", props.paymentMethod);
+  } else {
+    alert(JSON.stringify(paymentMethodValidator.value.$errors));
   }
 };
 </script>

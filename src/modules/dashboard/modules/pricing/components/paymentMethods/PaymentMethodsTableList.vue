@@ -20,7 +20,7 @@ const { isPaymentMethodsLoading, paymentMethods, paymentMethodsHasError } =
 
 const headers: Header[] = [
   { text: "Nombre", value: "name" },
-  { text: "Codigo", value: "code" },
+  { text: "Codigo", value: "code_sri" },
   { text: "", value: "actions", width: 110 },
 ];
 

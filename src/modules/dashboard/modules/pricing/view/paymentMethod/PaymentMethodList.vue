@@ -58,9 +58,6 @@ const onPaymentMethodSubmit = (newPaymentMethod: PaymentMethod) => {
   if (newPaymentMethod.id) {
     updatePaymentMethodMutations.mutate(newPaymentMethod);
   } else {
-    newPaymentMethod.code_sri = "20";
-    newPaymentMethod.accounting_account =
-      "4fac6be4-0ece-43a5-a137-28f6ca5e9382";
     savePaymentMethodMutations.mutate(newPaymentMethod);
   }
 };
@@ -167,8 +164,8 @@ watch(savePaymentMethodMutations.isSuccess, () => {
             </div>
           </div>
           <PaymentMethodsTableList
-            :is-delete-loading="false"
-            :is-update-loading="false"
+            :is-delete-loading="deletePaymentMethodMutations.isPending.value"
+            :is-update-loading="updatePaymentMethodMutations.isPending.value"
             :payment-method="paymentMethod"
             @delete-payment-methods="onDelete"
             @update-payment-methods="onSelect"

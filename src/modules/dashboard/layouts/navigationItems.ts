@@ -115,7 +115,7 @@ const navigationsItems: menu[] = [
       },
       {
         title: "Formas de pago",
-        icon: "carbon:promote",
+        icon: "solar:hand-money-outline",
         to: "payment-method-list",
       },
     ],
