@@ -21,7 +21,7 @@ const usePaymentMethods = () => {
 
   watch(data, () => {
     if (data.value) {
-      paymentMethods.value = data.value;
+      paymentMethods.value = [...data.value];
     }
   });
 

@@ -4,7 +4,7 @@ const paymentMethodRules = {
   name: {
     required: helpers.withMessage("This field is required", required),
   },
-  code: {
+  code_sri: {
     required: helpers.withMessage("This field is required", required),
   },
 };

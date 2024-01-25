@@ -1,10 +1,16 @@
 import type { PaymentMethod } from "./PaymentMethod";
 import type { Promotion } from "./Promotion";
 import type { Rate } from "./Rate";
+import type { SRIPaymentMethods } from "./SRIPaymentMethods";
 import type { SRITaxeParent } from "./SRITaxe";
 
 export interface SRITaxesApiResponse {
   data: SRITaxeParent[];
+  links: Links;
+  meta: Meta;
+}
+export interface SRIPaymentMethodsApiResponse {
+  data: SRIPaymentMethods[];
   links: Links;
   meta: Meta;
 }

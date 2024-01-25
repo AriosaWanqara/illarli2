@@ -45,9 +45,9 @@ const operation = (type: boolean, index: number) => {
 <template>
   <VCol :cols="colNumber" class="py-0 tw-mt-3" v-for="item in numberOfInputs">
     <div class="tw-flex tw-flex-col tw-gap-1'">
-      <label for="" class="tw-text-gray-400 tw-font-semibold tw-uppercase"
-        >{{ props.labelMessage }}
-        <span v-if="props.isRequired" class="tw-text-red-300">*</span></label
+      <label for="" class="tw-text-gray-400 tw-font-semibold tw-uppercase">
+        {{ props.labelMessage
+        }}<span v-if="props.isRequired" class="tw-text-red-300">*</span></label
       >
       <VTextField
         :placeholder="placeholder"

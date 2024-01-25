@@ -1,21 +1,25 @@
 import api from "@/api/axios";
 import type { PaymentMethod } from "../../models/PaymentMethod";
 import { useMutation } from "@tanstack/vue-query";
+import type { PaymentMethodApiResponse } from "../../models/ApiResponse";
 
 const savePaymentMethod = async (
   paymentMethod: Partial<PaymentMethod>
 ): Promise<any> => {
-  const { data } = await api.post("/general/payment-methods", paymentMethod);
-  return data;
+  const { data } = await api.post<PaymentMethodApiResponse>(
+    "/general/payment-methods",
+    paymentMethod
+  );
+  return data.data;
 };
 const updatePaymentMethod = async (
   paymentMethod: Partial<PaymentMethod>
 ): Promise<any> => {
-  const { data } = await api.patch(
+  const { data } = await api.patch<PaymentMethodApiResponse>(
     `/general/payment-methods/${paymentMethod.id}`,
     paymentMethod
   );
-  return data;
+  return data.data;
 };
 const deletePaymentMethod = async (id: string): Promise<any> => {
   const { data } = await api.delete(`/general/payment-methods/${id}`);

@@ -113,6 +113,11 @@ const navigationsItems: menu[] = [
         icon: "carbon:promote",
         to: "promotions-list",
       },
+      {
+        title: "Formas de pago",
+        icon: "carbon:promote",
+        to: "payment-method-list",
+      },
     ],
   },
   {

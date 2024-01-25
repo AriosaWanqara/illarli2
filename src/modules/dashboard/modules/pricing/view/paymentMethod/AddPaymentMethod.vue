@@ -8,7 +8,7 @@ import { ref } from "vue";
 import { watch } from "vue";
 import type { AxiosError } from "axios";
 import { useRouter } from "vue-router";
-import useSRITaxes from "../../compossables/SRITaxe/useSRITaxes";
+import useSRIPaymentMethods from "../../compossables/SRI/useSRIPaymentMethods";
 
 interface props {
   propsPaymentMethod?: PaymentMethod;
@@ -19,7 +19,11 @@ const props = defineProps<props>();
 const { savePaymentMethodMutations, updatePaymentMethodMutations } =
   usePaymentMethodMutations();
 const { paymentMethodRules } = usePaymentMethodRules();
-const { SRITaxesDropdown, SRITaxesHasError, isSRITaxesLoading } = useSRITaxes();
+const {
+  SRIPaymentMethodsDropdown,
+  SRIPaymentMethodsHasError,
+  isSRIPaymentMethodsLoading,
+} = useSRIPaymentMethods();
 const paymentMethod = ref<PaymentMethod>({} as PaymentMethod);
 
 if (props.propsPaymentMethod) {
@@ -92,11 +96,11 @@ watch(updatePaymentMethodMutations.isSuccess, () => {
         <VCol cols="6">
           <VSelect
             label="SRI"
-            :items="SRITaxesDropdown"
+            :items="SRIPaymentMethodsDropdown"
             itemTitle="label"
             itemValue="value"
-            :loading="isSRITaxesLoading"
-            v-model="paymentMethod.code"
+            :loading="isSRIPaymentMethodsLoading"
+            v-model="paymentMethod.code_sri"
           />
         </VCol>
         <VCol cols="12">
