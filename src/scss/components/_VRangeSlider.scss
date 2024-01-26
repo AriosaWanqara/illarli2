@@ -1,8 +1,8 @@
-.v-slider__container > .v-slider-thumb .v-slider-thumb__surface {
+.custome .v-slider__container > .v-slider-thumb .v-slider-thumb__surface {
   background-color: rgba(var(--v-theme-secondary)) !important;
 }
 
-.v-slider__container > .v-slider-thumb ~ .v-slider-thumb {
+.custome .v-slider__container > .v-slider-thumb ~ .v-slider-thumb {
   & .v-slider-thumb__surface {
     background-color: rgba(var(--v-theme-primary)) !important;
   }

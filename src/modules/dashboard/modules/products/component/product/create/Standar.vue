@@ -34,7 +34,7 @@ const standarProduct = ref<StandarProduct>({
 } as StandarProduct);
 const productValidator = useVuelidate(standarPoductRules, standarProduct);
 const router = useRouter();
-const selectedRatesPercentage = ref<number[]>([]);
+const selectedRatesPercentage = ref<{ name: string; value: number }[]>([]);
 const showCalculator = ref(false);
 
 if (props.productProps) {
@@ -117,12 +117,14 @@ watch(updateStandarProductMutation.isSuccess, () => {
 
 const onProductCalculateHelp = () => {
   if (standarProduct.value.taxes.length > 0) {
-    let rates: number[] = [];
+    selectedRatesPercentage.value = [];
     standarProduct.value.taxes.map((x) => {
-      rates.push(parseFloat(x.rate));
+      selectedRatesPercentage.value.push({
+        name: x.name,
+        value: parseFloat(x.rate),
+      });
     });
     showCalculator.value = true;
-    selectedRatesPercentage.value = rates;
   }
 };
 </script>
@@ -173,68 +175,32 @@ const onProductCalculateHelp = () => {
                 </VSelect>
               </div>
             </VCol>
-            <VCol cols="6" md="3" class="py-1">
-              <div class="tw-flex tw-flex-col tw-gap-1">
-                <label
-                  for=""
-                  class="tw-font-semibold tw-text-gray-400 tw-uppercase"
+            <VCol cols="6" md="6" class="py-1">
+              <div class="tw-flex tw-items-end">
+                <div class="tw-flex tw-flex-col tw-gap-1 tw-flex-1">
+                  <label
+                    for=""
+                    class="tw-font-semibold tw-text-gray-400 tw-uppercase"
+                  >
+                    Precio con imp<span class="tw-text-red-300">*</span>
+                  </label>
+                  <VTextField
+                    hide-details
+                    placeholder="Precio"
+                    v-model="standarProduct.price"
+                  />
+                </div>
+                <VBtn
+                  @click="onProductCalculateHelp"
+                  color="info"
+                  density="default"
                 >
-                  Stock inicial<span class="tw-text-red-300">*</span>
-                </label>
-                <VTextField
-                  hide-details
-                  placeholder="Stock inicial"
-                  v-model="standarProduct.stock"
-                />
-              </div>
-            </VCol>
-            <VCol cols="6" md="3" class="py-1">
-              <div class="tw-flex tw-flex-col tw-gap-1">
-                <label
-                  for=""
-                  class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-                >
-                  Stock min
-                </label>
-                <VTextField
-                  hide-details
-                  placeholder="Stock minimo"
-                  v-model="standarProduct.stock_min"
-                />
+                  <p class="textPrimary">Calcular</p>
+                </VBtn>
               </div>
             </VCol>
           </VRow>
           <VRow>
-            <VCol cols="6" md="3" class="py-1">
-              <div class="tw-flex tw-flex-col tw-gap-1">
-                <label
-                  for=""
-                  class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-                >
-                  Costo inicial<span class="tw-text-red-300">*</span>
-                </label>
-                <VTextField
-                  hide-details
-                  placeholder="Costo de compra"
-                  v-model="standarProduct.cost"
-                />
-              </div>
-            </VCol>
-            <VCol cols="6" md="3" class="py-1">
-              <div class="tw-flex tw-flex-col tw-gap-1">
-                <label
-                  for=""
-                  class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-                >
-                  Precio con imp<span class="tw-text-red-300">*</span>
-                </label>
-                <VTextField
-                  hide-details
-                  placeholder="Precio"
-                  v-model="standarProduct.price"
-                />
-              </div>
-            </VCol>
             <VCol cols="12" class="py-0">
               <div class="tw-flex tw-justify-end tw-gap-2 tw-mt-[5px]">
                 <VBtn
@@ -243,9 +209,6 @@ const onProductCalculateHelp = () => {
                   color="borderColor"
                 >
                   <p class="textPrimary">cancelar</p>
-                </VBtn>
-                <VBtn @click="onProductCalculateHelp" color="info">
-                  <p class="textPrimary">Calcular</p>
                 </VBtn>
                 <VBtn
                   prepend-icon="mdi-plus"
@@ -265,7 +228,6 @@ const onProductCalculateHelp = () => {
     </VCardItem>
     <VDialog max-width="400" v-model="showCalculator">
       <PriceCalculatorComponent
-        :price="standarProduct.cost ?? 0"
         :rates="selectedRatesPercentage"
         @close="
           () => {

@@ -30,6 +30,20 @@ export const ProductRouter: RouteRecordRaw[] = [
       import("@dashboard/modules/products/views/brand/BrandsList.vue"),
   },
   {
+    path: "servicios",
+    name: "product-service-list",
+    meta: { permission: "list characteristics", name: "Serivicios" },
+    component: () =>
+      import("@dashboard/modules/products/views/services/ServiceList.vue"),
+  },
+  {
+    path: "servicios/add",
+    name: "product-service-add",
+    meta: { permission: "list characteristics", name: "Crear Serivicio" },
+    component: () =>
+      import("@dashboard/modules/products/views/services/AddService.vue"),
+  },
+  {
     path: "add",
     name: "product-add",
     redirect: { name: "product-add-standar" },

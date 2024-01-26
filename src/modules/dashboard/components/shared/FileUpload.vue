@@ -154,43 +154,41 @@ const onReOpenEditor = () => {
 </script>
 
 <template>
-  <div class="">
-    <file-pond
-      ref="pond"
-      :filePosterHeight="imagePreviewHeight"
-      :imagePreviewHeight="imagePreviewHeight"
-      :credits="''"
-      class="custome"
-      @click="onReOpenEditor"
-      :server="server"
-      :files="files"
-      :label-idle="props.labelTemplate"
-      accepted-file-types="image/jpeg, image/png"
-      v-on:updatefiles="handleLoad"
-    />
-    <div class="" v-if="props.isCorpCircular">
-      <PinturaEditorModal
-        :src="uploadBlob"
-        v-if="showEditor"
-        cropImageSelectionCornerStyle="circle"
-        v-bind="edit"
-        :imageCropAspectRatio="props.aspectFatio"
-        @pintura:hide="showEditor = false"
-        @pintura:process="handleProcess($event)"
-        :willRenderCanvas="willRenderCanvas"
-      ></PinturaEditorModal>
-    </div>
-    <div class="" v-else>
-      <PinturaEditorModal
-        :src="uploadBlob"
-        v-if="showEditor"
-        cropImageSelectionCornerStyle="circle"
-        v-bind="edit"
-        :imageCropAspectRatio="props.aspectFatio"
-        @pintura:hide="showEditor = false"
-        @pintura:process="handleProcess($event)"
-      ></PinturaEditorModal>
-    </div>
+  <file-pond
+    ref="pond"
+    :filePosterHeight="imagePreviewHeight"
+    :imagePreviewHeight="imagePreviewHeight"
+    :credits="''"
+    class="custome"
+    @click="onReOpenEditor"
+    :server="server"
+    :files="files"
+    :label-idle="props.labelTemplate"
+    accepted-file-types="image/jpeg, image/png"
+    v-on:updatefiles="handleLoad"
+  />
+  <div class="" v-if="props.isCorpCircular">
+    <PinturaEditorModal
+      :src="uploadBlob"
+      v-if="showEditor"
+      cropImageSelectionCornerStyle="circle"
+      v-bind="edit"
+      :imageCropAspectRatio="props.aspectFatio"
+      @pintura:hide="showEditor = false"
+      @pintura:process="handleProcess($event)"
+      :willRenderCanvas="willRenderCanvas"
+    ></PinturaEditorModal>
+  </div>
+  <div class="" v-else>
+    <PinturaEditorModal
+      :src="uploadBlob"
+      v-if="showEditor"
+      cropImageSelectionCornerStyle="circle"
+      v-bind="edit"
+      :imageCropAspectRatio="props.aspectFatio"
+      @pintura:hide="showEditor = false"
+      @pintura:process="handleProcess($event)"
+    ></PinturaEditorModal>
   </div>
 </template>
 

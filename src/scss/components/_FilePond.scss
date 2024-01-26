@@ -1,11 +1,13 @@
 .custome .filepond--root {
   font-family: Montserrat !important;
-  min-height: 100px !important;
+  min-height: 80px !important;
+  height: 80px !important;
   cursor: pointer;
   border: 1px solid !important;
   border-color: rgba(var(--v-theme-borderColor)) !important;
   overflow: hidden !important;
   border-radius: 6px;
+  margin-bottom: 0 !important;
 }
 
 .custome .filepond--drop-label {

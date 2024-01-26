@@ -1,3 +1,5 @@
+import type { Dropdown } from "@/models/Dropdown";
+
 export enum PriceCalculatorType {
   QUANTITY,
   MARKUP,
@@ -25,15 +27,36 @@ export const PriceCalculator = (
   }
 };
 
+export const reverseCalculator = (
+  price: number,
+  rate: { name: string; value: number }[]
+): Dropdown[] => {
+  let summary: Dropdown[] = [];
+  let sum = 0;
+  rate.map((x) => {
+    sum = sum + price * (x.value / 100);
+    summary.push({
+      label: x.name,
+      value: (price * (x.value / 100)).toFixed(2),
+    });
+  });
+  summary.unshift({
+    label: "P.U",
+    value: (price - sum).toFixed(2),
+  });
+  return summary;
+};
+
 const calculatePriceByQuantity = (
   cost: number,
   utility: number,
   rate: number[]
 ) => {
   let unitPrice = cost + utility;
-  let unitPriceWithTaxes = 0;
+  let unitPriceWithTaxes = unitPrice;
   rate.map((x) => {
-    unitPriceWithTaxes = unitPriceWithTaxes + unitPrice * (1 + x / 100);
+    let taxesValue = unitPrice * (x / 100);
+    unitPriceWithTaxes = unitPriceWithTaxes + taxesValue;
   });
   return {
     unitPrice,
@@ -47,9 +70,10 @@ const calculatePriceByMarkup = (
   rate: number[]
 ) => {
   let unitPrice = cost * (1 + utility / 100);
-  let unitPriceWithTaxes = 0;
+  let unitPriceWithTaxes = unitPrice;
   rate.map((x) => {
-    unitPriceWithTaxes = unitPriceWithTaxes + unitPrice * (1 + x / 100);
+    let taxesValue = unitPrice * (x / 100);
+    unitPriceWithTaxes = unitPriceWithTaxes + taxesValue;
   });
 
   return {
@@ -67,9 +91,10 @@ const calculatePriceByMargin = (
     utility = 99;
   }
   let unitPrice = cost / (1 - utility / 100);
-  let unitPriceWithTaxes = 0;
+  let unitPriceWithTaxes = unitPrice;
   rate.map((x) => {
-    unitPriceWithTaxes = unitPriceWithTaxes + unitPrice * (1 + x / 100);
+    let taxesValue = unitPrice * (x / 100);
+    unitPriceWithTaxes = unitPriceWithTaxes + taxesValue;
   });
 
   return {

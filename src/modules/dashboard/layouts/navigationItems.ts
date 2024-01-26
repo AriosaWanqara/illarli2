@@ -21,6 +21,11 @@ const navigationsItems: menu[] = [
     to: "dashboard-home",
   },
   {
+    title: "Servicios",
+    icon: "ep:service",
+    to: "product-service-list",
+  },
+  {
     title: "Productos",
     icon: "material-symbols:production-quantity-limits-outline-rounded",
     to: "#",

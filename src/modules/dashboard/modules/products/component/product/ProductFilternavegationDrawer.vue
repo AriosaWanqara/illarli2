@@ -138,7 +138,7 @@ const clearFilters = () => {
                 :step="1"
                 strict
                 hide-details
-                class="tw-px-3"
+                class="tw-px-3 custome"
               />
               <div class="tw-flex tw-items-center tw-gap-3 tw-mb-5 tw-mt-2">
                 <VTextField
