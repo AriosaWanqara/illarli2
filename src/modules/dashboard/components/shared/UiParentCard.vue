@@ -15,7 +15,11 @@ const hasSlot = (name: string) => {
 </script>
 
 <template>
-  <v-card :class="store.themeConfig.cardHasShadow ? 'box-card' : ''" flat>
+  <v-card
+    :class="store.themeConfig.cardHasShadow ? 'box-card' : ''"
+    :flat="isFlat"
+    variant="flat"
+  >
     <v-card-item
       class="py-0 px-0"
       v-if="hasSlot('actionBack') || hasSlot('action') || title"

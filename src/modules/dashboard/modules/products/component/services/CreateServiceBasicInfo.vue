@@ -2,6 +2,7 @@
 import FileUpload from "@/modules/dashboard/components/shared/FileUpload.vue";
 import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
 import { smallFormFileUploadTempla } from "@/modules/dashboard/const/FileUploadTemplate";
+import timerIcon from "@dashboard/assets/images/ic_service_timer.png";
 </script>
 
 <template>
@@ -49,9 +50,9 @@ import { smallFormFileUploadTempla } from "@/modules/dashboard/const/FileUploadT
       <VCol cols="12">
         <div class="tw-flex tw-flex-col container-style">
           <div class="tw-flex tw-justify-between tw-px-6 tw-items-center">
-            <div class="tw-flex tw-gap-1 tw-items-center">
+            <div class="tw-flex tw-gap-2 tw-items-center">
               <div class="tw-h-[48px] tw-w-[48px]">
-                <p>icono</p>
+                <img :src="timerIcon" alt="" />
               </div>
               <div class="tw-flex tw-flex-col tw-gap-1">
                 <p

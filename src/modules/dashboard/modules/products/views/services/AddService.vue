@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import ViewScaffold from "@/modules/dashboard/components/shared/ViewScaffold.vue";
 import CreateServiceBasicInfo from "../../component/services/CreateServiceBasicInfo.vue";
 import serviceBanner from "@dashboard/assets/images/service_banner.png";
+import CreateServiceForm from "../../component/services/CreateServiceForm.vue";
 </script>
 
 <template>
@@ -20,7 +22,9 @@ import serviceBanner from "@dashboard/assets/images/service_banner.png";
             </div>
           </div>
           <div class="tw-text-center tw-mt-5">
-            <h2 class="title-1">asd</h2>
+            <h2 class="title-1 tw-font-semibold">
+              Nombre del servicio:<span class="tw-font-medium">asdasd</span>
+            </h2>
           </div>
         </VCardTitle>
         <VCardItem class="py-0 px-0">
@@ -31,7 +35,11 @@ import serviceBanner from "@dashboard/assets/images/service_banner.png";
       </VCard>
     </div>
     <div class="tw-flex-1">
-      <h1>asd</h1>
+      <ViewScaffold>
+        <template #default>
+          <CreateServiceForm />
+        </template>
+      </ViewScaffold>
     </div>
   </div>
 </template>
