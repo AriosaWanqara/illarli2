@@ -106,7 +106,7 @@ watch(updateSubproductMutation.isSuccess, () => {
         <VRow class="mt-2">
           <VCol cols="6" class="py-1">
             <VTextField
-              label="name"
+              placeholder="name"
               v-model="product.name"
               :error-messages="
                 productValidator.name.$errors.map((x) => x.$message.toString())
@@ -115,16 +115,16 @@ watch(updateSubproductMutation.isSuccess, () => {
           </VCol>
 
           <VCol cols="6" class="py-1">
-            <VTextField label="unit_id**" v-model="product.unit_id" />
+            <VTextField placeholder="unit_id**" v-model="product.unit_id" />
           </VCol>
           <VCol cols="6" class="py-1">
-            <VTextField label="price" v-model="product.price" />
+            <VTextField placeholder="price" v-model="product.price" />
           </VCol>
           <VCol cols="6" class="py-1">
-            <VTextField label="amount" v-model="product.amount" />
+            <VTextField placeholder="amount" v-model="product.amount" />
           </VCol>
           <VCol cols="6" class="py-1">
-            <VTextField label="sku" v-model="product.sku" />
+            <VTextField placeholder="sku" v-model="product.sku" />
           </VCol>
           <VCol cols="6" class="py-1">
             <VSelect
@@ -133,7 +133,7 @@ watch(updateSubproductMutation.isSuccess, () => {
               :items="standarProductsDropdown"
               item-title="label"
               item-value="value"
-              label="parent"
+              placeholder="parent"
               v-model="product.parent_product_id"
             />
           </VCol>

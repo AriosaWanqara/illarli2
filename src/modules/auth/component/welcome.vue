@@ -26,8 +26,8 @@ const onCarouselUpdate = (activeImage: any) => {
       </p>
       <div class="tw-mt-2 tw-flex tw-gap-2">
         <div
-          class="tw-h-[6px] tw-w-[6px] bg-primary tw-rounded-full tw-transition-all tw-duration-200"
-          :class="index == imageShowed ? 'tw-scale-150' : ''"
+          class="tw-h-[6px] tw-w-[6px] tw-rounded-full tw-transition-all tw-duration-200 tw-border-[1px] border-primary"
+          :class="index == imageShowed ? 'tw-scale-150 bg-primary' : ''"
           v-for="(dot, index) in items"
         ></div>
       </div>
