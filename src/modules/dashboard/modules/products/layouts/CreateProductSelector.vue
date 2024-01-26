@@ -10,6 +10,7 @@ import productBanerImg from "@dashboard/assets/images/product-creat.png";
 import { ref } from "vue";
 import ProductTypeCard from "../component/product/ProductTypeCard.vue";
 import useCreateProduct from "../composables/product/useCreateProduct";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 const myFiles: any[] = [];
 
@@ -88,10 +89,7 @@ const ProductType = ref([
         <FormSeccion title="Descripcion" class="tw-mt-2">
           <VRow>
             <VCol cols="12" class="py-1">
-              <div class="tw-flex tw-flex-col tw-gap-2">
-                <label for="" class="tw-text-gray-400 tw-uppercase">
-                  nombre del producto<span class="tw-text-red-300">*</span>
-                </label>
+              <InputSection label-message="nombre del producto" required>
                 <VTextField
                   variant="solo-filled"
                   hide-details
@@ -99,13 +97,10 @@ const ProductType = ref([
                   placeholder="Ingrese el nombre del producto"
                   :error-messages="nameError"
                 />
-              </div>
+              </InputSection>
             </VCol>
             <VCol cols="12" class="py-1">
-              <div class="tw-flex tw-flex-col tw-gap-2">
-                <label for="" class="tw-text-gray-400 tw-uppercase"
-                  >IMAGEN del producto</label
-                >
+              <InputSection label-message="IMAGEN del producto">
                 <FileUpload
                   :aspect-fatio="1"
                   :image-preview-height="100"
@@ -114,7 +109,7 @@ const ProductType = ref([
                   :img-name="''"
                   :files="myFiles"
                 />
-              </div>
+              </InputSection>
             </VCol>
           </VRow>
         </FormSeccion>

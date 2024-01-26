@@ -4,6 +4,7 @@ import useCashdrawerRules from "../../composables/cashdrawer/useCashdrawerRules"
 import useDocumentTypes from "../../composables/documentType/useDocumentTypes";
 import useSubsidiaries from "../../composables/subsidiary/useSubsidiaries";
 import type { Cashdrawer } from "../../models/Cashdrawer";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   cashdrawer: Cashdrawer;
@@ -30,24 +31,16 @@ const onCashDrawerSubmit = () => {
 <template>
   <VRow class="mt-1">
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Codigo de la caja <span class="tw-text-red-300">*</span></label
-        >
-
+      <InputSection label-message="Codigo de la caja " required>
         <VTextField
           placeholder="codigo"
           v-model="props.cashdrawer.code"
           variant="solo-filled"
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Sucursal de la caja <span class="tw-text-red-300">*</span></label
-        >
-
+      <InputSection label-message="Sucursal de la caja" required>
         <VSelect
           variant="solo-filled"
           flat
@@ -57,16 +50,11 @@ const onCashDrawerSubmit = () => {
           :items="subsidiaryDropdown"
           item-title="label"
           item-value="value"
-        >
-        </VSelect>
-      </div>
+        />
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Tipo de documento <span class="tw-text-red-300">*</span></label
-        >
-
+      <InputSection label-message="Tipo de documento" required>
         <VSelect
           variant="solo-filled"
           flat
@@ -78,23 +66,18 @@ const onCashDrawerSubmit = () => {
           :items="documentTypeDropdown"
           item-title="label"
           item-value="value"
-        >
-        </VSelect>
-      </div>
+        />
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Observacion</label
-        >
-
+      <InputSection label-message="Observacion">
         <VTextarea
           variant="solo-filled"
           flat
           placeholder="observacion"
           v-model="props.cashdrawer.observation"
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12">
       <div class="tw-flex tw-justify-end">

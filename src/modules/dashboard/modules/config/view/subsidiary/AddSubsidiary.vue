@@ -8,6 +8,7 @@ import useSubsidiariesMutations from "../../composables/subsidiary/useSubsidiari
 import { watch } from "vue";
 import { useRouter } from "vue-router";
 import type { AxiosError } from "axios";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 const { subsidiaryRules } = useSubsidiaryRules();
 const brand = ref<Subsidiary>({} as Subsidiary);
@@ -53,35 +54,23 @@ watch(saveSubsidiaryMutations.isSuccess, () => {
     </template>
     <template #default>
       <VRow class="mt-1">
-        <VCol cols="12" class="py-0 tw-mb-4">
-          <VDivider></VDivider>
-        </VCol>
         <VCol cols="12" md="6" class="py-0">
-          <div class="tw-flex tw-flex-col tw-gap-1">
-            <label for="" class="tw-font-semibold"> Nombre comercial*</label>
+          <InputSection labelMessage="Nombre comercial" required>
             <VTextField
               placeholder="business name"
               v-model="brand.businessname"
             />
-          </div>
+          </InputSection>
         </VCol>
         <VCol cols="12" md="6" class="py-0">
-          <div class="tw-flex tw-flex-col tw-gap-1">
-            <label for="" class="tw-font-semibold">
-              Direccion de la sucursal*</label
-            >
-
+          <InputSection labelMessage="Direccion de la sucursal" required>
             <VTextField placeholder="address" v-model="brand.address" />
-          </div>
+          </InputSection>
         </VCol>
         <VCol cols="12" md="6" class="py-0">
-          <div class="tw-flex tw-flex-col tw-gap-1">
-            <label for="" class="tw-font-semibold">
-              Telefono de la sucursal</label
-            >
-
+          <InputSection labelMessage="Telefono de la sucursal">
             <VTextField placeholder="phone" v-model="brand.phone" />
-          </div>
+          </InputSection>
         </VCol>
         <VCol cols="12" class="py-1">
           <VBtn

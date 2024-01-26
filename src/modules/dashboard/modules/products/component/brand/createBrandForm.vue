@@ -2,6 +2,7 @@
 import useVuelidate from "@vuelidate/core";
 import useBrandRules from "../../composables/brand/useBrandRules";
 import type { Brand } from "../../models/Brand";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   brand: Brand;
@@ -29,23 +30,17 @@ const onBrandSubmit = () => {
 <template>
   <VRow class="mt-1">
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-          >Nombre de la marca <span class="tw-text-red-300">*</span></label
-        >
+      <InputSection label-message="Nombre de la marca" required>
         <VTextField
           placeholder="nombre"
           v-model="props.brand.name"
           variant="solo-filled"
           flat
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-          >Descripcion de la marca</label
-        >
+      <InputSection label-message="Descripcion de la marca">
         <VTextarea
           rows="4"
           variant="solo-filled"
@@ -53,7 +48,7 @@ const onBrandSubmit = () => {
           placeholder="Observacion"
           v-model="props.brand.observation"
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
       <div class="tw-w-full tw-flex tw-justify-end">

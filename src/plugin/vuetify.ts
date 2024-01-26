@@ -42,6 +42,9 @@ export default createVuetify({
     VCard: {
       rounded: "md",
     },
+    VCol: {
+      class: "py-1",
+    },
     VBtn: {
       density: "comfortable",
       variant: "tonal",
@@ -55,6 +58,7 @@ export default createVuetify({
       density: "compact",
       color: "primary",
       flat: true,
+      hideDetails: true,
     },
     VAutocomplete: {
       variant: "solo-filled",
@@ -73,6 +77,7 @@ export default createVuetify({
       density: "compact",
       color: "primary",
       flat: true,
+      hideDetails: true,
     },
     VListItem: {
       minHeight: "37px",

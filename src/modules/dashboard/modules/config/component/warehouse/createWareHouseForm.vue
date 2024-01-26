@@ -4,6 +4,7 @@ import useSubsidiaries from "../../composables/subsidiary/useSubsidiaries";
 import useWareHouseRules from "../../composables/warehouse/useWareHouseRules";
 import useWareHouseTypes from "../../composables/warehouse/useWareHouseTypes";
 import type { WareHouse } from "../../models/WareHouse";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   isLoading: boolean;
@@ -30,10 +31,7 @@ const onWareHouseSubmit = () => {
 <template>
   <VRow>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Tipo de bodega</label
-        >
+      <InputSection label-message="Tipo de bodega" required>
         <VSelect
           :items="wareHouseTypes"
           item-title="name"
@@ -46,39 +44,25 @@ const onWareHouseSubmit = () => {
             <p>Cargando...</p>
           </template>
         </VSelect>
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Nombre de la bodega</label
-        >
-
+      <InputSection label-message="Nombre de la bodega" required>
         <VTextField label="nombre" v-model="props.wareHouse.name" />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Codigo de bodega</label
-        >
-
+      <InputSection label-message="Codigo de bodega">
         <VTextField label="code" v-model="props.wareHouse.code" />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Direccion de bodega</label
-        >
+      <InputSection label-message="Direccion de bodega">
         <VTextField label="address" v-model="props.wareHouse.address" />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Sucursal de bodega</label
-        >
+      <InputSection label-message="Sucursal de bodega" required>
         <VSelect
           label="subsidiary"
           :loading="isSubsidiariesLoading"
@@ -91,7 +75,7 @@ const onWareHouseSubmit = () => {
             <p>Cargando...</p>
           </template>
         </VSelect>
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
       <div class="tw-flex tw-justify-end">

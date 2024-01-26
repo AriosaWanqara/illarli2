@@ -4,6 +4,7 @@ import { ref } from "vue";
 import usePermissions from "../../composables/permission/usePermissions";
 import useRolRules from "../../composables/rol/useRolRules";
 import type { RolToSave } from "../../models/Rol";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   isLoading: boolean;
@@ -31,19 +32,13 @@ const onRolSubmit = () => {
 
 <template>
   <VRow class="mt-1">
-    <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400"
-          >Nombre del rol</label
-        >
+    <VCol cols="12">
+      <InputSection label-message="Nombre del rol" required>
         <VTextField placeholder="name" v-model="rolToSave.name" />
-      </div>
+      </InputSection>
     </VCol>
-    <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400"
-          >Permisos para el rol</label
-        >
+    <VCol cols="12">
+      <InputSection label-message="Permisos para el rol" required>
         <VSelect
           :items="permissionDropdown"
           item-title="label"
@@ -54,7 +49,7 @@ const onRolSubmit = () => {
           v-model="rolToSave.permissions"
         >
         </VSelect>
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12">
       <div class="tw-flex tw-justify-end">

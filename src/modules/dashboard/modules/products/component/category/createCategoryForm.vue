@@ -4,6 +4,7 @@ import useCategoryRules from "../../composables/category/useCategoryRules";
 import type { Category } from "../../models/Category";
 import FileUpload from "@/modules/dashboard/components/shared/FileUpload.vue";
 import { smallFormFileUploadTempla } from "@/modules/dashboard/const/FileUploadTemplate";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   isLoading: boolean;
@@ -53,22 +54,16 @@ const handleLoad = (img: string) => {
 <template>
   <VRow>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-          >Nombre de la categoria <span class="tw-text-red-300">*</span>
-        </label>
+      <InputSection label-message="Nombre de la categoria" required>
         <VTextField
           placeholder="nombre"
           v-model="props.category.name"
           variant="solo-filled"
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1 tw-text-gray-400">
-        <label class="tw-font-semibold tw-uppercase"
-          >Descripcion de la categoria</label
-        >
+      <InputSection label-message="Descripcion de la categoria">
         <VTextarea
           rows="4"
           flat
@@ -77,7 +72,7 @@ const handleLoad = (img: string) => {
           placeholder="descripcion"
           v-model="props.category.description"
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
       <FileUpload

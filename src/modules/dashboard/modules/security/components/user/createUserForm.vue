@@ -7,6 +7,7 @@ import type { Dropdown } from "@/models/Dropdown";
 import { watch } from "vue";
 import useUserRules from "../../composables/user/useUserRules";
 import useVuelidate from "@vuelidate/core";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   isLoding: boolean;
@@ -74,58 +75,43 @@ const onUserSubmit = () => {
 <template>
   <VRow class="mt-1">
     <VCol cols="12" md="6" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Nombre del usuario
-        </label>
+      <InputSection label-message="Nombre del usuario" required>
         <VTextField
           variant="solo-filled"
           placeholder="name"
           v-model="userToSave.name"
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Correo del usuario
-        </label>
+      <InputSection label-message="Correo del usuario" required>
         <VTextField
           variant="solo-filled"
           placeholder="email"
           v-model="userToSave.email"
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Username del usuario
-          <VTextField
-            variant="solo-filled"
-            placeholder="username"
-            v-model="userToSave.username"
-          />
-        </label>
-      </div>
+      <InputSection label-message="Username del usuario" required>
+        <VTextField
+          variant="solo-filled"
+          placeholder="username"
+          v-model="userToSave.username"
+        />
+      </InputSection>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Contraseña del usuario
-          <VTextField
-            variant="solo-filled"
-            placeholder="contraseña"
-            v-model="userToSave.password"
-          />
-        </label>
-      </div>
+      <InputSection label-message="Contraseña del usuario" required>
+        <VTextField
+          variant="solo-filled"
+          placeholder="contraseña"
+          v-model="userToSave.password"
+        />
+      </InputSection>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Rol del usuario
-        </label>
+      <InputSection label-message="Rol del usuario" required>
         <VSelect
           variant="solo-filled"
           flat
@@ -141,13 +127,10 @@ const onUserSubmit = () => {
             <p v-if="isRolesLoading">cargando...</p>
           </template>
         </VSelect>
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" md="6" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Sucursal del usuario
-        </label>
+      <InputSection label-message="Sucursal del usuario" required>
         <VSelect
           variant="solo-filled"
           flat
@@ -163,13 +146,10 @@ const onUserSubmit = () => {
             <p v-if="isSubsidiariesLoading">cargando...</p>
           </template>
         </VSelect>
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" md="6" class="py-0" v-if="userToSave.subsidiariesId">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400">
-          Caja del usuario
-        </label>
+      <InputSection label-message="Caja del usuario" required>
         <VSelect
           placeholder="Caja"
           :items="cashDrawerDropdown"
@@ -183,7 +163,7 @@ const onUserSubmit = () => {
             <p v-if="isSubsidiariesLoading">cargando...</p>
           </template>
         </VSelect>
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12">
       <div class="tw-flex tw-justify-end">
