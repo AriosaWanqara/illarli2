@@ -3,6 +3,29 @@ import FileUpload from "@/modules/dashboard/components/shared/FileUpload.vue";
 import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
 import { smallFormFileUploadTempla } from "@/modules/dashboard/const/FileUploadTemplate";
 import timerIcon from "@dashboard/assets/images/ic_service_timer.png";
+import { ref } from "vue";
+
+const time = ref(0);
+
+function timeConversion(duration: number) {
+  const portions: string[] = [];
+  let durationInMs = duration * 60 * 1000;
+  const msInHour = 1000 * 60 * 60;
+  const hours = Math.trunc(durationInMs / msInHour);
+  if (hours > 0) {
+    portions.push(hours + "Horas");
+    durationInMs = durationInMs - hours * msInHour;
+  }
+
+  const msInMinute = 1000 * 60;
+  const minutes = Math.trunc(durationInMs / msInMinute);
+  if (minutes > 0) {
+    portions.push(minutes + "Min");
+    durationInMs = durationInMs - minutes * msInMinute;
+  }
+
+  return portions.join(" ");
+}
 </script>
 
 <template>
@@ -72,7 +95,7 @@ import timerIcon from "@dashboard/assets/images/ic_service_timer.png";
                   Seleccionado
                 </p>
                 <h2 class="tw-font-semibold tw-capitalize tw-text-base">
-                  1 Hora 30 Min.
+                  {{ time ? timeConversion(time) : "0 Min" }}.
                 </h2>
               </div>
             </div>
@@ -80,6 +103,9 @@ import timerIcon from "@dashboard/assets/images/ic_service_timer.png";
           <div class="tw-px-2">
             <v-slider
               hideDetails
+              max="1440"
+              v-model="time"
+              step="5"
               color="primary"
               track-size="2"
               trackColor="borderColor"
