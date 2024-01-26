@@ -8,6 +8,7 @@ import providerImg from "@dashboard/assets/images/ic_provider.png";
 import { personRolEnum } from "../constant/personRolEnum";
 import type { Provider } from "../models/Provider";
 import PersonTypeCard from "./PersonTypeCard.vue";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   person: Provider;
@@ -74,13 +75,7 @@ const personType = [
         <FormSeccion title="Información General" border class="tw-mt-2">
           <VRow>
             <VCol class="py-0" cols="12">
-              <div class="tw-flex tw-flex-col tw-gap-1 tw-mt-1">
-                <label
-                  for=""
-                  class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-                >
-                  TIPO DE IDENTIFICACIÓN<span class="tw-text-red-300">*</span>
-                </label>
+              <InputSection label-message="TIPO DE IDENTIFICACIÓN" required>
                 <VSelect
                   hide-details
                   :items="personTypeBasicMapping"
@@ -89,39 +84,27 @@ const personType = [
                   v-model="props.person.identity_type"
                   placeholder="Seleccione un tipo de identificación"
                 />
-              </div>
+              </InputSection>
             </VCol>
             <VCol class="py-0" cols="12">
-              <div class="tw-flex tw-flex-col tw-gap-1 tw-mt-1">
-                <label
-                  for=""
-                  class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-                >
-                  N. de Documento<span class="tw-text-red-300">*</span>
-                </label>
+              <InputSection label-message="N. de Documento" required>
                 <VTextField
                   hide-details
                   :error-messages="props.identityError"
                   v-model="props.person.identity"
                   placeholder="Seleccione un tipo de identificación"
                 />
-              </div>
+              </InputSection>
             </VCol>
             <VCol class="py-0" cols="12">
-              <div class="tw-flex tw-flex-col tw-gap-1 tw-mt-1">
-                <label
-                  for=""
-                  class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-                >
-                  Nombre completo<span class="tw-text-red-300">*</span>
-                </label>
+              <InputSection label-message="Nombre completo" required>
                 <VTextField
                   hide-details
                   :error-messages="props.nameError"
                   v-model="props.person.name"
                   placeholder="Seleccione un tipo de identificación"
                 />
-              </div>
+              </InputSection>
             </VCol>
           </VRow>
         </FormSeccion>

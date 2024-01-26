@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import { computed, ref } from "vue";
+import InputSection from "./InputSection.vue";
 
 interface props {
   errorMessage: string;
@@ -44,11 +45,10 @@ const operation = (type: boolean, index: number) => {
 
 <template>
   <VCol :cols="colNumber" class="py-0 tw-mt-3" v-for="item in numberOfInputs">
-    <div class="tw-flex tw-flex-col tw-gap-1'">
-      <label for="" class="tw-text-gray-400 tw-font-semibold tw-uppercase">
-        {{ props.labelMessage
-        }}<span v-if="props.isRequired" class="tw-text-red-300">*</span></label
-      >
+    <InputSection
+      :label-message="props.labelMessage"
+      :required="props.isRequired"
+    >
       <VTextField
         :placeholder="placeholder"
         v-model="valueOfInputs[item - 1]"
@@ -76,7 +76,7 @@ const operation = (type: boolean, index: number) => {
           </div>
         </template>
       </VTextField>
-    </div>
+    </InputSection>
   </VCol>
 </template>
 

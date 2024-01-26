@@ -2,6 +2,7 @@
 import useVuelidate from "@vuelidate/core";
 import useRateRules from "../../compossables/rate/useRateRules";
 import type { Rate } from "../../models/Rate";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   rate: Rate;
@@ -24,12 +25,8 @@ const onRateSubmit = () => {
 
 <template>
   <VRow class="mt-1">
-    <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1 tw-mb-6">
-        <label for="" class="tw-font-semibold tw-text-gray-400"
-          >Caracteristicas de la tarifa
-          <span class="tw-text-red-300">*</span></label
-        >
+    <VCol cols="12" class="py-1">
+      <InputSection label-message="Caracteristicas de la tarifa" required>
         <div class="tw-flex tw-gap-2 tw-flex-col md:tw-flex-row">
           <v-btn-toggle
             v-model="props.rate.operation"
@@ -50,45 +47,38 @@ const onRateSubmit = () => {
             <v-btn value="1" variant="tonal">En Valor</v-btn>
           </v-btn-toggle>
         </div>
-      </div>
+      </InputSection>
     </VCol>
-    <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400"
-          >Nombre de la tarifa <span class="tw-text-red-300">*</span></label
-        >
+    <VCol cols="12" class="py-1">
+      <InputSection label-message="Nombre de la tarifa" required>
         <VTextField
           variant="solo-filled"
           placeholder="name"
+          hide-details
           v-model="props.rate.name"
         />
-      </div>
+      </InputSection>
     </VCol>
-    <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400"
-          >Valor de la tarifa <span class="tw-text-red-300">*</span></label
-        >
+    <VCol cols="12" class="py-1">
+      <InputSection label-message="Valor de la tarifa" required>
         <VTextField
           variant="solo-filled"
           placeholder="value"
           type="number"
+          hide-details
           v-model="props.rate.value"
         />
-      </div>
+      </InputSection>
     </VCol>
-    <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400"
-          >Descripcion de la tarifa</label
-        >
+    <VCol cols="12" class="py-1">
+      <InputSection label-message="Descripcion de la tarifa">
         <VTextarea
           variant="solo-filled"
           placeholder="description"
           flat
           v-model="props.rate.description"
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12">
       <div class="tw-flex tw-justify-end">

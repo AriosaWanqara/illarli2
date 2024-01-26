@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 import { ref } from "vue";
 const state = ref(1);
 </script>
@@ -7,36 +8,30 @@ const state = ref(1);
 <template>
   <div>
     <FormSeccion title="Datos específicos" border>
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-          >DETALLE DEL SERVICIO
-        </label>
+      <InputSection label-message="DETALLE DEL SERVICIO">
         <VTextarea placeholder="Ingrese detalle del servicio" />
-      </div>
+      </InputSection>
     </FormSeccion>
     <FormSeccion title="Valor - Impuestos" border>
       <VRow>
         <VCol cols="6">
-          <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-            >impuesto<span class="tw-text-red-300">*</span>
-          </label>
-          <VSelect placeholder="seleccione los impuestos" />
+          <InputSection label-message="impuesto" required>
+            <VSelect placeholder="seleccione los impuestos" />
+          </InputSection>
         </VCol>
         <VCol cols="6">
-          <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-            >precio FINAL con impUESTOS<span class="tw-text-red-300">*</span>
-          </label>
-          <VTextField placeholder="Ingrese el precio" />
+          <InputSection label-message="precio FINAL con impUESTOS" required>
+            <VTextField placeholder="Ingrese el precio" />
+          </InputSection>
         </VCol>
       </VRow>
     </FormSeccion>
     <FormSeccion title="Mostrar en Ventas" border>
       <VRow>
         <VCol cols="12">
-          <div class="tw-flex tw-flex-col tw-gap-1">
-            <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-              >¿Este producto se encuentra habilitado para ventas?
-            </label>
+          <InputSection
+            label-message="¿Este producto se encuentra habilitado para ventas?"
+          >
             <v-btn-toggle
               color="primary"
               mandatory
@@ -46,7 +41,7 @@ const state = ref(1);
               <v-btn value="0" variant="tonal">Desactivado</v-btn>
               <v-btn value="1" variant="tonal">Activado</v-btn>
             </v-btn-toggle>
-          </div>
+          </InputSection>
         </VCol>
         <VCol cols="12">
           <div class="tw-flex tw-justify-end tw-gap-2">

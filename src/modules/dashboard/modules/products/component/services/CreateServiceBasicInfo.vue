@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import FileUpload from "@/modules/dashboard/components/shared/FileUpload.vue";
 import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 import { smallFormFileUploadTempla } from "@/modules/dashboard/const/FileUploadTemplate";
 import timerIcon from "@dashboard/assets/images/ic_service_timer.png";
 import { ref } from "vue";
@@ -32,26 +33,17 @@ function timeConversion(duration: number) {
   <FormSeccion title="Descripcion" border>
     <VRow>
       <VCol cols="12" class="py-1">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase">
-            Nombre del servicio<sapn class="tw-text-red-300">*</sapn>
-          </label>
+        <InputSection label-message="Nombre del servicio" required>
           <VTextField placeholder="Ingrese el nombre" hideDetails />
-        </div>
+        </InputSection>
       </VCol>
       <VCol cols="12" class="py-1">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase">
-            codigo<sapn class="tw-text-red-300">*</sapn>
-          </label>
+        <InputSection label-message="codigo" required>
           <VTextField placeholder="Ingrese el codigo" hideDetails />
-        </div>
+        </InputSection>
       </VCol>
       <VCol cols="12" class="py-1">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase">
-            imagen del servicio
-          </label>
+        <InputSection label-message="imagen del servicio">
           <FileUpload
             :files="[]"
             :imagePreviewHeight="50"
@@ -60,15 +52,12 @@ function timeConversion(duration: number) {
             :aspectFatio="1"
             :isCorpCircular="false"
           />
-        </div>
+        </InputSection>
       </VCol>
       <VCol cols="12" class="py-1">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase">
-            seccion/categoria
-          </label>
+        <InputSection label-message="seccion/categoria">
           <VSelect placeholder="Seleccione una categoria" hideDetails />
-        </div>
+        </InputSection>
       </VCol>
       <VCol cols="12">
         <div class="tw-flex tw-flex-col container-style">

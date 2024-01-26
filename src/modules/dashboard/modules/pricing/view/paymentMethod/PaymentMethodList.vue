@@ -130,7 +130,7 @@ watch(savePaymentMethodMutations.isSuccess, () => {
   <FormListContainer>
     <template #form>
       <ViewScaffold
-        :title="paymentMethod.id ? 'Actualizar Pago' : 'Crear Pago'"
+        :title="paymentMethod.id ? 'Actualizar Pago' : 'Crear Forma de Pago'"
       >
         <template #default>
           <div class="tw-mb-3"></div>

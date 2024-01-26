@@ -17,6 +17,7 @@ import type { Brand } from "../../../models/Brand";
 import type { Product } from "../../../models/products/Product";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
 import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   productProps?: Product;
@@ -141,13 +142,7 @@ const onProductCalculateHelp = () => {
       <FormSeccion title="Valor-impuestos" class="tw-mt-2">
         <VRow>
           <VCol cols="6" md="6" class="py-1">
-            <div class="tw-flex tw-flex-col tw-gap-1">
-              <label
-                for=""
-                class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-              >
-                Impuesto<span class="tw-text-red-300">*</span>
-              </label>
+            <InputSection label-message="Impuesto" required>
               <VSelect
                 hide-details
                 item-value="id"
@@ -174,17 +169,11 @@ const onProductCalculateHelp = () => {
                   </span>
                 </template>
               </VSelect>
-            </div>
+            </InputSection>
           </VCol>
           <VCol cols="6" md="6" class="py-1">
-            <div class="tw-flex tw-items-end">
-              <div class="tw-flex tw-flex-col tw-gap-1 tw-flex-1">
-                <label
-                  for=""
-                  class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-                >
-                  Precio con imp<span class="tw-text-red-300">*</span>
-                </label>
+            <InputSection label-message="Precio con imp" required>
+              <div class="tw-flex">
                 <VTextField
                   hide-details
                   :error-messages="
@@ -195,15 +184,15 @@ const onProductCalculateHelp = () => {
                   placeholder="Precio"
                   v-model="standarProduct.price"
                 />
+                <VBtn
+                  @click="onProductCalculateHelp"
+                  color="info"
+                  density="default"
+                >
+                  <p class="textPrimary">Calcular</p>
+                </VBtn>
               </div>
-              <VBtn
-                @click="onProductCalculateHelp"
-                color="info"
-                density="default"
-              >
-                <p class="textPrimary">Calcular</p>
-              </VBtn>
-            </div>
+            </InputSection>
           </VCol>
         </VRow>
         <VRow>

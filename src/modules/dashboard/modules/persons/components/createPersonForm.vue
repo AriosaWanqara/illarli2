@@ -7,6 +7,7 @@ import { allCivilStatusEnum } from "../constant/civilStatusEnum";
 import { allGenders } from "../constant/genderEnum";
 import type { Provider } from "../models/Provider";
 import useRates from "../../pricing/compossables/rate/useRates";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   person: Provider;
@@ -37,10 +38,7 @@ const onPersonSubmit = () => {
   <FormSeccion title="Datos General" border>
     <VRow>
       <VCol cols="12" md="6" class="py-0" v-if="showBasic">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-font-semibold tw-text-gray-400"
-            >Nombre de la persona</label
-          >
+        <InputSection label-message="Nombre de la persona" required>
           <VTextField
             variant="solo-filled"
             placeholder="Nombre"
@@ -49,13 +47,10 @@ const onPersonSubmit = () => {
             "
             v-model="props.person.name"
           />
-        </div>
+        </InputSection>
       </VCol>
       <VCol cols="12" md="6" class="py-0" v-if="showBasic">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-font-semibold tw-text-gray-400"
-            >Documento de identificacion</label
-          >
+        <InputSection label-message="Documento de identificacion" required>
           <VTextField
             variant="solo-filled"
             placeholder="identity"
@@ -64,13 +59,10 @@ const onPersonSubmit = () => {
             "
             v-model="props.person.identity"
           />
-        </div>
+        </InputSection>
       </VCol>
       <VCol cols="12" class="py-0 tw-mt-3">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-            >dirección del cliente
-          </label>
+        <InputSection label-message="dirección del cliente">
           <VTextarea
             variant="solo-filled"
             hide-details
@@ -80,7 +72,7 @@ const onPersonSubmit = () => {
             "
             v-model="props.person.address"
           />
-        </div>
+        </InputSection>
       </VCol>
       <RecursiveInput
         :col-number="12"
@@ -110,10 +102,7 @@ const onPersonSubmit = () => {
       />
 
       <VCol cols="12" md="6" class="py-0 tw-mt-3" v-if="showExtra">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-font-semibold tw-text-gray-400"
-            >Estado civil</label
-          >
+        <InputSection label-message="Estado civil">
           <VSelect
             variant="solo-filled"
             flat
@@ -129,13 +118,10 @@ const onPersonSubmit = () => {
             item-title="label"
             item-value="value"
           />
-        </div>
+        </InputSection>
       </VCol>
       <VCol cols="12" md="6" class="py-0 tw-mt-3" v-if="showExtra">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-font-semibold tw-text-gray-400"
-            >Genero de la persona</label
-          >
+        <InputSection label-message="Genero de la persona">
           <VSelect
             variant="solo-filled"
             flat
@@ -149,17 +135,14 @@ const onPersonSubmit = () => {
             item-title="label"
             item-value="value"
           />
-        </div>
+        </InputSection>
       </VCol>
     </VRow>
   </FormSeccion>
   <FormSeccion title="Tarifa" border class="tw-mt-3">
     <VRow class="py-0">
       <VCol cols="12" class="py-0">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-text-gray-400 tw-font-semibold tw-uppercase">
-            Tarifa
-          </label>
+        <InputSection label-message="Tarifa">
           <VSelect
             placeholder="Seleccione una tarifa"
             v-model="props.person.rate"
@@ -170,7 +153,7 @@ const onPersonSubmit = () => {
             item-title="name"
             item-value="id"
           />
-        </div>
+        </InputSection>
       </VCol>
       <VCol cols="12" class="py-0 tw-mt-8">
         <div class="tw-flex tw-justify-end">

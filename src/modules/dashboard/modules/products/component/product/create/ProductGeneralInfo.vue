@@ -8,6 +8,7 @@ import useCategoryMutations from "../../../composables/category/useCategoryMutat
 import { watch } from "vue";
 import useBrands from "../../../composables/brand/useBrands";
 import useBrandsMutations from "../../../composables/brand/useBrandsMutations";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 const { categories, isCategoriesLoading } = useCategories();
 const { brands, isBrandsLoading } = useBrands();
@@ -88,10 +89,7 @@ watch(saveBrandMutation.isError, () => {
   <FormSeccion title="Información General">
     <VRow class="py-0">
       <VCol class="py-1" cols="12">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-uppercase tw-font-semibold tw-text-gray-400"
-            >Codigo <span class="tw-text-red-300">*</span></label
-          >
+        <InputSection label-message="Codigo" required>
           <VTextField
             hide-details
             variant="solo-filled"
@@ -100,13 +98,10 @@ watch(saveBrandMutation.isError, () => {
             placeholder="Ingrese el codigo del producto"
             v-model="props.product.sku"
           />
-        </div>
+        </InputSection>
       </VCol>
       <VCol class="py-1" cols="12">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-uppercase tw-font-semibold tw-text-gray-400"
-            >Observaciones</label
-          >
+        <InputSection label-message="Observaciones">
           <VTextarea
             variant="solo-filled"
             flat
@@ -114,13 +109,10 @@ watch(saveBrandMutation.isError, () => {
             placeholder="Ingrese una observación del producto."
             v-model="props.product.description"
           />
-        </div>
+        </InputSection>
       </VCol>
       <VCol class="py-1" cols="6">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-uppercase tw-font-semibold tw-text-gray-400"
-            >sección / categoria
-          </label>
+        <InputSection label-message="sección / categoria">
           <SimpleAutoCompleteCreator
             placeholder="Seleccione una categoria"
             color="primary"
@@ -137,13 +129,10 @@ watch(saveBrandMutation.isError, () => {
             @model-update="onCategoryAutocompleteModelUpdate"
             @not-exist-item-create="onCategoryCreate"
           />
-        </div>
+        </InputSection>
       </VCol>
       <VCol class="py-1" cols="6">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <label for="" class="tw-uppercase tw-font-semibold tw-text-gray-400"
-            >marca
-          </label>
+        <InputSection label-message="marca">
           <SimpleAutoCompleteCreator
             placeholder="Seleccione una marca"
             color="primary"
@@ -160,7 +149,7 @@ watch(saveBrandMutation.isError, () => {
             @model-update="onBrandAutocompleteModelUpdate"
             @not-exist-item-create="onBrandCreate"
           />
-        </div>
+        </InputSection>
       </VCol>
     </VRow>
   </FormSeccion>

@@ -3,6 +3,7 @@ import useVuelidate from "@vuelidate/core";
 import usePaymentMethodRules from "../../compossables/paymentMethod/usePaymentMethodRules";
 import type { PaymentMethod } from "../../models/PaymentMethod";
 import useSRIPaymentMethods from "../../compossables/SRI/useSRIPaymentMethods";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 
 interface props {
   paymentMethod: PaymentMethod;
@@ -38,21 +39,15 @@ const onPaymentMethodSubmit = () => {
 <template>
   <VRow>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase">
-          Nombre<span class="tw-text-red-300">*</span>
-        </label>
+      <InputSection label-message="Nombre" required>
         <VTextField
           placeholder="Ingrese un nombre"
           v-model="props.paymentMethod.name"
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
-      <div class="tw-flex tw-flex-col tw-gap-1">
-        <label for="" class="tw-font-semibold tw-text-gray-400 tw-uppercase">
-          Tipo de forma de pago<span class="tw-text-red-300">*</span>
-        </label>
+      <InputSection label-message="Tipo de forma de pago" required>
         <VSelect
           placeholder="seleccione una forma de pago"
           :items="SRIPaymentMethodsDropdown"
@@ -66,7 +61,7 @@ const onPaymentMethodSubmit = () => {
               : 'No hay registros'
           "
         />
-      </div>
+      </InputSection>
     </VCol>
     <VCol cols="12" class="py-0">
       <div class="tw-flex tw-justify-end">

@@ -8,8 +8,10 @@ const props = defineProps<props>();
 
 <template>
   <div class="tw-text-center">
-    <p v-if="hasError" class="tw-font-semibold">Problemas en el servidor 🥲</p>
-    <p v-else class="tw-font-semibold">No hay registros 🥲</p>
+    <p v-if="hasError" class="tw-font-semibold textPrimary">
+      Problemas en el servidor 🥲
+    </p>
+    <p v-else class="tw-font-semibold textPrimary">No hay registros 🥲</p>
   </div>
 </template>
 
