@@ -16,6 +16,8 @@ import useBrands from "../../../composables/brand/useBrands";
 import useCategories from "../../../composables/category/useCategories";
 import useComboPoductRules from "../../../composables/product/combo/useComboPoductRules";
 import { usethemeCustomizer } from "@/stores/themeCustomizer";
+import useCreateProduct from "../../../composables/product/useCreateProduct";
+import ProductGeneralInfo from "./ProductGeneralInfo.vue";
 
 const store = usethemeCustomizer();
 
@@ -31,8 +33,8 @@ const { saveComboProductMutation, updateComboProductMutation } =
 const { categoriesDropdown, isCategoriesLoading } = useCategories();
 const { brandsDropdown, isBrandsLoading } = useBrands();
 const props = defineProps<props>();
-
-const product = ref<ComboProduct>({
+const { product, nameError } = useCreateProduct();
+const comboProduct = ref<ComboProduct>({
   products: [] as ComboProductChild[],
   product_type_id: productTypeEnum.COMBO,
   taxes: [
@@ -40,31 +42,59 @@ const product = ref<ComboProduct>({
     { id: "9aaede03-d617-47bc-b264-74d1e0519177" },
   ],
 } as ComboProduct);
-const productValidator = useVuelidate(comboPoductRules, product);
+const productValidator = useVuelidate(comboPoductRules, comboProduct);
 const selectedChilds = ref<string[]>([]);
 
 // 9aaede03-d617-47bc-b264-74d1e0519177 12
 // 9aaede03-d462-412b-b007-317fef91cf11 0
 
 if (props.productProps) {
-  product.value.id = props.productProps.id;
-  product.value.name = props.productProps.name;
-  product.value.sku = props.productProps.sku;
-  product.value.price = parseFloat(props.productProps.price);
-  product.value.unit_id = props.productProps.unit_id.toString();
-  product.value.categoriesId = props.productProps.categories;
+  comboProduct.value.id = props.productProps.id;
+  comboProduct.value.name = props.productProps.name;
+  comboProduct.value.sku = props.productProps.sku;
+  comboProduct.value.price = parseFloat(props.productProps.price);
+  comboProduct.value.unit_id = props.productProps.unit_id.toString();
+  comboProduct.value.categoriesId = props.productProps.categories;
   props.productProps.products.map((x) => {
     selectedChilds.value.push(x.child_product_id);
   });
 }
+watch(
+  () => comboProduct.value.sku,
+  () => {
+    product.value.sku = comboProduct.value.sku;
+  }
+);
+
+watch(
+  () => product.value.name,
+  () => {
+    comboProduct.value.name = product.value.name;
+  }
+);
+
+watch(
+  () => productValidator.value.name.$errors,
+  () => {
+    if (productValidator.value.name.$errors.length > 0) {
+      nameError.value = productValidator.value.name.$errors.map((x) =>
+        x.$message.toString()
+      );
+    } else {
+      nameError.value = [];
+    }
+  },
+  { deep: true }
+);
 
 const onComboProductSubmit = () => {
+  comboProduct.value.unit_id = "1";
   productValidator.value.$validate();
   if (!productValidator.value.$error) {
     if (props.productProps) {
-      updateComboProductMutation.mutate(product.value);
+      updateComboProductMutation.mutate(comboProduct.value);
     } else {
-      saveComboProductMutation.mutate(product.value);
+      saveComboProductMutation.mutate(comboProduct.value);
     }
   } else {
     alert(
@@ -123,8 +153,8 @@ function setChild() {
             price: parseFloat(tempProduct!.price),
           });
         });
-        product.value.products = tempChild;
-        product.value.price = tempChild.reduce((acc, el) => {
+        comboProduct.value.products = tempChild;
+        comboProduct.value.price = tempChild.reduce((acc, el) => {
           return el.price + acc;
         }, 0);
       } else {
@@ -137,15 +167,15 @@ function setChild() {
             price: parseFloat(tempProduct!.price),
           });
         });
-        product.value.products = tempChild;
-        product.value.price = tempChild.reduce((acc, el) => {
+        comboProduct.value.products = tempChild;
+        comboProduct.value.price = tempChild.reduce((acc, el) => {
           return el.price + acc;
         }, 0);
       }
     }
   } else {
-    product.value.products = [];
-    product.value.price = 0;
+    comboProduct.value.products = [];
+    comboProduct.value.price = 0;
   }
 }
 </script>
@@ -157,18 +187,16 @@ function setChild() {
   >
     <VCardItem class="py-0 px-0">
       <div class="tw-py-7 tw-px-5">
+        <ProductGeneralInfo
+          class="tw-mb-5"
+          :product="comboProduct"
+          :code-error="
+            productValidator.sku.$errors.map((x) => x.$message.toString())
+          "
+        />
         <v-row class="mt-2">
           <VCol cols="6" class="py-1">
-            <VTextField label="name" v-model="product.name" />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VTextField label="sku" v-model="product.sku" />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VTextField label="unit_id**" v-model="product.unit_id" />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VTextField label="price" v-model="product.price" />
+            <VTextField label="price" v-model="comboProduct.price" />
           </VCol>
           <VCol cols="6" class="py-1">
             <VSelect
@@ -179,27 +207,6 @@ function setChild() {
               item-value="value"
               label="child"
               v-model="selectedChilds"
-            />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VSelect
-              label="categories"
-              multiple
-              v-model="product.categoriesId"
-              :items="categoriesDropdown"
-              :loading="isCategoriesLoading"
-              item-title="label"
-              item-value="value"
-            />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VSelect
-              label="Brand"
-              v-model="product.brand_id"
-              :items="brandsDropdown"
-              item-title="label"
-              item-value="value"
-              :loading="isBrandsLoading"
             />
           </VCol>
           <v-col cols="12">

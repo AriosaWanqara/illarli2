@@ -16,6 +16,9 @@ const standarPoductRules = {
   price: {
     required: helpers.withMessage("Price field is required", required),
   },
+  taxes: {
+    required: helpers.withMessage("Price field is required", required),
+  },
 };
 
 const useStandarPoductRules = () => {

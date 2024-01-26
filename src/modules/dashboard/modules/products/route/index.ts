@@ -47,7 +47,7 @@ export const ProductRouter: RouteRecordRaw[] = [
     path: "add",
     name: "product-add",
     redirect: { name: "product-add-standar" },
-    meta: { name: "Agregar Producto" },
+    meta: { name: "Añadir Producto" },
     component: () =>
       import("@dashboard/modules/products/layouts/AddProductLayout.vue"),
     children: [
@@ -63,7 +63,10 @@ export const ProductRouter: RouteRecordRaw[] = [
       {
         path: "sub-producto",
         name: "product-add-subproduct",
-        meta: { permission: "list characteristics" },
+        meta: {
+          permission: "list characteristics",
+          name: "Añadir SubProducto",
+        },
         component: () =>
           import(
             "@dashboard/modules/products/component/product/create/Subproduct.vue"
@@ -90,7 +93,10 @@ export const ProductRouter: RouteRecordRaw[] = [
       {
         path: "combo",
         name: "product-add-combo",
-        meta: { permission: "list characteristics" },
+        meta: {
+          permission: "list characteristics",
+          name: "Añadir Producto Combo",
+        },
         component: () =>
           import(
             "@dashboard/modules/products/component/product/create/Combo.vue"

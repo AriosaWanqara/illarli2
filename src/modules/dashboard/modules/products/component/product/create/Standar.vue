@@ -32,6 +32,7 @@ const standarProduct = ref<StandarProduct>({
   product_type_id: productTypeEnum.STANDAR,
   taxes: [] as SRITaxe[],
 } as StandarProduct);
+standarProduct.value.categoriesId = [];
 const productValidator = useVuelidate(standarPoductRules, standarProduct);
 const router = useRouter();
 const selectedRatesPercentage = ref<{ name: string; value: number }[]>([]);
@@ -156,6 +157,11 @@ const onProductCalculateHelp = () => {
                   hide-details
                   item-value="id"
                   item-title="name"
+                  :error-messages="
+                    productValidator.taxes.$errors.map((x) =>
+                      x.$message.toString()
+                    )
+                  "
                   :items="taxes"
                   :loading="isTaxesLoading"
                   return-object
@@ -186,6 +192,11 @@ const onProductCalculateHelp = () => {
                   </label>
                   <VTextField
                     hide-details
+                    :error-messages="
+                      productValidator.price.$errors.map((x) =>
+                        x.$message.toString()
+                      )
+                    "
                     placeholder="Precio"
                     v-model="standarProduct.price"
                   />

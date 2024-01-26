@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import type { Subproduct } from "../../../models/products/Subproduct";
-import useStandarProducts from "../../../composables/product/standar/useStandarProducts";
-import useSubproductRules from "../../../composables/product/subproduct/useSubproductRules";
-import useSubproductMutations from "../../../composables/product/subproduct/useSubproductMutations";
-import { useVuelidate } from "@vuelidate/core";
-import { productTypeEnum } from "../../../const/productTypeEnum";
-import { watch } from "vue";
-import type { AxiosError } from "axios";
-import { useRouter } from "vue-router";
-import type { Product } from "../../../models/products/Product";
-import useCategories from "../../../composables/category/useCategories";
-import useBrands from "../../../composables/brand/useBrands";
 import { usethemeCustomizer } from "@/stores/themeCustomizer";
+import { useVuelidate } from "@vuelidate/core";
+import type { AxiosError } from "axios";
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import useStandarProducts from "../../../composables/product/standar/useStandarProducts";
+import useSubproductMutations from "../../../composables/product/subproduct/useSubproductMutations";
+import useSubproductRules from "../../../composables/product/subproduct/useSubproductRules";
+import { productTypeEnum } from "../../../const/productTypeEnum";
+import type { Product } from "../../../models/products/Product";
+import type { Subproduct } from "../../../models/products/Subproduct";
+import ProductGeneralInfo from "./ProductGeneralInfo.vue";
+import useCreateProduct from "../../../composables/product/useCreateProduct";
 
 interface props {
   productProps?: Product;
@@ -25,41 +24,64 @@ const props = defineProps<props>();
 const { saveSubproductMutation, updateSubproductMutation } =
   useSubproductMutations();
 const router = useRouter();
-const { categoriesDropdown, isCategoriesLoading } = useCategories();
-const { brandsDropdown, isBrandsLoading } = useBrands();
-
-const product = ref<Subproduct>({
+const { product, nameError } = useCreateProduct();
+const subporduct = ref<Subproduct>({
   product_type_id: productTypeEnum.SUBPRODUCT,
   taxes: [
     // '9aaede03-d462-412b-b007-317fef91cf11'
     { id: "9aaede03-d617-47bc-b264-74d1e0519177" },
   ],
 } as Subproduct);
+const productValidator = useVuelidate(subproductRules, subporduct);
 
-// 9aaede03-d617-47bc-b264-74d1e0519177 12
-// 9aaede03-d462-412b-b007-317fef91cf11 0
+watch(
+  () => subporduct.value.sku,
+  () => {
+    product.value.sku = subporduct.value.sku;
+  }
+);
 
-const productValidator = useVuelidate(subproductRules, product);
+watch(
+  () => product.value.name,
+  () => {
+    subporduct.value.name = product.value.name;
+  }
+);
+
+watch(
+  () => productValidator.value.name.$errors,
+  () => {
+    if (productValidator.value.name.$errors.length > 0) {
+      nameError.value = productValidator.value.name.$errors.map((x) =>
+        x.$message.toString()
+      );
+    } else {
+      nameError.value = [];
+    }
+  },
+  { deep: true }
+);
 
 if (props.productProps) {
-  product.value.id = props.productProps.id;
-  product.value.name = props.productProps.name;
-  product.value.sku = props.productProps.sku;
-  product.value.price = parseFloat(props.productProps.price);
-  product.value.unit_id = props.productProps.unit_id.toString();
-  product.value.amount = parseFloat(props.productProps.products[0].amount);
-  product.value.parent_product_id =
+  subporduct.value.id = props.productProps.id;
+  subporduct.value.name = props.productProps.name;
+  subporduct.value.sku = props.productProps.sku;
+  subporduct.value.price = parseFloat(props.productProps.price);
+  subporduct.value.unit_id = props.productProps.unit_id.toString();
+  subporduct.value.amount = parseFloat(props.productProps.products[0].amount);
+  subporduct.value.parent_product_id =
     props.productProps.products[0].child_product_id;
-  product.value.categoriesId = props.productProps.categories;
+  subporduct.value.categoriesId = props.productProps.categories;
 }
 
 const onSubproductSubmit = () => {
+  subporduct.value.unit_id = "1";
   productValidator.value.$validate();
   if (!productValidator.value.$error) {
     if (props.productProps) {
-      updateSubproductMutation.mutate(product.value);
+      updateSubproductMutation.mutate(subporduct.value);
     } else {
-      saveSubproductMutation.mutate(product.value);
+      saveSubproductMutation.mutate(subporduct.value);
     }
   } else {
     alert(
@@ -103,28 +125,19 @@ watch(updateSubproductMutation.isSuccess, () => {
   >
     <VCardItem class="py-0 px-0">
       <div class="tw-py-7 tw-px-5">
-        <VRow class="mt-2">
+        <ProductGeneralInfo
+          :product="subporduct"
+          :code-error="
+            productValidator.sku.$errors.map((x) => x.$message.toString())
+          "
+          class="tw-pb-4"
+        />
+        <VRow>
           <VCol cols="6" class="py-1">
-            <VTextField
-              placeholder="name"
-              v-model="product.name"
-              :error-messages="
-                productValidator.name.$errors.map((x) => x.$message.toString())
-              "
-            />
-          </VCol>
-
-          <VCol cols="6" class="py-1">
-            <VTextField placeholder="unit_id**" v-model="product.unit_id" />
+            <VTextField placeholder="price" v-model="subporduct.price" />
           </VCol>
           <VCol cols="6" class="py-1">
-            <VTextField placeholder="price" v-model="product.price" />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VTextField placeholder="amount" v-model="product.amount" />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VTextField placeholder="sku" v-model="product.sku" />
+            <VTextField placeholder="amount" v-model="subporduct.amount" />
           </VCol>
           <VCol cols="6" class="py-1">
             <VSelect
@@ -134,30 +147,10 @@ watch(updateSubproductMutation.isSuccess, () => {
               item-title="label"
               item-value="value"
               placeholder="parent"
-              v-model="product.parent_product_id"
+              v-model="subporduct.parent_product_id"
             />
           </VCol>
-          <VCol cols="6" class="py-1">
-            <VSelect
-              label="categories"
-              multiple
-              v-model="product.categoriesId"
-              :items="categoriesDropdown"
-              :loading="isCategoriesLoading"
-              item-title="label"
-              item-value="value"
-            />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VSelect
-              label="Brand"
-              v-model="product.brand_id"
-              :items="brandsDropdown"
-              item-title="label"
-              item-value="value"
-              :loading="isBrandsLoading"
-            />
-          </VCol>
+
           <VCol cols="12">
             <VBtn
               color="primary"

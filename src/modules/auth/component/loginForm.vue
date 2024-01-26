@@ -107,6 +107,7 @@ watch(signInMutation.isSuccess, () => {
               color="primary"
               block
               variant="flat"
+              class="tw-w-full"
               density="default"
               type="submit"
               :loading="signInMutation.isPending.value"
