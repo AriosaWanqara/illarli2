@@ -18,7 +18,6 @@ import {
   DARK_PURPLE_THEME,
   DARK_RED_THEME,
 } from "@/utils/DarkTheme";
-
 export default createVuetify({
   components,
   directives,

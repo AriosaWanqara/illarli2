@@ -16,11 +16,11 @@ import { productTypeEnum } from "../../../const/productTypeEnum";
 import type { Brand } from "../../../models/Brand";
 import type { Product } from "../../../models/products/Product";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
+import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 
 interface props {
   productProps?: Product;
 }
-const store = usethemeCustomizer();
 
 const { standarPoductRules } = useStandarPoductRules();
 const { isTaxesLoading, taxes, taxesHasError } = useSRITaxes();
@@ -130,113 +130,107 @@ const onProductCalculateHelp = () => {
 };
 </script>
 <template>
-  <VCard
-    class="py-0 px-0"
-    :class="store.themeConfig.cardHasShadow ? 'box-card' : ''"
-    variant="flat"
-  >
-    <VCardItem class="py-0 px-0">
-      <div class="tw-py-7 tw-px-5">
-        <ProductGeneralInfo
-          :product="standarProduct"
-          :code-error="
-            productValidator.sku.$errors.map((x) => x.$message.toString())
-          "
-        />
-        <FormSeccion title="Valor-impuestos" class="tw-mt-2">
-          <VRow>
-            <VCol cols="6" md="6" class="py-1">
-              <div class="tw-flex tw-flex-col tw-gap-1">
+  <UIParentCardV2>
+    <div class="tw-py-7 tw-px-5">
+      <ProductGeneralInfo
+        :product="standarProduct"
+        :code-error="
+          productValidator.sku.$errors.map((x) => x.$message.toString())
+        "
+      />
+      <FormSeccion title="Valor-impuestos" class="tw-mt-2">
+        <VRow>
+          <VCol cols="6" md="6" class="py-1">
+            <div class="tw-flex tw-flex-col tw-gap-1">
+              <label
+                for=""
+                class="tw-font-semibold tw-text-gray-400 tw-uppercase"
+              >
+                Impuesto<span class="tw-text-red-300">*</span>
+              </label>
+              <VSelect
+                hide-details
+                item-value="id"
+                item-title="name"
+                :error-messages="
+                  productValidator.taxes.$errors.map((x) =>
+                    x.$message.toString()
+                  )
+                "
+                :items="taxes"
+                :loading="isTaxesLoading"
+                return-object
+                multiple
+                placeholder="Impuesto"
+                v-model="standarProduct.taxes"
+              >
+                <template v-slot:selection="{ item, index }">
+                  <span v-if="index < 1">{{ item.title }}</span>
+                  <span
+                    v-if="index === 1"
+                    class="text-grey text-caption align-self-center"
+                  >
+                    (+{{ standarProduct.taxes.length - 1 }} others)
+                  </span>
+                </template>
+              </VSelect>
+            </div>
+          </VCol>
+          <VCol cols="6" md="6" class="py-1">
+            <div class="tw-flex tw-items-end">
+              <div class="tw-flex tw-flex-col tw-gap-1 tw-flex-1">
                 <label
                   for=""
                   class="tw-font-semibold tw-text-gray-400 tw-uppercase"
                 >
-                  Impuesto<span class="tw-text-red-300">*</span>
+                  Precio con imp<span class="tw-text-red-300">*</span>
                 </label>
-                <VSelect
+                <VTextField
                   hide-details
-                  item-value="id"
-                  item-title="name"
                   :error-messages="
-                    productValidator.taxes.$errors.map((x) =>
+                    productValidator.price.$errors.map((x) =>
                       x.$message.toString()
                     )
                   "
-                  :items="taxes"
-                  :loading="isTaxesLoading"
-                  return-object
-                  multiple
-                  placeholder="Impuesto"
-                  v-model="standarProduct.taxes"
-                >
-                  <template v-slot:selection="{ item, index }">
-                    <span v-if="index < 1">{{ item.title }}</span>
-                    <span
-                      v-if="index === 1"
-                      class="text-grey text-caption align-self-center"
-                    >
-                      (+{{ standarProduct.taxes.length - 1 }} others)
-                    </span>
-                  </template>
-                </VSelect>
+                  placeholder="Precio"
+                  v-model="standarProduct.price"
+                />
               </div>
-            </VCol>
-            <VCol cols="6" md="6" class="py-1">
-              <div class="tw-flex tw-items-end">
-                <div class="tw-flex tw-flex-col tw-gap-1 tw-flex-1">
-                  <label
-                    for=""
-                    class="tw-font-semibold tw-text-gray-400 tw-uppercase"
-                  >
-                    Precio con imp<span class="tw-text-red-300">*</span>
-                  </label>
-                  <VTextField
-                    hide-details
-                    :error-messages="
-                      productValidator.price.$errors.map((x) =>
-                        x.$message.toString()
-                      )
-                    "
-                    placeholder="Precio"
-                    v-model="standarProduct.price"
-                  />
-                </div>
-                <VBtn
-                  @click="onProductCalculateHelp"
-                  color="info"
-                  density="default"
-                >
-                  <p class="textPrimary">Calcular</p>
-                </VBtn>
-              </div>
-            </VCol>
-          </VRow>
-          <VRow>
-            <VCol cols="12" class="py-0">
-              <div class="tw-flex tw-justify-end tw-gap-2 tw-mt-[5px]">
-                <VBtn
-                  @click="router.push({ name: 'product-list' })"
-                  variant="outlined"
-                  color="borderColor"
-                >
-                  <p class="textPrimary">cancelar</p>
-                </VBtn>
-                <VBtn
-                  prepend-icon="mdi-plus"
-                  color="success"
-                  :loading="
-                    saveStandarProductMutation.isPending.value ||
-                    updateStandarProductMutation.isPending.value
-                  "
-                  @click="onStandarProductSubmit"
-                  >Añadir producto</VBtn
-                >
-              </div>
-            </VCol>
-          </VRow>
-        </FormSeccion>
-      </div>
-    </VCardItem>
+              <VBtn
+                @click="onProductCalculateHelp"
+                color="info"
+                density="default"
+              >
+                <p class="textPrimary">Calcular</p>
+              </VBtn>
+            </div>
+          </VCol>
+        </VRow>
+        <VRow>
+          <VCol cols="12" class="py-0">
+            <div class="tw-flex tw-justify-end tw-gap-2 tw-mt-[5px]">
+              <VBtn
+                @click="router.push({ name: 'product-list' })"
+                variant="outlined"
+                color="borderColor"
+              >
+                <p class="textPrimary">cancelar</p>
+              </VBtn>
+              <VBtn
+                prepend-icon="mdi-plus"
+                color="success"
+                :loading="
+                  saveStandarProductMutation.isPending.value ||
+                  updateStandarProductMutation.isPending.value
+                "
+                @click="onStandarProductSubmit"
+                >Añadir producto</VBtn
+              >
+            </div>
+          </VCol>
+        </VRow>
+      </FormSeccion>
+    </div>
     <VDialog max-width="400" v-model="showCalculator">
       <PriceCalculatorComponent
         :rates="selectedRatesPercentage"
@@ -253,7 +247,7 @@ const onProductCalculateHelp = () => {
         "
       />
     </VDialog>
-  </VCard>
+  </UIParentCardV2>
 </template>
 
 <style scoped></style>

@@ -6,6 +6,7 @@ import Profile from "./account/Profile.vue";
 import Notifications from "./notification/Notifications.vue";
 import ThemeSwitcher from "./theme/ThemeSwitcher.vue";
 import { useRoute } from "vue-router";
+import icPos from "@dashboard/assets/images/ic_pos.png";
 
 const { layoutState } = useLayoutState();
 const { smAndUp, xl } = useDisplay();
@@ -48,10 +49,10 @@ const route = useRoute();
       <div class="tw-flex tw-gap-5 tw-items-center">
         <RouterLink :to="{ name: 'pos-home' }">
           <div
-            class="tw-flex tw-gap-1 tw-py-1 tw-border-[1px] tw-border-gray-300 tw-px-2 tw-rounded-md"
+            class="tw-flex tw-gap-1 tw-py-1 tw-border-[1px] tw-border-cyan-500 tw-px-2 tw-rounded-md tw-items-center"
           >
-            <Icon icon="solar:shop-2-linear" />
-            <p class="textPrimary tw-text-xs">POS</p>
+            <img :src="icPos" width="20" />
+            <p class="tw-text-cyan-500 tw-font-semibold">POS</p>
           </div>
         </RouterLink>
         <Notifications />

@@ -18,6 +18,7 @@ import useComboPoductRules from "../../../composables/product/combo/useComboPodu
 import { usethemeCustomizer } from "@/stores/themeCustomizer";
 import useCreateProduct from "../../../composables/product/useCreateProduct";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
+import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 
 const store = usethemeCustomizer();
 
@@ -180,50 +181,44 @@ function setChild() {
 }
 </script>
 <template>
-  <VCard
-    class="py-0 px-0"
-    :class="store.themeConfig.cardHasShadow ? 'box-card' : ''"
-    variant="flat"
-  >
-    <VCardItem class="py-0 px-0">
-      <div class="tw-py-7 tw-px-5">
-        <ProductGeneralInfo
-          class="tw-mb-5"
-          :product="comboProduct"
-          :code-error="
-            productValidator.sku.$errors.map((x) => x.$message.toString())
-          "
-        />
-        <v-row class="mt-2">
-          <VCol cols="6" class="py-1">
-            <VTextField label="price" v-model="comboProduct.price" />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VSelect
-              :loading="isStandarProductsLoading"
-              :items="standarProductsDropdown"
-              item-title="label"
-              multiple
-              item-value="value"
-              label="child"
-              v-model="selectedChilds"
-            />
-          </VCol>
-          <v-col cols="12">
-            <v-btn
-              color="primary"
-              @click="onComboProductSubmit"
-              :loading="
-                saveComboProductMutation.isPending.value ||
-                updateComboProductMutation.isPending.value
-              "
-              >crear</v-btn
-            >
-          </v-col>
-        </v-row>
-      </div>
-    </VCardItem>
-  </VCard>
+  <UIParentCardV2>
+    <div class="tw-py-7 tw-px-5">
+      <ProductGeneralInfo
+        class="tw-mb-5"
+        :product="comboProduct"
+        :code-error="
+          productValidator.sku.$errors.map((x) => x.$message.toString())
+        "
+      />
+      <v-row class="mt-2">
+        <VCol cols="6" class="py-1">
+          <VTextField label="price" v-model="comboProduct.price" />
+        </VCol>
+        <VCol cols="6" class="py-1">
+          <VSelect
+            :loading="isStandarProductsLoading"
+            :items="standarProductsDropdown"
+            item-title="label"
+            multiple
+            item-value="value"
+            label="child"
+            v-model="selectedChilds"
+          />
+        </VCol>
+        <v-col cols="12">
+          <v-btn
+            color="primary"
+            @click="onComboProductSubmit"
+            :loading="
+              saveComboProductMutation.isPending.value ||
+              updateComboProductMutation.isPending.value
+            "
+            >crear</v-btn
+          >
+        </v-col>
+      </v-row>
+    </div>
+  </UIParentCardV2>
 </template>
 
 <style></style>

@@ -11,7 +11,7 @@ import "@dashboard/scss/style.scss";
     <VMain class="tw-h-full">
       <router-view
         v-slot="{ Component }"
-        class="tw-px-[1vw] md:tw-pt-[2vh] tw-pt-0"
+        class="tw-px-[1vw] md:tw-pt-[1vh] tw-pt-0"
       >
         <transition name="slide-fade" mode="out-in">
           <component :is="Component" />
@@ -21,7 +21,7 @@ import "@dashboard/scss/style.scss";
     <Customizer />
     <SideBar />
     <MobileSideBar />
-    <TopBar class="md:tw-pt-[2vh] tw-pt-0" />
+    <TopBar class="md:tw-pt-[1vh] tw-pt-0" />
   </div>
 </template>
 

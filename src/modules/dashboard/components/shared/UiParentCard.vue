@@ -17,7 +17,7 @@ const hasSlot = (name: string) => {
 <template>
   <v-card
     :class="store.themeConfig.cardHasShadow ? 'box-card' : ''"
-    :flat="isFlat"
+    :flat="isFlat || store.isDark"
     variant="flat"
   >
     <v-card-item

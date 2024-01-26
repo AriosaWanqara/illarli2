@@ -12,6 +12,7 @@ import type { Product } from "../../../models/products/Product";
 import type { Subproduct } from "../../../models/products/Subproduct";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
 import useCreateProduct from "../../../composables/product/useCreateProduct";
+import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 
 interface props {
   productProps?: Product;
@@ -118,54 +119,48 @@ watch(updateSubproductMutation.isSuccess, () => {
 </script>
 
 <template>
-  <VCard
-    class="py-0 px-0"
-    :class="store.themeConfig.cardHasShadow ? 'box-card' : ''"
-    variant="flat"
-  >
-    <VCardItem class="py-0 px-0">
-      <div class="tw-py-7 tw-px-5">
-        <ProductGeneralInfo
-          :product="subporduct"
-          :code-error="
-            productValidator.sku.$errors.map((x) => x.$message.toString())
-          "
-          class="tw-pb-4"
-        />
-        <VRow>
-          <VCol cols="6" class="py-1">
-            <VTextField placeholder="price" v-model="subporduct.price" />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VTextField placeholder="amount" v-model="subporduct.amount" />
-          </VCol>
-          <VCol cols="6" class="py-1">
-            <VSelect
-              :disable="props.productProps"
-              :loading="isStandarProductsLoading"
-              :items="standarProductsDropdown"
-              item-title="label"
-              item-value="value"
-              placeholder="parent"
-              v-model="subporduct.parent_product_id"
-            />
-          </VCol>
+  <UIParentCardV2>
+    <div class="tw-py-7 tw-px-5">
+      <ProductGeneralInfo
+        :product="subporduct"
+        :code-error="
+          productValidator.sku.$errors.map((x) => x.$message.toString())
+        "
+        class="tw-pb-4"
+      />
+      <VRow>
+        <VCol cols="6" class="py-1">
+          <VTextField placeholder="price" v-model="subporduct.price" />
+        </VCol>
+        <VCol cols="6" class="py-1">
+          <VTextField placeholder="amount" v-model="subporduct.amount" />
+        </VCol>
+        <VCol cols="6" class="py-1">
+          <VSelect
+            :disable="props.productProps"
+            :loading="isStandarProductsLoading"
+            :items="standarProductsDropdown"
+            item-title="label"
+            item-value="value"
+            placeholder="parent"
+            v-model="subporduct.parent_product_id"
+          />
+        </VCol>
 
-          <VCol cols="12">
-            <VBtn
-              color="primary"
-              @click="onSubproductSubmit"
-              :loading="
-                saveSubproductMutation.isPending.value ||
-                updateSubproductMutation.isPending.value
-              "
-              >crear</VBtn
-            >
-          </VCol>
-        </VRow>
-      </div>
-    </VCardItem>
-  </VCard>
+        <VCol cols="12">
+          <VBtn
+            color="primary"
+            @click="onSubproductSubmit"
+            :loading="
+              saveSubproductMutation.isPending.value ||
+              updateSubproductMutation.isPending.value
+            "
+            >crear</VBtn
+          >
+        </VCol>
+      </VRow>
+    </div>
+  </UIParentCardV2>
 </template>
 
 <style scoped></style>

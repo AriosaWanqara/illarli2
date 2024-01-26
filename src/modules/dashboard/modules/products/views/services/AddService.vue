@@ -3,13 +3,14 @@ import ViewScaffold from "@/modules/dashboard/components/shared/ViewScaffold.vue
 import CreateServiceBasicInfo from "../../component/services/CreateServiceBasicInfo.vue";
 import serviceBanner from "@dashboard/assets/images/service_banner.png";
 import CreateServiceForm from "../../component/services/CreateServiceForm.vue";
+import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 </script>
 
 <template>
   <div class="tw-flex tw-gap-x-3 tw-flex-wrap md:tw-flex-row tw-flex-col">
     <div class="md:tw-max-w-[446px] tw-h-min">
-      <VCard class="py-0" variant="flat">
-        <VCardTitle class="py-0 px-0">
+      <UIParentCardV2>
+        <template #title>
           <div class="tw-h-[70px]">
             <div
               class="tw-h-[55px] tw-bg-[#3EBBCC] tw-relative tw-w-full tw-flex tw-justify-center"
@@ -26,13 +27,11 @@ import CreateServiceForm from "../../component/services/CreateServiceForm.vue";
               Nombre del servicio:<span class="tw-font-medium">asdasd</span>
             </h2>
           </div>
-        </VCardTitle>
-        <VCardItem class="py-0 px-0">
-          <div class="tw-px-4">
-            <CreateServiceBasicInfo />
-          </div>
-        </VCardItem>
-      </VCard>
+        </template>
+        <div class="tw-px-4">
+          <CreateServiceBasicInfo />
+        </div>
+      </UIParentCardV2>
     </div>
     <div class="tw-flex-1">
       <ViewScaffold>

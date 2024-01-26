@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import FileUpload from "@/modules/dashboard/components/shared/FileUpload.vue";
 import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
+import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 import { smallFormFileUploadTempla } from "@/modules/dashboard/const/FileUploadTemplate";
-import productBanerImg from "@dashboard/assets/images/product-creat.png";
-import ProductTypeCard from "../component/product/ProductTypeCard.vue";
-import { ref } from "vue";
-import { usethemeCustomizer } from "@/stores/themeCustomizer";
-import standar from "@dashboard/assets/images/ic_standar.png";
 import combo from "@dashboard/assets/images/ic_combo.png";
+import standar from "@dashboard/assets/images/ic_standar.png";
 import subproduct from "@dashboard/assets/images/ic_subproduct.png";
+import productBanerImg from "@dashboard/assets/images/product-creat.png";
+import { ref } from "vue";
+import ProductTypeCard from "../component/product/ProductTypeCard.vue";
 import useCreateProduct from "../composables/product/useCreateProduct";
 
 const myFiles: any[] = [];
 
-const store = usethemeCustomizer();
 const { nameError, product } = useCreateProduct();
 
 const ProductType = ref([
@@ -61,24 +60,22 @@ const ProductType = ref([
 </script>
 
 <template>
-  <VCard
-    class="py-0 px-0 border-r-20"
-    :class="store.themeConfig.cardHasShadow ? 'box-card' : ''"
-    variant="flat"
-  >
-    <VCardTitle class="py-0 px-0 overflow-visible">
-      <div
-        class="tw-relative bg-secondary tw-h-[60px] tw-flex tw-overflow-visible tw-justify-center"
-      >
+  <UIParentCardV2>
+    <template #title>
+      <div class="tw-relative tw-h-[100px]">
         <div
-          class="tw-absolute tw-bg-white tw-top-4 tw-overflow-hidden tw-rounded-full tw-w-[82px] border-secondary tw-h-[82px] tw-flex tw-justify-center tw-items-center"
+          class="tw-relative bg-secondary tw-h-[60px] tw-flex tw-overflow-visible tw-justify-center"
         >
-          <img :src="productBanerImg" alt="" />
+          <div
+            class="tw-absolute tw-bg-white tw-top-4 tw-overflow-hidden tw-rounded-full tw-w-[82px] border-secondary tw-h-[82px] tw-flex tw-justify-center tw-items-center"
+          >
+            <img :src="productBanerImg" alt="" />
+          </div>
         </div>
       </div>
-    </VCardTitle>
-    <VCardItem class="px-0 tw-mt-4">
-      <div class="tw-px-5">
+    </template>
+    <template #default>
+      <div class="tw-px-5 tw-py-5">
         <head
           class="tw-w-full tw-flex tw-justify-center tw-items-center tw-flex-col"
         >
@@ -133,8 +130,8 @@ const ProductType = ref([
           </div>
         </section>
       </div>
-    </VCardItem>
-  </VCard>
+    </template>
+  </UIParentCardV2>
 </template>
 
 <style scoped>
