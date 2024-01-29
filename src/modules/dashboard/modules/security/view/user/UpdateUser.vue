@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
 import type { AxiosError } from "axios";
 import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
