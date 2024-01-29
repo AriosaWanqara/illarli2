@@ -14,7 +14,7 @@ interface props {
 const props = defineProps<props>();
 const emits = defineEmits(["close", "return-filters"]);
 const selectedCategories = ref([]);
-const { categories, isCategoriesLoading } = useCategories();
+const { categories, isCategoriesLoading, categoriesHasError } = useCategories();
 
 const range = ref<[number, number]>([0, 0]);
 const open = ref(["Precios", "Categorias"]);
@@ -180,6 +180,11 @@ const clearFilters = () => {
                 :loading="isCategoriesLoading"
                 :headers="[{ title: '', key: 'quantiy', value: 'name' }]"
                 item-value="id"
+                :no-data-text="
+                  categoriesHasError
+                    ? 'Error del servidor 🥲'
+                    : 'No hay categorias'
+                "
                 show-select
               >
                 <template #bottom></template>

@@ -57,8 +57,11 @@ const bodyRowClassNameFunction: BodyRowClassNameFunction = (
   try {
     if (props.item) {
       //@ts-ignore
-      if (props.item.id == item.id) {
-        return "selected-row";
+      if (props.item.id) {
+        //@ts-ignore
+        if (props.item.id == item.id) {
+          return "selected-row";
+        }
       }
     }
   } catch (error) {

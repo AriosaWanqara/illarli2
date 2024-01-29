@@ -3,9 +3,19 @@ import ViewScaffold from "@/modules/dashboard/components/shared/ViewScaffold.vue
 import ServiceTableList from "../../component/services/ServiceTableList.vue";
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
+import ProductFilternavegationDrawer from "../../component/product/ProductFilternavegationDrawer.vue";
 
 const newFilters = ref([]);
 const openFilter = ref(false);
+
+const onServiceUpdate = (serviceToUpdate: any) => {};
+const onServiceDelete = (serviceToDelete: any) => {};
+const onServiceSelected = (serviceSelected: any) => {};
+const onServicesFilters = (filterServices: any[]) => {};
+
+const onNewFilter = (filters: any) => {
+  newFilters.value = filters;
+};
 </script>
 
 <template>
@@ -86,7 +96,26 @@ const openFilter = ref(false);
           </div>
         </div>
       </div>
-      <ServiceTableList />
+      <ServiceTableList
+        :is-modify-loading="false"
+        :is-delete-loading="false"
+        :is-table-error="false"
+        :services="[]"
+        :service="{}"
+        @update-service="onServiceUpdate"
+        @delete-service="onServiceDelete"
+        @filter-service="onServicesFilters"
+        @selected-service="onServiceSelected"
+      />
+      <ProductFilternavegationDrawer
+        :close="openFilter"
+        @return-filters="onNewFilter"
+        @close="
+          (visibility) => {
+            openFilter = visibility;
+          }
+        "
+      />
     </template>
   </ViewScaffold>
 </template>
