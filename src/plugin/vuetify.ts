@@ -42,9 +42,6 @@ export default createVuetify({
     VCard: {
       rounded: "md",
     },
-    VCol: {
-      class: "py-1",
-    },
     VBtn: {
       density: "comfortable",
       variant: "tonal",

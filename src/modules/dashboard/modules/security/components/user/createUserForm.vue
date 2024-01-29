@@ -8,6 +8,7 @@ import { watch } from "vue";
 import useUserRules from "../../composables/user/useUserRules";
 import useVuelidate from "@vuelidate/core";
 import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
+import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
 
 interface props {
   isLoding: boolean;
@@ -23,6 +24,9 @@ const { isSubsidiariesLoading, subsidiaryDropdown, subsidiaries } =
   useSubsidiaries();
 const cashDrawerDropdown = ref<Dropdown[]>([]);
 const userToSave = ref({ ...user });
+if (!userToSave.value.subsidiariesId) {
+  userToSave.value.subsidiariesId = [];
+}
 const { userRules } = useUserRules();
 const userValidator = useVuelidate(userRules, userToSave.value);
 if (cashDrawerDropdownProps) {
@@ -73,97 +77,116 @@ const onUserSubmit = () => {
 </script>
 
 <template>
-  <VRow class="mt-1">
-    <VCol cols="12" md="6" class="py-0">
-      <InputSection label-message="Nombre del usuario" required>
-        <VTextField
-          variant="solo-filled"
-          placeholder="name"
-          v-model="userToSave.name"
-        />
-      </InputSection>
+  <VRow>
+    <VCol cols="12" md="6">
+      <FormSeccion title="Informacin general">
+        <VRow>
+          <VCol cols="12">
+            <InputSection label-message="Nombre del usuario" required>
+              <VTextField
+                variant="solo-filled"
+                placeholder="name"
+                v-model="userToSave.name"
+              />
+            </InputSection>
+          </VCol>
+          <VCol cols="12">
+            <InputSection label-message="Correo del usuario" required>
+              <VTextField
+                variant="solo-filled"
+                placeholder="email"
+                v-model="userToSave.email"
+              />
+            </InputSection>
+          </VCol>
+          <VCol cols="12">
+            <InputSection label-message="Username del usuario" required>
+              <VTextField
+                variant="solo-filled"
+                placeholder="username"
+                v-model="userToSave.username"
+              />
+            </InputSection>
+          </VCol>
+          <VCol cols="12">
+            <InputSection label-message="Contraseña del usuario" required>
+              <VTextField
+                variant="solo-filled"
+                placeholder="contraseña"
+                v-model="userToSave.password"
+              />
+            </InputSection>
+          </VCol>
+        </VRow>
+      </FormSeccion>
     </VCol>
-    <VCol cols="12" md="6" class="py-0">
-      <InputSection label-message="Correo del usuario" required>
-        <VTextField
-          variant="solo-filled"
-          placeholder="email"
-          v-model="userToSave.email"
-        />
-      </InputSection>
-    </VCol>
-    <VCol cols="12" md="6" class="py-0">
-      <InputSection label-message="Username del usuario" required>
-        <VTextField
-          variant="solo-filled"
-          placeholder="username"
-          v-model="userToSave.username"
-        />
-      </InputSection>
-    </VCol>
-    <VCol cols="12" md="6" class="py-0">
-      <InputSection label-message="Contraseña del usuario" required>
-        <VTextField
-          variant="solo-filled"
-          placeholder="contraseña"
-          v-model="userToSave.password"
-        />
-      </InputSection>
-    </VCol>
-    <VCol cols="12" md="6" class="py-0">
-      <InputSection label-message="Rol del usuario" required>
-        <VSelect
-          variant="solo-filled"
-          flat
-          placeholder="rol"
-          :items="rolesDropdown"
-          item-title="label"
-          multiple
-          item-value="value"
-          :loading="isRolesLoading"
-          v-model="userToSave.roles"
-        >
-          <template #selection="{ index, item }" v-if="isRolesLoading">
-            <p v-if="isRolesLoading">cargando...</p>
-          </template>
-        </VSelect>
-      </InputSection>
-    </VCol>
-    <VCol cols="12" md="6" class="py-0">
-      <InputSection label-message="Sucursal del usuario" required>
-        <VSelect
-          variant="solo-filled"
-          flat
-          placeholder="sucursal"
-          :items="subsidiaryDropdown"
-          item-title="label"
-          multiple
-          item-value="value"
-          :loading="isSubsidiariesLoading"
-          v-model="userToSave.subsidiariesId"
-        >
-          <template #selection="{ index, item }" v-if="isSubsidiariesLoading">
-            <p v-if="isSubsidiariesLoading">cargando...</p>
-          </template>
-        </VSelect>
-      </InputSection>
-    </VCol>
-    <VCol cols="12" md="6" class="py-0" v-if="userToSave.subsidiariesId">
-      <InputSection label-message="Caja del usuario" required>
-        <VSelect
-          placeholder="Caja"
-          :items="cashDrawerDropdown"
-          item-title="label"
-          multiple
-          item-value="value"
-          :loading="isSubsidiariesLoading"
-          v-model="userToSave.checkoutsId"
-        >
-          <template #selection="{ index, item }" v-if="isSubsidiariesLoading">
-            <p v-if="isSubsidiariesLoading">cargando...</p>
-          </template>
-        </VSelect>
-      </InputSection>
+    <VCol cols="12" md="6">
+      <FormSeccion title="Datos empresariales">
+        <VRow class="mt-1">
+          <VCol cols="12">
+            <InputSection label-message="Rol del usuario" required>
+              <VSelect
+                variant="solo-filled"
+                flat
+                placeholder="rol"
+                :items="rolesDropdown"
+                item-title="label"
+                multiple
+                item-value="value"
+                :loading="isRolesLoading"
+                v-model="userToSave.roles"
+              >
+                <template #selection="{ index, item }" v-if="isRolesLoading">
+                  <p v-if="isRolesLoading">cargando...</p>
+                </template>
+              </VSelect>
+            </InputSection>
+          </VCol>
+          <VCol cols="12">
+            <InputSection label-message="Sucursal del usuario" required>
+              <VSelect
+                variant="solo-filled"
+                flat
+                placeholder="sucursal"
+                :items="subsidiaryDropdown"
+                item-title="label"
+                multiple
+                item-value="value"
+                :loading="isSubsidiariesLoading"
+                v-model="userToSave.subsidiariesId"
+              >
+                <template
+                  #selection="{ index, item }"
+                  v-if="isSubsidiariesLoading"
+                >
+                  <p v-if="isSubsidiariesLoading">cargando...</p>
+                </template>
+              </VSelect>
+            </InputSection>
+          </VCol>
+          <VCol cols="12">
+            <InputSection label-message="Caja del usuario" required>
+              <VSelect
+                placeholder="Caja"
+                :items="cashDrawerDropdown"
+                item-title="label"
+                multiple
+                :disabled="userToSave.subsidiariesId.length <= 0"
+                item-value="value"
+                :loading="isSubsidiariesLoading"
+                v-model="userToSave.checkoutsId"
+              >
+                <template
+                  #selection="{ index, item }"
+                  v-if="isSubsidiariesLoading"
+                >
+                  <p v-if="isSubsidiariesLoading">cargando...</p>
+                </template>
+              </VSelect>
+            </InputSection>
+          </VCol>
+        </VRow>
+      </FormSeccion>
     </VCol>
     <VCol cols="12">
       <div class="tw-flex tw-justify-end">

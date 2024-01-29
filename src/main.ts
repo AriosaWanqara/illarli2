@@ -10,6 +10,7 @@ import vuetify from "./plugin/vuetify";
 import VueApexCharts from "vue3-apexcharts";
 import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import Vue3Lottie from "vue3-lottie";
 
 import App from "./App.vue";
 import router from "./router";
@@ -35,6 +36,7 @@ app.component("EasyDataTable", Vue3EasyDataTable);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
+app.use(Vue3Lottie);
 app.use(router);
 app.use(autoAnimatePlugin);
 
