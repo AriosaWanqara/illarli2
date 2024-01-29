@@ -34,34 +34,21 @@ watch(updateUserMutations.isSuccess, () => {
 </script>
 
 <template>
-  <ViewScaffold title="Crear usuario">
-    <template #actionBack>
-      <RouterLink :to="{ name: 'users-list' }">
-        <v-btn
-          color="textPrimary"
-          icon="mdi-arrow-left"
-          variant="text"
-          density="compact"
-        ></v-btn>
-      </RouterLink>
-    </template>
-
-    <template #default>
-      <VRow class="mt-1" v-if="isUserLoading">
-        <p>cargando</p>
-      </VRow>
-      <VRow class="mt-1" v-else-if="userHasError">
-        <p>error</p>
-      </VRow>
-      <CreateUserForm
-        v-else
-        :form-button-text="'Actualizar usuario'"
-        :is-loding="updateUserMutations.isPending.value"
-        :user="userToSave"
-        @user-submit="onUserSubmit"
-      />
-    </template>
-  </ViewScaffold>
+  <div class="">
+    <div class="mt-1" v-if="isUserLoading">
+      <p>cargando</p>
+    </div>
+    <div class="mt-1" v-else-if="userHasError">
+      <p>error</p>
+    </div>
+    <CreateUserForm
+      v-else
+      :form-button-text="'Actualizar usuario'"
+      :is-loding="updateUserMutations.isPending.value"
+      :user="userToSave"
+      @user-submit="onUserSubmit"
+    />
+  </div>
 </template>
 
 <style scoped></style>

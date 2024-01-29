@@ -32,27 +32,12 @@ watch(saveUserMutations.isSuccess, () => {
 </script>
 
 <template>
-  <ViewScaffold title="Crear usuario">
-    <template #actionBack>
-      <RouterLink :to="{ name: 'users-list' }">
-        <v-btn
-          color="textPrimary"
-          icon="mdi-arrow-left"
-          variant="text"
-          density="compact"
-        ></v-btn>
-      </RouterLink>
-    </template>
-
-    <template #default>
-      <createUserFormVue
-        :form-button-text="'Añadir usuario'"
-        :is-loding="saveUserMutations.isPending.value"
-        :user="user"
-        @user-submit="onUserSubmit"
-      />
-    </template>
-  </ViewScaffold>
+  <createUserFormVue
+    :form-button-text="'Añadir usuario'"
+    :is-loding="saveUserMutations.isPending.value"
+    :user="user"
+    @user-submit="onUserSubmit"
+  />
 </template>
 
 <style scoped></style>

@@ -5,7 +5,7 @@
 .dark .v-btn-toggle span.v-btn__content {
   color: rgba(var(--v-theme-textPrimary));
 }
-.v-btn-toggle {
+.custome-1.v-btn-toggle {
   border-radius: 15px !important;
   .v-btn {
     &.v-btn--active {
@@ -29,7 +29,7 @@
   }
 }
 
-.v-btn-toggle {
+.custome-1.v-btn-toggle {
   .v-btn:nth-child(1) {
     &:not(.v-btn--active) {
       & .v-btn__underlay {

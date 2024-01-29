@@ -33,6 +33,7 @@ const onRateSubmit = () => {
             color="primary"
             mandatory
             density="compact"
+            class="custome-1"
           >
             <v-btn value="1" variant="tonal">Aumentar</v-btn>
             <v-btn value="0" variant="tonal">Disminuir</v-btn>
@@ -42,6 +43,7 @@ const onRateSubmit = () => {
             color="primary"
             mandatory
             density="compact"
+            class="custome-1"
           >
             <v-btn value="0" variant="tonal">porcentage</v-btn>
             <v-btn value="1" variant="tonal">En Valor</v-btn>
