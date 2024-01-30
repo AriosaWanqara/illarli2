@@ -3,7 +3,6 @@ import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
 import PriceCalculatorComponent from "@/modules/dashboard/components/shared/PriceCalculatorComponent.vue";
 import useSRITaxes from "@/modules/dashboard/modules/pricing/compossables/SRI/useSRITaxes";
 import type { SRITaxe } from "@/modules/dashboard/modules/pricing/models/SRITaxe";
-import { usethemeCustomizer } from "@/stores/themeCustomizer";
 import type { StandarProduct } from "@dashboard/modules/products/models/products/StandarProduct";
 import { useVuelidate } from "@vuelidate/core";
 import type { AxiosError } from "axios";
@@ -129,6 +128,19 @@ const onProductCalculateHelp = () => {
     showCalculator.value = true;
   }
 };
+
+const checkTaxesSelected = (params: SRITaxe[]) => {
+  if (params.length > 0) {
+    console.log(params.length);
+    if (
+      params.filter((x) => x.code == params[params.length - 1].code).length > 1
+    ) {
+      let lastTaxesRemove = params.pop();
+      standarProduct.value.taxes = params;
+      alert("solo puede escoger un tipo de " + lastTaxesRemove?.parent);
+    }
+  }
+};
 </script>
 <template>
   <UIParentCardV2>
@@ -154,7 +166,11 @@ const onProductCalculateHelp = () => {
                 "
                 :items="taxes"
                 :loading="isTaxesLoading"
+                :no-data-text="
+                  taxesHasError ? 'Error del servidor 🥲' : 'No hay registros'
+                "
                 return-object
+                @update:modelValue="checkTaxesSelected"
                 multiple
                 placeholder="Impuesto"
                 v-model="standarProduct.taxes"

@@ -21,7 +21,9 @@ const useSRITaxes = () => {
     if (data.value) {
       taxes.value = [];
       data.value.map((x) => {
-        taxes.value = [...taxes.value, ...x.rates];
+        x.rates.map((y) => {
+          taxes.value.push({ ...y, code: x.code, parent: x.name });
+        });
       });
     }
   });
