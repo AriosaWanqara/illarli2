@@ -5,6 +5,7 @@ import usePromotions from "../../compossables/promotion/usePromotions";
 import usePromotionMutations from "../../compossables/promotion/usePromotionMutations";
 import { watch } from "vue";
 import type { AxiosError } from "axios";
+import PromotionsTableList from "../../components/promotions/list/PromotionsTableList.vue";
 
 const { isPromotionsLoading, promotions, promotionsHasError } = usePromotions();
 const { deletePromotionMutation } = usePromotionMutations();
@@ -27,6 +28,8 @@ watch(deletePromotionMutation.isSuccess, () => {
     );
   }
 });
+
+const onPromotionsFilter = (filterPromotions: any) => {};
 </script>
 
 <template>
@@ -37,19 +40,7 @@ watch(deletePromotionMutation.isSuccess, () => {
       </RouterLink>
     </template>
     <template #default>
-      <p v-if="isPromotionsLoading">cargando..</p>
-      <p v-else-if="promotionsHasError">error</p>
-      <div v-else v-for="promotion in promotions">
-        {{ promotion.name }}
-        <RouterLink
-          :to="{ name: 'promotions-update', params: { id: promotion.id } }"
-        >
-          <VBtn>Modificar</VBtn>
-        </RouterLink>
-        <VBtn @click="onDelete(promotion.id)">Eliminar</VBtn>
-        <br />
-        <br />
-      </div>
+      <PromotionsTableList @promotions-filter="onPromotionsFilter" />
     </template>
   </ViewScaffold>
 </template>

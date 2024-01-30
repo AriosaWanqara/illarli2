@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
+import type { AxiosError } from "axios";
+import { watch } from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import usePromotion from "../../compossables/promotion/usePromotion";
-import useProducts from "@dashboard/modules/products/composables/product/useProducts";
 import usePromotionMutations from "../../compossables/promotion/usePromotionMutations";
-import { watch } from "vue";
-import type { AxiosError } from "axios";
 
 const params = useRoute().params;
 const { isPromotionLoading, promotionToUpdate, promotionHasError } =
   usePromotion(params.id.toString());
-const { isProductsLoading, productsDropdown } = useProducts();
+
 const { updatePromotionMutation } = usePromotionMutations();
 const router = useRouter();
 
@@ -65,16 +64,6 @@ watch(updatePromotionMutation.isSuccess, () => {
           <VTextField
             label="description"
             v-model="promotionToUpdate.description"
-          />
-        </VCol>
-        <VCol cols="6">
-          <VSelect
-            :items="productsDropdown"
-            item-title="label"
-            label="Product id"
-            item-value="value"
-            v-model="promotionToUpdate.product_id"
-            :loading="isProductsLoading"
           />
         </VCol>
         <VCol cols="12">

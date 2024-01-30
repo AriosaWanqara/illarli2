@@ -11,6 +11,8 @@ import VueApexCharts from "vue3-apexcharts";
 import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import Vue3Lottie from "vue3-lottie";
+import VCalendar from "v-calendar";
+import "v-calendar/style.css";
 
 import App from "./App.vue";
 import router from "./router";
@@ -37,6 +39,7 @@ const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
 app.use(Vue3Lottie);
+app.use(VCalendar, {});
 app.use(router);
 app.use(autoAnimatePlugin);
 

@@ -28,7 +28,6 @@ const usePromotion = (id: string) => {
         name: data.value.name,
         type: data.value.type,
         description: data.value.description,
-        product_id: data.value.product_id,
       };
     }
   });

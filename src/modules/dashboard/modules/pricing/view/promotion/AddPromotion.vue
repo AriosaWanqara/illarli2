@@ -1,23 +1,24 @@
 <script setup lang="ts">
+import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 import ViewScaffold from "@dashboard/components/shared/ViewScaffold.vue";
-import { ref } from "vue";
-import { RouterLink, useRouter } from "vue-router";
-import type { Promotion } from "../../models/Promotion";
-import useProducts from "@dashboard/modules/products/composables/product/useProducts";
-import usePromotionMutations from "../../compossables/promotion/usePromotionMutations";
-import { watch } from "vue";
 import type { AxiosError } from "axios";
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import CreateQuantityPromotionsForm from "../../components/promotions/create/CreateQuantityPromotionsForm.vue";
+import CreateDayPromotionsForm from "../../components/promotions/create/CreateDayPromotionsForm.vue";
+import CreateBetweenHoursPromotionsForm from "../../components/promotions/create/CreateBetweenHoursPromotionsForm.vue";
+import CreateBetweenDaysPromotionsForm from "../../components/promotions/create/CreateBetweenDaysPromotionsForm.vue";
+import usePromotionMutations from "../../compossables/promotion/usePromotionMutations";
+import type { Promotion } from "../../models/Promotion";
 
-const { isProductsLoading, productsDropdown } = useProducts();
 const { savePromotionMutation } = usePromotionMutations();
 const router = useRouter();
+const tab = ref("1");
 
-const promotion = ref<Promotion>({
-  type: "0",
-} as Promotion);
+const promotion = ref<Promotion>({} as Promotion);
 
-const onPromotionSubmit = () => {
-  savePromotionMutation.mutate(promotion.value);
+const onPromotionSubmit = (promotion: Promotion) => {
+  savePromotionMutation.mutate(promotion);
 };
 
 watch(savePromotionMutation.isError, () => {
@@ -35,51 +36,58 @@ watch(savePromotionMutation.isSuccess, () => {
 </script>
 
 <template>
-  <ViewScaffold title="Add Promo">
-    <template #action>
-      <RouterLink :to="{ name: 'promotions-list' }">
-        <VBtn>back</VBtn>
-      </RouterLink>
-    </template>
-    <template #default>
-      <VRow class="mt-1">
-        <VCol cols="6">
-          <v-btn-toggle
-            v-model="promotion.type"
-            color="primary"
-            mandatory
-            density="compact"
-          >
-            <v-btn value="0" variant="tonal">PROMOTION</v-btn>
-            <v-btn value="1" variant="tonal">QUANTITY</v-btn>
-          </v-btn-toggle>
-        </VCol>
-        <VCol cols="6">
-          <VTextField label="name" v-model="promotion.name" />
-        </VCol>
-        <VCol cols="6">
-          <VTextField label="description" v-model="promotion.description" />
-        </VCol>
-        <VCol cols="6">
-          <VSelect
-            :items="productsDropdown"
-            item-title="label"
-            label="Product id"
-            item-value="value"
-            v-model="promotion.product_id"
-            :loading="isProductsLoading"
+  <ViewScaffold>
+    <v-tabs v-model="tab" density="compact">
+      <v-tab density="compact" :ripple="false" value="1" color="info">
+        Cantidad
+      </v-tab>
+      <v-tab density="compact" :ripple="false" value="2" color="info">
+        Dia de la semana
+      </v-tab>
+      <v-tab density="compact" :ripple="false" value="3" color="info">
+        entre dias
+      </v-tab>
+      <v-tab density="compact" :ripple="false" value="4" color="info">
+        entre horas
+      </v-tab>
+    </v-tabs>
+    <v-window v-model="tab">
+      <v-window-item value="1">
+        <UIParentCardV2>
+          <CreateQuantityPromotionsForm
+            :button-text="'Guardar'"
+            :is-button-loading="savePromotionMutation.isPending.value"
+            :promotions="promotion"
+            @promotion-submit="onPromotionSubmit"
           />
-        </VCol>
-        <VCol cols="12">
-          <VBtn
-            @click="onPromotionSubmit"
-            :loading="savePromotionMutation.isPending.value"
-          >
-            crear
-          </VBtn>
-        </VCol>
-      </VRow>
-    </template>
+        </UIParentCardV2>
+      </v-window-item>
+      <v-window-item value="2">
+        <CreateDayPromotionsForm
+          :button-text="'Guardar'"
+          :is-button-loading="savePromotionMutation.isPending.value"
+          :promotions="promotion"
+          @promotion-submit="onPromotionSubmit"
+        />
+      </v-window-item>
+
+      <v-window-item value="3">
+        <CreateBetweenDaysPromotionsForm
+          :button-text="'Guardar'"
+          :is-button-loading="savePromotionMutation.isPending.value"
+          :promotions="promotion"
+          @promotion-submit="onPromotionSubmit"
+        />
+      </v-window-item>
+      <v-window-item value="4">
+        <CreateBetweenHoursPromotionsForm
+          :button-text="'Guardar'"
+          :is-button-loading="savePromotionMutation.isPending.value"
+          :promotions="promotion"
+          @promotion-submit="onPromotionSubmit"
+        />
+      </v-window-item>
+    </v-window>
   </ViewScaffold>
 </template>
 
