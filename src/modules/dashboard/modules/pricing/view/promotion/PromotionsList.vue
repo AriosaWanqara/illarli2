@@ -11,6 +11,7 @@ import type { Promotion } from "../../models/Promotion";
 import type { FilterOption } from "vue3-easy-data-table";
 import { Icon } from "@iconify/vue";
 import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
+import PromotionsFilter from "../../components/promotions/PromotionsFilter.vue";
 
 const { promotions } = usePromotions();
 const { deletePromotionMutation } = usePromotionMutations();
@@ -102,12 +103,26 @@ const onPromotionsFilter = (filterPromotions: any) => {
         :is-delete-loading="deletePromotionMutation.isPending.value"
         :is-update-loading="false"
         :search="search"
+        :filter-options="newFilters"
       />
       <ConfirmDeleteDialog
         :dialog-text="'Esta seguro que desea borrar el item'"
         :title="'Confirmar borrado'"
         :show-modal="showConfirmDelete"
         @confirm-response="onConfirmDelete"
+      />
+      <PromotionsFilter
+        :visibility="openFilter"
+        @return-filters="
+          (filters) => {
+            newFilters = filters;
+          }
+        "
+        @close="
+          (val) => {
+            openFilter = val;
+          }
+        "
       />
     </template>
   </ViewScaffold>

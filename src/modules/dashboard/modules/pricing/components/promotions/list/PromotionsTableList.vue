@@ -20,6 +20,7 @@ const { isPromotionsLoading, promotions, promotionsHasError } = usePromotions();
 const headers: Header[] = [
   { text: "name", value: "name" },
   { text: "discount", value: "discount" },
+  { text: "weekday", value: "weekday" },
   { text: "Acciones", value: "actions", width: 110 },
 ];
 

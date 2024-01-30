@@ -3,6 +3,7 @@ import InputSection from "@/modules/dashboard/components/shared/InputSection.vue
 import type { Promotion } from "../../../models/Promotion";
 import { DatePicker } from "v-calendar";
 import moment from "moment";
+import { PromotionFilterType } from "../../../const/PromotionFilterType";
 
 interface props {
   promotions: Promotion;
@@ -14,6 +15,7 @@ const props = defineProps<props>();
 const emits = defineEmits(["promotion-submit"]);
 
 const onPromotionSubmit = () => {
+  props.promotions.quantity = 1;
   props.promotions.starting_date = moment(
     props.promotions.starting_date
   ).format("YYYY-MM-DD HH:mm");
@@ -21,7 +23,10 @@ const onPromotionSubmit = () => {
     "YYYY-MM-DD HH:mm"
   );
   props.promotions.weekday = moment(props.promotions.weekday).format("DD");
-  emits("promotion-submit", { ...props.promotions, filter: "2" });
+  emits("promotion-submit", {
+    ...props.promotions,
+    filter: PromotionFilterType.BY_DAY,
+  });
 };
 </script>
 

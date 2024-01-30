@@ -3,6 +3,7 @@ import InputSection from "@/modules/dashboard/components/shared/InputSection.vue
 import type { Promotion } from "../../../models/Promotion";
 import { DatePicker } from "v-calendar";
 import moment from "moment";
+import { PromotionFilterType } from "../../../const/PromotionFilterType";
 
 interface props {
   promotions: Promotion;
@@ -20,7 +21,10 @@ const onPromotionSubmit = () => {
   props.promotions.ending_date = moment(props.promotions.ending_date).format(
     "YYYY-MM-DD HH:mm"
   );
-  emits("promotion-submit", { ...props.promotions, filter: "1" });
+  emits("promotion-submit", {
+    ...props.promotions,
+    filter: PromotionFilterType.BY_QUANTITY,
+  });
 };
 </script>
 
