@@ -7,9 +7,7 @@ import type { Promotion } from "../../models/Promotion";
 const promotions = ref<Promotion[]>([]);
 
 const fetchPromotions = async (): Promise<Promotion[]> => {
-  const { data } = await api.get<PromotionsApiResponse>(
-    "/inventory/promotion_and_discounts"
-  );
+  const { data } = await api.get<PromotionsApiResponse>("/inventory/discounts");
   return data.data;
 };
 
