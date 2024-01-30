@@ -45,7 +45,10 @@ const onPromotionSubmit = () => {
     </VCol>
     <VCol cols="12" md="6">
       <InputSection label-message="Start date">
-        <DatePicker v-model="props.promotions.starting_date">
+        <DatePicker
+          v-model="props.promotions.starting_date"
+          :popover="{ placement: 'right-start' }"
+        >
           <template #default="{ inputValue, inputEvents }">
             <VTextField
               placeholder="Fecha inicio"
@@ -59,7 +62,10 @@ const onPromotionSubmit = () => {
     </VCol>
     <VCol cols="12" md="6">
       <InputSection label-message="End date">
-        <DatePicker v-model="props.promotions.ending_date">
+        <DatePicker
+          v-model="props.promotions.ending_date"
+          :popover="{ placement: 'left-start' }"
+        >
           <template #default="{ inputValue, inputEvents }">
             <VTextField
               placeholder="Fecha fin"

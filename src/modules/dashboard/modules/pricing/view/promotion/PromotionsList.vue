@@ -8,14 +8,29 @@ import type { AxiosError } from "axios";
 import PromotionsTableList from "../../components/promotions/list/PromotionsTableList.vue";
 import { ref } from "vue";
 import type { Promotion } from "../../models/Promotion";
+import type { FilterOption } from "vue3-easy-data-table";
+import { Icon } from "@iconify/vue";
+import ConfirmDeleteDialog from "@/modules/dashboard/components/shared/ConfirmDeleteDialog.vue";
 
 const { promotions } = usePromotions();
 const { deletePromotionMutation } = usePromotionMutations();
 const filtersPromotions = ref<Promotion[]>([]);
 const search = ref();
+const newFilters = ref<FilterOption[]>([]);
+const openFilter = ref(false);
+const showConfirmDelete = ref(false);
+const deleteId = ref();
 
 const onDelete = (promotionsToDelete: Promotion) => {
-  deletePromotionMutation.mutate(promotionsToDelete.id);
+  deleteId.value = promotionsToDelete.id;
+  showConfirmDelete.value = true;
+};
+
+const onConfirmDelete = (response: boolean) => {
+  if (response) {
+    deletePromotionMutation.mutate(deleteId.value);
+  }
+  showConfirmDelete.value = false;
 };
 
 watch(deletePromotionMutation.isError, () => {
@@ -34,7 +49,6 @@ watch(deletePromotionMutation.isSuccess, () => {
 });
 
 const onPromotionsFilter = (filterPromotions: any) => {
-  console.log(filterPromotions);
   filtersPromotions.value = filterPromotions;
 };
 </script>
@@ -42,17 +56,45 @@ const onPromotionsFilter = (filterPromotions: any) => {
 <template>
   <ViewScaffold>
     <template #default>
-      <div class="tw-flex tw-justify-between tw-items-center tw-mb-4">
-        <VTextField
-          placeholder="Buscar"
-          prepend-inner-icon="mdi-magnify"
-          class="tw-max-w-[50%] tw-min-w-[160px]"
-          variant="outlined"
-          v-model="search"
-        />
-        <RouterLink :to="{ name: 'promotions-add' }">
-          <VBtn color="success" prepend-icon="mdi-plus">Nueva</VBtn>
-        </RouterLink>
+      <div class="tw-flex tw-flex-col tw-gap-4 tw-mb-2">
+        <div class="tw-flex tw-justify-between tw-items-center">
+          <VTextField
+            placeholder="Buscar"
+            prepend-inner-icon="mdi-magnify"
+            class="tw-max-w-[50%] tw-min-w-[160px]"
+            variant="outlined"
+            v-model="search"
+          />
+          <RouterLink :to="{ name: 'promotions-add' }">
+            <VBtn color="success" prepend-icon="mdi-plus">Nueva</VBtn>
+          </RouterLink>
+        </div>
+        <div class="tw-flex tw-justify-between tw-items-center">
+          <div class="tw-font-semibold tw-text-[#036666]">
+            <p>Todas las promociones ({{ promotions.length }})</p>
+          </div>
+          <div class="">
+            <VBtn
+              variant="tonal"
+              :color="newFilters.length > 0 ? 'info' : 'primary'"
+              class="px-0"
+              @click="openFilter = true"
+            >
+              <Icon
+                icon="mdi:filter-off"
+                :class="'tw-text-blue-600'"
+                height="16"
+                v-if="newFilters.length > 0"
+              />
+              <Icon
+                icon="mdi:filter"
+                :class="'textPrimary'"
+                height="16"
+                v-else
+              />
+            </VBtn>
+          </div>
+        </div>
       </div>
       <PromotionsTableList
         @promotions-filter="onPromotionsFilter"
@@ -60,6 +102,12 @@ const onPromotionsFilter = (filterPromotions: any) => {
         :is-delete-loading="deletePromotionMutation.isPending.value"
         :is-update-loading="false"
         :search="search"
+      />
+      <ConfirmDeleteDialog
+        :dialog-text="'Esta seguro que desea borrar el item'"
+        :title="'Confirmar borrado'"
+        :show-modal="showConfirmDelete"
+        @confirm-response="onConfirmDelete"
       />
     </template>
   </ViewScaffold>
