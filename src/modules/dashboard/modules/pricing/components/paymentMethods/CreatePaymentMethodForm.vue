@@ -38,7 +38,7 @@ const onPaymentMethodSubmit = () => {
 
 <template>
   <VRow>
-    <VCol cols="12" class="py-0">
+    <VCol cols="12">
       <InputSection label-message="Nombre" required>
         <VTextField
           placeholder="Ingrese un nombre"
@@ -46,7 +46,7 @@ const onPaymentMethodSubmit = () => {
         />
       </InputSection>
     </VCol>
-    <VCol cols="12" class="py-0">
+    <VCol cols="12">
       <InputSection label-message="Tipo de forma de pago" required>
         <VSelect
           placeholder="seleccione una forma de pago"
@@ -63,7 +63,7 @@ const onPaymentMethodSubmit = () => {
         />
       </InputSection>
     </VCol>
-    <VCol cols="12" class="py-0">
+    <VCol cols="12">
       <div class="tw-flex tw-justify-end">
         <VBtn
           @click="onPaymentMethodSubmit"

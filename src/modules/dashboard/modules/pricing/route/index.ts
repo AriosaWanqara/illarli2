@@ -11,34 +11,16 @@ export const pricingRoute: RouteRecordRaw[] = [
   {
     path: "metodo-pago",
     name: "payment-method-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Forma de pago" },
     component: () =>
       import(
         "@dashboard/modules/pricing/view/paymentMethod/PaymentMethodList.vue"
       ),
   },
   {
-    path: "metodo-pago/add",
-    name: "payment-method-add",
-    meta: { permission: "list characteristics" },
-    component: () =>
-      import(
-        "@dashboard/modules/pricing/view/paymentMethod/AddPaymentMethod.vue"
-      ),
-  },
-  {
-    path: "metodo-pago/:id",
-    name: "payment-method-update",
-    meta: { permission: "list characteristics" },
-    component: () =>
-      import(
-        "@dashboard/modules/pricing/view/paymentMethod/UpdatePaymentMethod.vue"
-      ),
-  },
-  {
     path: "promotions",
     name: "promotions-list",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Promociones" },
     component: () =>
       import("@dashboard/modules/pricing/view/promotion/PromotionsList.vue"),
   },
@@ -52,7 +34,7 @@ export const pricingRoute: RouteRecordRaw[] = [
   {
     path: "promotion/add",
     name: "promotions-add",
-    meta: { permission: "list characteristics" },
+    meta: { permission: "list characteristics", name: "Crear promocion" },
     component: () =>
       import("@dashboard/modules/pricing/view/promotion/AddPromotion.vue"),
   },
