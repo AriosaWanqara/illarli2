@@ -47,6 +47,13 @@ export default createVuetify({
       variant: "tonal",
       color: "primary",
     },
+    VTabs: {
+      color: "secondary",
+      density: "compact",
+    },
+    VTab: {
+      density: "compact",
+    },
     VDataTable: {
       density: "comfortable",
     },

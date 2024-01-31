@@ -13,6 +13,8 @@ import { productTypeEnum } from "../../../const/productTypeEnum";
 import type { Product } from "../../../models/products/Product";
 import type { Subproduct } from "../../../models/products/Subproduct";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
+import ProductPromotions from "./ProductPromotions.vue";
+import ProductSizingForm from "./ProductSizingForm.vue";
 
 interface props {
   productProps?: Product;
@@ -29,7 +31,9 @@ const subporduct = ref<Subproduct>({
   product_type_id: productTypeEnum.SUBPRODUCT,
   taxes: [] as SRITaxe[],
 } as Subproduct);
+subporduct.value.discount = [];
 const productValidator = useVuelidate(subproductRules, subporduct);
+const tab = ref();
 
 watch(
   () => subporduct.value.skus,
@@ -124,42 +128,54 @@ watch(updateSubproductMutation.isSuccess, () => {
 <template>
   <UIParentCardV2>
     <div class="tw-py-7 tw-px-5">
-      <ProductGeneralInfo
-        :product="subporduct"
-        :code-error="
-          productValidator.skus.$errors.map((x) => x.$message.toString())
-        "
-        class="tw-pb-4"
-      />
-      <VRow>
-        <VCol cols="6" class="py-1">
-          <VTextField placeholder="price" v-model="subporduct.price" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VTextField placeholder="amount" v-model="subporduct.amount" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VSelect
-            :disable="props.productProps"
-            :loading="isStandarProductsLoading"
-            :items="standarProductsDropdown"
-            item-title="label"
-            item-value="value"
-            placeholder="parent"
-            v-model="subporduct.parent_product_id"
-          />
-        </VCol>
-
-        <VCol cols="12">
-          <VBtn
-            color="primary"
-            @click="onSubproductSubmit"
-            :loading="
-              saveSubproductMutation.isPending.value ||
-              updateSubproductMutation.isPending.value
+      <v-tabs v-model="tab">
+        <v-tab value="1">Producto *</v-tab>
+        <v-tab value="2">Padre *</v-tab>
+        <v-tab value="3">Promociones</v-tab>
+        <v-tab value="4">Tamaño</v-tab>
+      </v-tabs>
+      <v-window v-model="tab">
+        <v-window-item value="1">
+          <ProductGeneralInfo
+            :product="subporduct"
+            :code-error="
+              productValidator.skus.$errors.map((x) => x.$message.toString())
             "
-            >crear</VBtn
-          >
+            class="tw-pb-4"
+          />
+        </v-window-item>
+
+        <v-window-item value="2"> Two </v-window-item>
+
+        <v-window-item value="3">
+          <ProductPromotions :product="subporduct" />
+        </v-window-item>
+        <v-window-item value="4">
+          <ProductSizingForm :product="subporduct" />
+        </v-window-item>
+      </v-window>
+      <VRow>
+        <VCol cols="12">
+          <div class="tw-flex tw-justify-end tw-gap-2">
+            <VBtn
+              @click="router.push({ name: 'product-list' })"
+              variant="outlined"
+              color="borderColor"
+            >
+              <p class="textPrimary">cancelar</p>
+            </VBtn>
+            <VBtn
+              color="success"
+              prepend-icon="mdi-plus"
+              @click="onSubproductSubmit"
+              :loading="
+                saveSubproductMutation.isPending.value ||
+                updateSubproductMutation.isPending.value
+              "
+            >
+              Añadir producto
+            </VBtn>
+          </div>
         </VCol>
       </VRow>
     </div>

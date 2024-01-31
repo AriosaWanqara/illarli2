@@ -11,19 +11,19 @@ import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import useComboPoductMutations from "../../../composables/product/combo/useComboPoductMutations";
 import useComboPoductRules from "../../../composables/product/combo/useComboPoductRules";
-import useStandarProducts from "../../../composables/product/standar/useStandarProducts";
 import useCreateProduct from "../../../composables/product/useCreateProduct";
 import { productTypeEnum } from "../../../const/productTypeEnum";
 import type { Product } from "../../../models/products/Product";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
+import ProductPromotions from "./ProductPromotions.vue";
+import ProductSizingForm from "./ProductSizingForm.vue";
 
 interface props {
   productProps?: Product;
 }
 const router = useRouter();
 const { comboPoductRules } = useComboPoductRules();
-const { isStandarProductsLoading, standarProductsDropdown, standarProducts } =
-  useStandarProducts();
+
 const { saveComboProductMutation, updateComboProductMutation } =
   useComboPoductMutations();
 const props = defineProps<props>();
@@ -33,8 +33,10 @@ const comboProduct = ref<ComboProduct>({
   product_type_id: productTypeEnum.COMBO,
   taxes: [] as SRITaxe[],
 } as ComboProduct);
+comboProduct.value.discount = [];
 const productValidator = useVuelidate(comboPoductRules, comboProduct);
 const selectedChilds = ref<string[]>([]);
+const tab = ref();
 
 if (props.productProps) {
   comboProduct.value.id = props.productProps.id;
@@ -123,94 +125,58 @@ watch(saveComboProductMutation.isSuccess, () => {
     router.push({ name: "product-list" });
   }
 });
-
-watch(selectedChilds, () => {
-  setChild();
-});
-
-watch(standarProducts, () => {
-  setChild();
-});
-
-function setChild() {
-  if (selectedChilds.value.length > 0) {
-    if (standarProducts.value) {
-      if (props.productProps) {
-        let tempChild: ComboProductChild[] = [];
-        selectedChilds.value.map((x) => {
-          let tempProduct = standarProducts.value.find((y) => y.id == x);
-          let tempRelationId = props.productProps?.products.find(
-            (z) => z.child_product_id == x
-          );
-          tempChild.push({
-            product_relation_id: tempRelationId!.id,
-            amount: 1,
-            price: parseFloat(tempProduct!.price),
-          });
-        });
-        comboProduct.value.products = tempChild;
-        comboProduct.value.price = tempChild.reduce((acc, el) => {
-          return el.price + acc;
-        }, 0);
-      } else {
-        let tempChild: ComboProductChild[] = [];
-        selectedChilds.value.map((x) => {
-          let tempProduct = standarProducts.value.find((y) => y.id == x);
-          tempChild.push({
-            child_product_id: tempProduct!.id,
-            amount: 1,
-            price: parseFloat(tempProduct!.price),
-          });
-        });
-        comboProduct.value.products = tempChild;
-        comboProduct.value.price = tempChild.reduce((acc, el) => {
-          return el.price + acc;
-        }, 0);
-      }
-    }
-  } else {
-    comboProduct.value.products = [];
-    comboProduct.value.price = 0;
-  }
-}
 </script>
 <template>
   <UIParentCardV2>
     <div class="tw-py-7 tw-px-5">
-      <ProductGeneralInfo
-        class="tw-mb-5"
-        :product="comboProduct"
-        :code-error="
-          productValidator.skus.$errors.map((x) => x.$message.toString())
-        "
-      />
-      <v-row class="mt-2">
-        <VCol cols="6" class="py-1">
-          <VTextField label="price" v-model="comboProduct.price" />
-        </VCol>
-        <VCol cols="6" class="py-1">
-          <VSelect
-            :loading="isStandarProductsLoading"
-            :items="standarProductsDropdown"
-            item-title="label"
-            multiple
-            item-value="value"
-            label="child"
-            v-model="selectedChilds"
+      <v-tabs v-model="tab">
+        <v-tab value="1">Producto *</v-tab>
+        <v-tab value="2">Combo *</v-tab>
+        <v-tab value="3">Promociones</v-tab>
+        <v-tab value="4">Tamaño</v-tab>
+      </v-tabs>
+      <v-window v-model="tab">
+        <v-window-item value="1">
+          <ProductGeneralInfo
+            class="tw-mb-5"
+            :product="comboProduct"
+            :code-error="
+              productValidator.skus.$errors.map((x) => x.$message.toString())
+            "
           />
-        </VCol>
-        <v-col cols="12">
+        </v-window-item>
+
+        <v-window-item value="2"> Two </v-window-item>
+
+        <v-window-item value="3">
+          <ProductPromotions :product="comboProduct" />
+        </v-window-item>
+        <v-window-item value="4">
+          <ProductSizingForm :product="comboProduct" />
+        </v-window-item>
+      </v-window>
+      <v-col cols="12">
+        <div class="tw-flex tw-justify-end tw-gap-2">
+          <VBtn
+            @click="router.push({ name: 'product-list' })"
+            variant="outlined"
+            color="borderColor"
+          >
+            <p class="textPrimary">cancelar</p>
+          </VBtn>
           <v-btn
-            color="primary"
+            color="success"
+            prepend-icon="mdi-plus"
             @click="onComboProductSubmit"
             :loading="
               saveComboProductMutation.isPending.value ||
               updateComboProductMutation.isPending.value
             "
-            >crear</v-btn
           >
-        </v-col>
-      </v-row>
+            Añadir producto
+          </v-btn>
+        </div>
+      </v-col>
     </div>
   </UIParentCardV2>
 </template>
