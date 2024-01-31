@@ -12,4 +12,5 @@ export interface Promotion {
   ending_time: string;
   weekday: any;
   filter: string;
+  order: number;
 }

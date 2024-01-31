@@ -19,7 +19,10 @@ const usePromotions = () => {
 
   watch(data, () => {
     if (data.value) {
-      promotions.value = data.value;
+      promotions.value = [];
+      data.value.map((x, index) => {
+        promotions.value.push({ ...x, order: index + 1 });
+      });
     }
   });
 

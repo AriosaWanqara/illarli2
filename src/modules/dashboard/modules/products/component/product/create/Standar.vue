@@ -15,8 +15,11 @@ import { productTypeEnum } from "../../../const/productTypeEnum";
 import type { Brand } from "../../../models/Brand";
 import type { Product } from "../../../models/products/Product";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
+import ProductPromotions from "./ProductPromotions.vue";
+import ProductSizingForm from "./ProductSizingForm.vue";
 import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
+import draggable from "vuedraggable";
 
 interface props {
   productProps?: Product;
@@ -31,19 +34,21 @@ const props = defineProps<props>();
 const standarProduct = ref<StandarProduct>({
   product_type_id: productTypeEnum.STANDAR,
   taxes: [] as SRITaxe[],
+  skus: [] as { code: string }[],
 } as StandarProduct);
 standarProduct.value.categoriesId = [];
 const productValidator = useVuelidate(standarPoductRules, standarProduct);
 const router = useRouter();
 const selectedRatesPercentage = ref<{ name: string; value: number }[]>([]);
 const showCalculator = ref(false);
+const tab = ref();
 
 if (props.productProps) {
   product.value.name = props.productProps.name;
-  product.value.sku = props.productProps.sku;
+  // product.value.skus = props.productProps.skus;
   standarProduct.value.id = props.productProps.id;
   standarProduct.value.name = props.productProps.name;
-  standarProduct.value.sku = props.productProps.sku;
+  standarProduct.value.skus = props.productProps.skus;
   standarProduct.value.price = parseFloat(props.productProps.price);
   standarProduct.value.unit_id = props.productProps.unit_id.toString();
   standarProduct.value.brand_id = { id: props.productProps.brand_id } as Brand;
@@ -51,10 +56,14 @@ if (props.productProps) {
 }
 
 watch(
-  () => standarProduct.value.sku,
+  () => standarProduct.value.skus,
   () => {
-    product.value.sku = standarProduct.value.sku;
-  }
+    product.value.skus = [];
+    standarProduct.value.skus.map((x) => {
+      product.value.skus.push(x.code);
+    });
+  },
+  { deep: true }
 );
 
 const onStandarProductSubmit = () => {
@@ -145,96 +154,115 @@ const checkTaxesSelected = (params: SRITaxe[]) => {
 <template>
   <UIParentCardV2>
     <div class="tw-py-7 tw-px-5">
-      <ProductGeneralInfo
-        :product="standarProduct"
-        :code-error="
-          productValidator.sku.$errors.map((x) => x.$message.toString())
-        "
-      />
-      <FormSeccion title="Valor-impuestos" class="tw-mt-2">
-        <VRow>
-          <VCol cols="6" md="6" class="py-1">
-            <InputSection label-message="Impuesto" required>
-              <VSelect
-                hide-details
-                item-value="id"
-                item-title="name"
-                :error-messages="
-                  productValidator.taxes.$errors.map((x) =>
-                    x.$message.toString()
-                  )
-                "
-                :items="taxes"
-                :loading="isTaxesLoading"
-                :no-data-text="
-                  taxesHasError ? 'Error del servidor 🥲' : 'No hay registros'
-                "
-                return-object
-                @update:modelValue="checkTaxesSelected"
-                multiple
-                placeholder="Impuesto"
-                v-model="standarProduct.taxes"
-              >
-                <template v-slot:selection="{ item, index }">
-                  <span v-if="index < 1">{{ item.title }}</span>
-                  <span
-                    v-if="index === 1"
-                    class="text-grey text-caption align-self-center"
+      <v-tabs v-model="tab" density="compact">
+        <v-tab value="one" density="compact" color="secondary">Producto*</v-tab>
+        <v-tab value="two" density="compact" color="secondary"
+          >Promociones</v-tab
+        >
+        <v-tab value="three" density="compact" color="secondary">Tamaño</v-tab>
+      </v-tabs>
+      <v-window v-model="tab">
+        <v-window-item value="one">
+          <ProductGeneralInfo
+            :product="standarProduct"
+            :code-error="
+              productValidator.skus.$errors.map((x) => x.$message.toString())
+            "
+          />
+          <FormSeccion title="Valor-impuestos" class="tw-mt-2" border>
+            <VRow>
+              <VCol cols="6" md="6" class="py-1">
+                <InputSection label-message="Impuesto" required>
+                  <VSelect
+                    hide-details
+                    item-value="id"
+                    item-title="name"
+                    :error-messages="
+                      productValidator.taxes.$errors.map((x) =>
+                        x.$message.toString()
+                      )
+                    "
+                    :items="taxes"
+                    :loading="isTaxesLoading"
+                    :no-data-text="
+                      taxesHasError
+                        ? 'Error del servidor 🥲'
+                        : 'No hay registros'
+                    "
+                    return-object
+                    @update:modelValue="checkTaxesSelected"
+                    multiple
+                    placeholder="Impuesto"
+                    v-model="standarProduct.taxes"
                   >
-                    (+{{ standarProduct.taxes.length - 1 }} others)
-                  </span>
-                </template>
-              </VSelect>
-            </InputSection>
-          </VCol>
-          <VCol cols="6" md="6" class="py-1">
-            <InputSection label-message="Precio con imp" required>
-              <div class="tw-flex">
-                <VTextField
-                  hide-details
-                  :error-messages="
-                    productValidator.price.$errors.map((x) =>
-                      x.$message.toString()
-                    )
-                  "
-                  placeholder="Precio"
-                  v-model="standarProduct.price"
-                />
-                <VBtn
-                  @click="onProductCalculateHelp"
-                  color="info"
-                  density="default"
-                >
-                  <p class="textPrimary">Calcular</p>
-                </VBtn>
-              </div>
-            </InputSection>
-          </VCol>
-        </VRow>
-        <VRow>
-          <VCol cols="12" class="py-0">
-            <div class="tw-flex tw-justify-end tw-gap-2 tw-mt-[5px]">
-              <VBtn
-                @click="router.push({ name: 'product-list' })"
-                variant="outlined"
-                color="borderColor"
-              >
-                <p class="textPrimary">cancelar</p>
-              </VBtn>
-              <VBtn
-                prepend-icon="mdi-plus"
-                color="success"
-                :loading="
-                  saveStandarProductMutation.isPending.value ||
-                  updateStandarProductMutation.isPending.value
-                "
-                @click="onStandarProductSubmit"
-                >Añadir producto</VBtn
-              >
-            </div>
-          </VCol>
-        </VRow>
-      </FormSeccion>
+                    <template v-slot:selection="{ item, index }">
+                      <span v-if="index < 1">{{ item.title }}</span>
+                      <span
+                        v-if="index === 1"
+                        class="text-grey text-caption align-self-center"
+                      >
+                        (+{{ standarProduct.taxes.length - 1 }} others)
+                      </span>
+                    </template>
+                  </VSelect>
+                </InputSection>
+              </VCol>
+              <VCol cols="6" md="6" class="py-1">
+                <InputSection label-message="Precio con imp" required>
+                  <div class="tw-flex">
+                    <VTextField
+                      hide-details
+                      :error-messages="
+                        productValidator.price.$errors.map((x) =>
+                          x.$message.toString()
+                        )
+                      "
+                      placeholder="Precio"
+                      v-model="standarProduct.price"
+                    />
+                    <VBtn
+                      @click="onProductCalculateHelp"
+                      color="info"
+                      density="default"
+                    >
+                      <p class="textPrimary">Calcular</p>
+                    </VBtn>
+                  </div>
+                </InputSection>
+              </VCol>
+            </VRow>
+          </FormSeccion>
+        </v-window-item>
+
+        <v-window-item value="two">
+          <ProductPromotions :product="standarProduct" />
+        </v-window-item>
+
+        <v-window-item value="three">
+          <ProductSizingForm :product="standarProduct" />
+        </v-window-item>
+      </v-window>
+      <VCol cols="12" class="py-0">
+        <div class="tw-flex tw-justify-end tw-gap-2 tw-mt-[5px]">
+          <VBtn
+            @click="router.push({ name: 'product-list' })"
+            variant="outlined"
+            color="borderColor"
+          >
+            <p class="textPrimary">cancelar</p>
+          </VBtn>
+          <VBtn
+            prepend-icon="mdi-plus"
+            color="success"
+            :loading="
+              saveStandarProductMutation.isPending.value ||
+              updateStandarProductMutation.isPending.value
+            "
+            @click="onStandarProductSubmit"
+            >Añadir producto</VBtn
+          >
+        </div>
+      </VCol>
     </div>
     <VDialog max-width="400" v-model="showCalculator">
       <PriceCalculatorComponent

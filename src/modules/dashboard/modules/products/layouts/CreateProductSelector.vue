@@ -22,41 +22,16 @@ const ProductType = ref([
     to: "product-add-standar",
     icon: standar,
   },
-  // {
-  //     label: 'Serie',
-  //     to: 'product-add-serie',
-  //     icon: ''
-  // },
   {
     label: "Combo",
     to: "product-add-combo",
     icon: combo,
   },
-  // {
-  //     label: 'Tallas y Colores',
-  //     to: 'product-add-size-color',
-  //     icon: ''
-  // },
   {
     label: "Subproducto",
     to: "product-add-subproduct",
     icon: subproduct,
   },
-  // {
-  //     label: 'Receta',
-  //     to: 'product-add-recipe',
-  //     icon: ''
-  // },
-  // {
-  //     label: 'Lote',
-  //     to: 'product-add-lote',
-  //     icon: ''
-  // },
-  // {
-  //     label: 'Servicio',
-  //     to: 'product-add-service',
-  //     icon: ''
-  // }
 ]);
 </script>
 
@@ -84,9 +59,11 @@ const ProductType = ref([
             <span class="title-1 tw-font-semibold">Creando Producto:</span>
             {{ product.name }}
           </h2>
-          <p class="tw-text-sm tw-text-gray-400">Codigo: {{ product.sku }}</p>
+          <p class="tw-text-sm tw-text-gray-400">
+            Codigo: {{ product.skus ? product.skus[0] : "" }}
+          </p>
         </head>
-        <FormSeccion title="Descripcion" class="tw-mt-2">
+        <FormSeccion title="Descripcion" class="tw-mt-2" border>
           <VRow>
             <VCol cols="12" class="py-1">
               <InputSection label-message="nombre del producto" required>

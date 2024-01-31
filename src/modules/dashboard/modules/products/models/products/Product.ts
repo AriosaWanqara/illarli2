@@ -1,3 +1,4 @@
+import type { Promotion } from "../../../pricing/models/Promotion";
 import type { Brand } from "../Brand";
 import type { Category } from "../Category";
 
@@ -5,22 +6,25 @@ export interface Product {
   id: string;
   slug: string;
   name: string;
-  sku: string;
+  skus: {
+    id: string;
+    code: string;
+  }[];
   upc: null | string;
   description: string;
   active: number;
   price: string;
   mmu: string;
-  weight: null;
-  width: null;
-  height: null;
-  depth: null;
+  weight: null | number; // size
+  width: null | number; // size
+  height: null | number; // size
+  depth: null | number; // size
   stock_min: string;
   stock_max: string;
   stock: number;
   show: number;
   taxes: Tax[];
-  unit_id: number;
+  unit_id: number; // unit
   product_type_id: string;
   product_type_name: string;
   brand_id: string;
@@ -93,7 +97,7 @@ export interface Tax {
 
 export interface baseProduct {
   id: string;
-  sku: string;
+  skus: { code: string }[];
   name: string;
   price: number;
   cost: number;
@@ -101,4 +105,10 @@ export interface baseProduct {
   categoriesId: Category[];
   brand_id: Brand;
   image_file: string;
+  weight: null | number; // size
+  width: null | number; // size
+  height: null | number; // size
+  depth: null | number; // size
+  show: number;
+  discount: Promotion[];
 }

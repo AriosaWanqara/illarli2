@@ -78,7 +78,7 @@ const onItemFilter = (params: any) => {
         <div class="tw-flex tw-flex-col">
           <p class="tw-leading-5">{{ item.name }}</p>
           <p class="tw-leading-5 tw-text-sm tw-text-gray-400">
-            Codigo:{{ item.sku }}
+            Codigo:{{ item.skus[0].code }}
           </p>
         </div>
       </div>

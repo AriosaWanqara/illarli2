@@ -9,6 +9,7 @@ import { watch } from "vue";
 import useBrands from "../../../composables/brand/useBrands";
 import useBrandsMutations from "../../../composables/brand/useBrandsMutations";
 import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
+import { ref } from "vue";
 
 const { categories, isCategoriesLoading } = useCategories();
 const { brands, isBrandsLoading } = useBrands();
@@ -20,7 +21,7 @@ const isCategoryAutocompleteLoading = computed(
 const isBrandAutocompleteLoading = computed(
   () => isBrandsLoading.value || saveBrandMutation.isPending.value
 );
-
+const sku = ref("");
 interface props {
   product: baseProduct;
   codeError: string[];
@@ -69,6 +70,14 @@ watch(saveCategoryMutation.isError, () => {
   if (saveCategoryMutation.isError.value) {
   }
 });
+watch(sku, () => {
+  if (props.product.skus) {
+    props.product.skus = [{ code: "" }];
+  }
+  if (props.product.skus[0]) {
+    props.product.skus[0] = { code: sku.value };
+  }
+});
 watch(saveBrandMutation.isSuccess, () => {
   if (saveBrandMutation.isSuccess.value) {
     let response = saveBrandMutation.data.value;
@@ -86,7 +95,7 @@ watch(saveBrandMutation.isError, () => {
 </script>
 
 <template>
-  <FormSeccion title="Información General">
+  <FormSeccion title="Información General" border>
     <VRow class="py-0">
       <VCol class="py-1" cols="12">
         <InputSection label-message="Codigo" required>
@@ -96,7 +105,7 @@ watch(saveBrandMutation.isError, () => {
             flat
             :error-messages="props.codeError"
             placeholder="Ingrese el codigo del producto"
-            v-model="props.product.sku"
+            v-model="sku"
           />
         </InputSection>
       </VCol>

@@ -4,7 +4,7 @@ const standarPoductRules = {
   name: {
     required: helpers.withMessage("Name field is required", required),
   },
-  sku: {
+  skus: {
     required: helpers.withMessage("Sku field is required", required),
   },
   unit_id: {

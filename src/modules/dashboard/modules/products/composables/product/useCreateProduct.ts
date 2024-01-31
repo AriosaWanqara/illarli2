@@ -2,7 +2,7 @@ import { ref } from "vue";
 
 interface product {
   name: string;
-  sku: string;
+  skus: string[];
 }
 
 const nameError = ref<string[]>([]);
