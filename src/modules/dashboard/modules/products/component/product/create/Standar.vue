@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
+import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
 import PriceCalculatorComponent from "@/modules/dashboard/components/shared/PriceCalculatorComponent.vue";
+import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 import useSRITaxes from "@/modules/dashboard/modules/pricing/compossables/SRI/useSRITaxes";
 import type { SRITaxe } from "@/modules/dashboard/modules/pricing/models/SRITaxe";
 import type { StandarProduct } from "@dashboard/modules/products/models/products/StandarProduct";
@@ -17,9 +19,6 @@ import type { Product } from "../../../models/products/Product";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
 import ProductPromotions from "./ProductPromotions.vue";
 import ProductSizingForm from "./ProductSizingForm.vue";
-import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
-import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
-import draggable from "vuedraggable";
 
 interface props {
   productProps?: Product;
@@ -46,7 +45,10 @@ const tab = ref();
 
 if (props.productProps) {
   product.value.name = props.productProps.name;
-  // product.value.skus = props.productProps.skus;
+  product.value.skus = [];
+  props.productProps.skus.map((x) => {
+    product.value.skus.push(x.code);
+  });
   standarProduct.value.id = props.productProps.id;
   standarProduct.value.name = props.productProps.name;
   standarProduct.value.skus = props.productProps.skus;
