@@ -36,6 +36,7 @@ const standarProduct = ref<StandarProduct>({
   taxes: [] as SRITaxe[],
   skus: [] as { code: string }[],
 } as StandarProduct);
+standarProduct.value.discount = [];
 standarProduct.value.categoriesId = [];
 const productValidator = useVuelidate(standarPoductRules, standarProduct);
 const router = useRouter();
