@@ -4,6 +4,7 @@ import type { baseProduct } from "../../../models/products/Product";
 import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
 
 import draggable from "vuedraggable";
+import { watch } from "vue";
 
 interface props {
   product: baseProduct;
@@ -40,6 +41,17 @@ const log = (params: any) => {
     props.product.discount.find((x) => x.id == element.id)!.order = newIndex;
   }
 };
+
+watch(
+  () => props.product.discount.length,
+  () => {
+    if (props.product.discount.length > 0) {
+      props.product.discount.map((x, index) => {
+        x.order = index + 1;
+      });
+    }
+  }
+);
 </script>
 
 <template>
