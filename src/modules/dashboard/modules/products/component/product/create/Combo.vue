@@ -1,26 +1,21 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import useComboPoductMutations from "../../../composables/product/combo/useComboPoductMutations";
-import { useVuelidate } from "@vuelidate/core";
+import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
+import type { SRITaxe } from "@/modules/dashboard/modules/pricing/models/SRITaxe";
 import type {
   ComboProduct,
   ComboProductChild,
 } from "@dashboard/modules/products/models/products/ComboProduct";
-import { watch } from "vue";
+import { useVuelidate } from "@vuelidate/core";
 import type { AxiosError } from "axios";
-import { productTypeEnum } from "../../../const/productTypeEnum";
-import useStandarProducts from "../../../composables/product/standar/useStandarProducts";
-import type { Product } from "../../../models/products/Product";
-import useBrands from "../../../composables/brand/useBrands";
-import useCategories from "../../../composables/category/useCategories";
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import useComboPoductMutations from "../../../composables/product/combo/useComboPoductMutations";
 import useComboPoductRules from "../../../composables/product/combo/useComboPoductRules";
-import { usethemeCustomizer } from "@/stores/themeCustomizer";
+import useStandarProducts from "../../../composables/product/standar/useStandarProducts";
 import useCreateProduct from "../../../composables/product/useCreateProduct";
+import { productTypeEnum } from "../../../const/productTypeEnum";
+import type { Product } from "../../../models/products/Product";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
-import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
-
-const store = usethemeCustomizer();
 
 interface props {
   productProps?: Product;
@@ -31,28 +26,23 @@ const { isStandarProductsLoading, standarProductsDropdown, standarProducts } =
   useStandarProducts();
 const { saveComboProductMutation, updateComboProductMutation } =
   useComboPoductMutations();
-const { categoriesDropdown, isCategoriesLoading } = useCategories();
-const { brandsDropdown, isBrandsLoading } = useBrands();
 const props = defineProps<props>();
 const { product, nameError } = useCreateProduct();
 const comboProduct = ref<ComboProduct>({
   products: [] as ComboProductChild[],
   product_type_id: productTypeEnum.COMBO,
-  taxes: [
-    // '9aaede03-d462-412b-b007-317fef91cf11'
-    { id: "9aaede03-d617-47bc-b264-74d1e0519177" },
-  ],
+  taxes: [] as SRITaxe[],
 } as ComboProduct);
 const productValidator = useVuelidate(comboPoductRules, comboProduct);
 const selectedChilds = ref<string[]>([]);
 
-// 9aaede03-d617-47bc-b264-74d1e0519177 12
-// 9aaede03-d462-412b-b007-317fef91cf11 0
-
 if (props.productProps) {
   comboProduct.value.id = props.productProps.id;
   comboProduct.value.name = props.productProps.name;
-  comboProduct.value.sku = props.productProps.sku;
+  product.value.skus = [];
+  props.productProps.skus.map((x) => {
+    product.value.skus.push(x.code);
+  });
   comboProduct.value.price = parseFloat(props.productProps.price);
   comboProduct.value.unit_id = props.productProps.unit_id.toString();
   comboProduct.value.categoriesId = props.productProps.categories;
@@ -61,10 +51,14 @@ if (props.productProps) {
   });
 }
 watch(
-  () => comboProduct.value.sku,
+  () => comboProduct.value.skus,
   () => {
-    product.value.sku = comboProduct.value.sku;
-  }
+    product.value.skus = [];
+    comboProduct.value.skus.map((x) => {
+      product.value.skus.push(x.code);
+    });
+  },
+  { deep: true }
 );
 
 watch(
@@ -187,7 +181,7 @@ function setChild() {
         class="tw-mb-5"
         :product="comboProduct"
         :code-error="
-          productValidator.sku.$errors.map((x) => x.$message.toString())
+          productValidator.skus.$errors.map((x) => x.$message.toString())
         "
       />
       <v-row class="mt-2">

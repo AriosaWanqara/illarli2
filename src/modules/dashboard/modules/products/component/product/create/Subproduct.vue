@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { usethemeCustomizer } from "@/stores/themeCustomizer";
+import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
+import type { SRITaxe } from "@/modules/dashboard/modules/pricing/models/SRITaxe";
 import { useVuelidate } from "@vuelidate/core";
 import type { AxiosError } from "axios";
 import { ref, watch } from "vue";
@@ -7,17 +8,15 @@ import { useRouter } from "vue-router";
 import useStandarProducts from "../../../composables/product/standar/useStandarProducts";
 import useSubproductMutations from "../../../composables/product/subproduct/useSubproductMutations";
 import useSubproductRules from "../../../composables/product/subproduct/useSubproductRules";
+import useCreateProduct from "../../../composables/product/useCreateProduct";
 import { productTypeEnum } from "../../../const/productTypeEnum";
 import type { Product } from "../../../models/products/Product";
 import type { Subproduct } from "../../../models/products/Subproduct";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
-import useCreateProduct from "../../../composables/product/useCreateProduct";
-import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 
 interface props {
   productProps?: Product;
 }
-const store = usethemeCustomizer();
 const { isStandarProductsLoading, standarProductsDropdown } =
   useStandarProducts();
 const { subproductRules } = useSubproductRules();
@@ -28,18 +27,19 @@ const router = useRouter();
 const { product, nameError } = useCreateProduct();
 const subporduct = ref<Subproduct>({
   product_type_id: productTypeEnum.SUBPRODUCT,
-  taxes: [
-    // '9aaede03-d462-412b-b007-317fef91cf11'
-    { id: "9aaede03-d617-47bc-b264-74d1e0519177" },
-  ],
+  taxes: [] as SRITaxe[],
 } as Subproduct);
 const productValidator = useVuelidate(subproductRules, subporduct);
 
 watch(
-  () => subporduct.value.sku,
+  () => subporduct.value.skus,
   () => {
-    product.value.sku = subporduct.value.sku;
-  }
+    product.value.skus = [];
+    subporduct.value.skus.map((x) => {
+      product.value.skus.push(x.code);
+    });
+  },
+  { deep: true }
 );
 
 watch(
@@ -66,7 +66,10 @@ watch(
 if (props.productProps) {
   subporduct.value.id = props.productProps.id;
   subporduct.value.name = props.productProps.name;
-  subporduct.value.sku = props.productProps.sku;
+  product.value.skus = [];
+  props.productProps.skus.map((x) => {
+    product.value.skus.push(x.code);
+  });
   subporduct.value.price = parseFloat(props.productProps.price);
   subporduct.value.unit_id = props.productProps.unit_id.toString();
   subporduct.value.amount = parseFloat(props.productProps.products[0].amount);
@@ -124,7 +127,7 @@ watch(updateSubproductMutation.isSuccess, () => {
       <ProductGeneralInfo
         :product="subporduct"
         :code-error="
-          productValidator.sku.$errors.map((x) => x.$message.toString())
+          productValidator.skus.$errors.map((x) => x.$message.toString())
         "
         class="tw-pb-4"
       />

@@ -16,7 +16,7 @@ const subproductRules = {
   price: {
     required: helpers.withMessage("this field is required", required),
   },
-  sku: {
+  skus: {
     required: helpers.withMessage("this field is required", required),
   },
 };

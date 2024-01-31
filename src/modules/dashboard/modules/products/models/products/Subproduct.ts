@@ -1,3 +1,4 @@
+import type { SRITaxe } from "../../../pricing/models/SRITaxe";
 import type { baseProduct } from "./Product";
 
 export interface Subproduct extends baseProduct {
@@ -9,7 +10,7 @@ export interface Subproduct extends baseProduct {
   stock_min: number;
   stock_max: number;
   product_type_id: string;
-  taxes: { id: string }[];
+  taxes: SRITaxe[];
   warehouse_id: string;
   parent_product_id: string;
   amount: number;
