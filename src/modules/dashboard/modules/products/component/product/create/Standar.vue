@@ -157,10 +157,10 @@ const checkTaxesSelected = (params: SRITaxe[]) => {
 <template>
   <UIParentCardV2>
     <div class="tw-py-7 tw-px-5">
-      <v-tabs v-model="tab" density="compact">
-        <v-tab value="1" density="compact" color="secondary">Producto*</v-tab>
-        <v-tab value="2" density="compact" color="secondary">Promociones</v-tab>
-        <v-tab value="3" density="compact" color="secondary">Tamaño</v-tab>
+      <v-tabs v-model="tab">
+        <v-tab value="1">Producto *</v-tab>
+        <v-tab value="2">Promociones</v-tab>
+        <v-tab value="3">Tamaño</v-tab>
       </v-tabs>
       <v-window v-model="tab">
         <v-window-item value="1">
