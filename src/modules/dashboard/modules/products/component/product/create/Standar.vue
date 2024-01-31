@@ -243,8 +243,8 @@ const checkTaxesSelected = (params: SRITaxe[]) => {
           <ProductSizingForm :product="standarProduct" />
         </v-window-item>
       </v-window>
-      <VCol cols="12" class="py-0">
-        <div class="tw-flex tw-justify-end tw-gap-2 tw-mt-[5px]">
+      <VCol cols="12">
+        <div class="tw-flex tw-justify-end tw-gap-2">
           <VBtn
             @click="router.push({ name: 'product-list' })"
             variant="outlined"

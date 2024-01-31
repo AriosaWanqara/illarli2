@@ -15,12 +15,14 @@ import type { Subproduct } from "../../../models/products/Subproduct";
 import ProductGeneralInfo from "./ProductGeneralInfo.vue";
 import ProductPromotions from "./ProductPromotions.vue";
 import ProductSizingForm from "./ProductSizingForm.vue";
+import useSRITaxes from "@/modules/dashboard/modules/pricing/compossables/SRI/useSRITaxes";
+import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
 
 interface props {
   productProps?: Product;
 }
-const { isStandarProductsLoading, standarProductsDropdown } =
-  useStandarProducts();
+
+const { isTaxesLoading, taxes, taxesHasError } = useSRITaxes();
 const { subproductRules } = useSubproductRules();
 const props = defineProps<props>();
 const { saveSubproductMutation, updateSubproductMutation } =
@@ -123,6 +125,23 @@ watch(updateSubproductMutation.isSuccess, () => {
     router.push({ name: "product-list" });
   }
 });
+
+const checkTaxesSelected = (params: SRITaxe[]) => {
+  if (params.length > 0) {
+    console.log(params.length);
+    if (
+      params.filter((x) => x.code == params[params.length - 1].code).length > 1
+    ) {
+      let lastTaxesRemove = params.pop();
+      subporduct.value.taxes = params;
+      alert("solo puede escoger un tipo de " + lastTaxesRemove?.parent);
+    }
+  }
+};
+const onProductCalculateHelp = () => {
+  if (subporduct.value.taxes.length > 0) {
+  }
+};
 </script>
 
 <template>
@@ -143,6 +162,64 @@ watch(updateSubproductMutation.isSuccess, () => {
             "
             class="tw-pb-4"
           />
+          <FormSeccion title="Valor-impuestos" class="tw-mt-2" border>
+            <VRow>
+              <VCol cols="6" md="6" class="py-1">
+                <InputSection label-message="Impuesto" required>
+                  <VSelect
+                    hide-details
+                    item-value="id"
+                    item-title="name"
+                    :items="taxes"
+                    :loading="isTaxesLoading"
+                    :no-data-text="
+                      taxesHasError
+                        ? 'Error del servidor 🥲'
+                        : 'No hay registros'
+                    "
+                    return-object
+                    @update:modelValue="checkTaxesSelected"
+                    multiple
+                    placeholder="Impuesto"
+                    v-model="subporduct.taxes"
+                  >
+                    <template v-slot:selection="{ item, index }">
+                      <span v-if="index < 1">{{ item.title }}</span>
+                      <span
+                        v-if="index === 1"
+                        class="text-grey text-caption align-self-center"
+                      >
+                        (+{{ subporduct.taxes.length - 1 }} others)
+                      </span>
+                    </template>
+                  </VSelect>
+                </InputSection>
+              </VCol>
+              <VCol cols="6" md="6" class="py-1">
+                <InputSection label-message="Precio con imp" required>
+                  <div class="tw-flex">
+                    <VTextField
+                      hide-details
+                      :error-messages="
+                        productValidator.price.$errors.map((x) =>
+                          x.$message.toString()
+                        )
+                      "
+                      placeholder="Precio"
+                      v-model="subporduct.price"
+                    />
+                    <VBtn
+                      @click="onProductCalculateHelp"
+                      color="info"
+                      density="default"
+                    >
+                      <p class="textPrimary">Calcular</p>
+                    </VBtn>
+                  </div>
+                </InputSection>
+              </VCol>
+            </VRow>
+          </FormSeccion>
         </v-window-item>
 
         <v-window-item value="2"> Two </v-window-item>
@@ -154,30 +231,28 @@ watch(updateSubproductMutation.isSuccess, () => {
           <ProductSizingForm :product="subporduct" />
         </v-window-item>
       </v-window>
-      <VRow>
-        <VCol cols="12">
-          <div class="tw-flex tw-justify-end tw-gap-2">
-            <VBtn
-              @click="router.push({ name: 'product-list' })"
-              variant="outlined"
-              color="borderColor"
-            >
-              <p class="textPrimary">cancelar</p>
-            </VBtn>
-            <VBtn
-              color="success"
-              prepend-icon="mdi-plus"
-              @click="onSubproductSubmit"
-              :loading="
-                saveSubproductMutation.isPending.value ||
-                updateSubproductMutation.isPending.value
-              "
-            >
-              Añadir producto
-            </VBtn>
-          </div>
-        </VCol>
-      </VRow>
+      <VCol cols="12">
+        <div class="tw-flex tw-justify-end tw-gap-2">
+          <VBtn
+            @click="router.push({ name: 'product-list' })"
+            variant="outlined"
+            color="borderColor"
+          >
+            <p class="textPrimary">cancelar</p>
+          </VBtn>
+          <VBtn
+            color="success"
+            prepend-icon="mdi-plus"
+            @click="onSubproductSubmit"
+            :loading="
+              saveSubproductMutation.isPending.value ||
+              updateSubproductMutation.isPending.value
+            "
+          >
+            Añadir producto
+          </VBtn>
+        </div>
+      </VCol>
     </div>
   </UIParentCardV2>
 </template>
