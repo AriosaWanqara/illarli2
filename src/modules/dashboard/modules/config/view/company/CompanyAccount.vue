@@ -9,10 +9,10 @@ import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2
 import employeeImg from "@dashboard/assets/images/ic_employee.png";
 import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
 import InputSection from "@/modules/dashboard/components/shared/InputSection.vue";
-import FormListContainer from "@/modules/dashboard/components/shared/FormListContainer.vue";
 import ButtonFileUploader from "@/modules/dashboard/components/shared/ButtonFileUploader.vue";
 import CompanyAccountLoading from "../../component/company/CompanyAccountLoading.vue";
 import CompanyServerError from "../../component/company/CompanyServerError.vue";
+import DoubleFormWrapper from "@/modules/dashboard/components/shared/DoubleFormWrapper.vue";
 const {
   companyConfigs,
   companyConfigsHasError,
@@ -49,8 +49,8 @@ watch(updateCompanyConfigsMutations.isSuccess, () => {
       <CompanyServerError />
     </div>
     <div v-else class="">
-      <FormListContainer>
-        <template #form>
+      <DoubleFormWrapper>
+        <template #first-form>
           <UIParentCardV2>
             <template #title>
               <div class="tw-h-[100px]">
@@ -115,7 +115,7 @@ watch(updateCompanyConfigsMutations.isSuccess, () => {
             </template>
           </UIParentCardV2>
         </template>
-        <template #default>
+        <template #second-form>
           <UIParentCardV2>
             <template #default>
               <div class="tw-px-5 tw-py-6">
@@ -238,7 +238,7 @@ watch(updateCompanyConfigsMutations.isSuccess, () => {
             </template>
           </UIParentCardV2>
         </template>
-      </FormListContainer>
+      </DoubleFormWrapper>
     </div>
   </div>
 </template>

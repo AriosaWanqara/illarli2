@@ -8,6 +8,7 @@ import useClientsMutations from "../composables/client/useClientsMutations";
 import usePersonValidator from "../composables/usePersonValidator";
 import { personRolEnum } from "../constant/personRolEnum";
 import type { Provider } from "../models/Provider";
+import DoubleFormWrapper from "@/modules/dashboard/components/shared/DoubleFormWrapper.vue";
 
 const { saveClientMutations } = useClientsMutations();
 const { person: personToValidate, personValidator } = usePersonValidator();
@@ -48,18 +49,19 @@ watch(saveClientMutations.isSuccess, () => {
 </script>
 
 <template>
-  <div class="tw-flex tw-gap-x-3 tw-flex-wrap md:tw-flex-row tw-flex-col">
-    <PersonSelectorForm
-      class="md:tw-max-w-[446px] tw-h-min"
-      :person="person"
-      :name-error="
-        personValidator.name.$errors.map((x) => x.$message.toString())
-      "
-      :identity-error="
-        personValidator.identity.$errors.map((x) => x.$message.toString())
-      "
-    />
-    <div class="tw-flex-1">
+  <DoubleFormWrapper>
+    <template #first-form>
+      <PersonSelectorForm
+        :person="person"
+        :name-error="
+          personValidator.name.$errors.map((x) => x.$message.toString())
+        "
+        :identity-error="
+          personValidator.identity.$errors.map((x) => x.$message.toString())
+        "
+      />
+    </template>
+    <template #second-form>
       <ViewScaffold>
         <CreatePersonForm
           :is-loading="saveClientMutations.isPending.value"
@@ -69,8 +71,8 @@ watch(saveClientMutations.isSuccess, () => {
           @person-submit="onClientSubmit"
         />
       </ViewScaffold>
-    </div>
-  </div>
+    </template>
+  </DoubleFormWrapper>
 </template>
 
 <style scoped></style>

@@ -4,11 +4,12 @@ import CreateServiceBasicInfo from "../../component/services/CreateServiceBasicI
 import serviceBanner from "@dashboard/assets/images/service_banner.png";
 import CreateServiceForm from "../../component/services/CreateServiceForm.vue";
 import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
+import DoubleFormWrapper from "@/modules/dashboard/components/shared/DoubleFormWrapper.vue";
 </script>
 
 <template>
-  <div class="tw-flex tw-gap-x-3 tw-flex-wrap md:tw-flex-row tw-flex-col">
-    <div class="md:tw-max-w-[446px] tw-h-min">
+  <DoubleFormWrapper>
+    <template #first-form>
       <UIParentCardV2>
         <template #title>
           <div class="tw-h-[70px]">
@@ -32,15 +33,15 @@ import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2
           <CreateServiceBasicInfo />
         </div>
       </UIParentCardV2>
-    </div>
-    <div class="tw-flex-1">
+    </template>
+    <template #second-form>
       <ViewScaffold>
         <template #default>
           <CreateServiceForm />
         </template>
       </ViewScaffold>
-    </div>
-  </div>
+    </template>
+  </DoubleFormWrapper>
 </template>
 
 <style scoped></style>

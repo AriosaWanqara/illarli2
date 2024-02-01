@@ -6,6 +6,7 @@ interface props {
   showModal: boolean;
   dialogText: string;
   title: string;
+  successButtonText?: string;
 }
 
 const props = defineProps<props>();
@@ -32,7 +33,7 @@ const emits = defineEmits(["confirm-response"]);
             variant="elevated"
             color="info"
             @click="emits('confirm-response', true)"
-            >Si, Eliminar item</VBtn
+            >{{ successButtonText ?? "Si, Eliminar item" }}</VBtn
           >
           <VBtn
             color="error"
