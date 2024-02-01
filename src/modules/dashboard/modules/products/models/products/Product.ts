@@ -27,6 +27,7 @@ export interface Product {
   unit_id: number; // unit
   product_type_id: string;
   product_type_name: string;
+  img: string;
   brand_id: string;
   categories: Category[];
   products: ProductChild[];

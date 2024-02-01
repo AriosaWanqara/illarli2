@@ -5,6 +5,7 @@ import { ref } from "vue";
 import type { Provider } from "../../../persons/models/Provider";
 import { personRolEnum } from "../../../persons/constant/personRolEnum";
 import CreatePurchaseMinGeneralInfo from "../../components/purchase/create/CreatePurchaseMinGeneralInfo.vue";
+import ProductSelector from "../../components/purchase/create/ProductSelector.vue";
 import type { PurchaseToSave2 } from "../../models/PurchaseOrder";
 
 const person = ref<Provider>({} as Provider);
@@ -18,7 +19,8 @@ const purchase = ref<PurchaseToSave2>({} as PurchaseToSave2);
         :person="person"
         :person-type="personRolEnum.SUPPLIER"
       /> -->
-      <CreatePurchaseMinGeneralInfo :purchase="purchase" />
+      <!-- <CreatePurchaseMinGeneralInfo :purchase="purchase" /> -->
+      <ProductSelector />
     </template>
   </UIScaffold>
 </template>
