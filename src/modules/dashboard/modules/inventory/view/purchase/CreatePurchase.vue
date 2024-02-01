@@ -69,35 +69,6 @@ const calculate = () => {
   });
 };
 
-const test = [
-  {
-    label: "asd",
-    child: [
-      {
-        label: "3-test",
-        value: "s",
-      },
-      {
-        label: "4-test",
-        value: "s",
-      },
-    ],
-  },
-  {
-    label: "lol",
-    child: [
-      {
-        label: "1-test",
-        value: "s",
-      },
-      {
-        label: "2-test",
-        value: "s",
-      },
-    ],
-  },
-];
-
 const onXMLUpload = (xml: File) => {
   uploadXMLMutations.mutate(xml);
 };

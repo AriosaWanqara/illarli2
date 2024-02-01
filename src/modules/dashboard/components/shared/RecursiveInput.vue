@@ -27,18 +27,13 @@ const operation = (type: boolean, index: number) => {
   if (type) {
     numberOfInputs.value++;
   } else {
-    numberOfInputs.value--;
-    if (numberOfInputs.value >= index) {
-      for (let i = index - 1; i < numberOfInputs.value - 1; i++) {
-        if (valueOfInputs.value[i + 1]) {
-          valueOfInputs.value[i] = valueOfInputs.value[i + 1] ?? "";
-        }
-      }
-      valueOfInputs.value[numberOfInputs.value - 1] = "";
+    if (valueOfInputs.value[index - 1]) {
+      valueOfInputs.value[index - 1] = "";
       valueOfInputs.value = valueOfInputs.value.filter((x) => x != "");
     } else {
-      valueOfInputs.value.pop();
+      valueOfInputs.value = valueOfInputs.value.filter((x) => x != undefined);
     }
+    numberOfInputs.value--;
   }
 };
 </script>
