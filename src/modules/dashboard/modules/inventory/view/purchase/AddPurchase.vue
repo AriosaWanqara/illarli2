@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import UIScaffold from "@/modules/dashboard/components/shared/UIScaffold.vue";
 import CreatePersonWithMinInfoForm from "../../../persons/components/CreatePersonWithMinInfoForm.vue";
 import { ref } from "vue";
 import type { Provider } from "../../../persons/models/Provider";
@@ -9,7 +8,6 @@ import ProductSelector from "../../components/purchase/create/ProductSelector.vu
 import type { PurchaseToSave2 } from "../../models/PurchaseOrder";
 import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 import purchaseBanner from "@dashboard/assets/images/purchase_banner.png";
-import FormListContainer from "@/modules/dashboard/components/shared/FormListContainer.vue";
 import DoubleFormWrapper from "@/modules/dashboard/components/shared/DoubleFormWrapper.vue";
 
 const person = ref<Provider>({} as Provider);
@@ -19,28 +17,32 @@ const purchase = ref<PurchaseToSave2>({} as PurchaseToSave2);
 <template>
   <DoubleFormWrapper>
     <template #first-form>
-      <div class="tw-px-4">
-        <UIParentCardV2>
-          <template #title>
-            <div class="tw-h-[100px]">
+      <UIParentCardV2>
+        <template #title>
+          <div class="tw-h-[90px]">
+            <div
+              class="tw-h-[65px] tw-flex tw-justify-center tw-bg-[#7BD599] tw-relative"
+            >
               <div
-                class="tw-h-[70px] tw-flex tw-justify-center tw-bg-[#7BD599]"
+                class="tw-bg-white tw-rounded-full tw-border-[1px] tw-border-[#7BD599] tw-grid tw-place-content-center tw-h-[80px] tw-w-[80px] tw-absolute tw-top-1"
               >
-                <div
-                  class="tw-bg-white tw-rounded-full tw-border-[1px] tw-border-[#7BD599] tw-grid tw-place-content-center tw-h-[90px] tw-w-[90px]"
-                >
-                  <VImg :src="purchaseBanner" width="120" />
-                </div>
+                <VImg :src="purchaseBanner" width="110" class="" />
               </div>
             </div>
-          </template>
-          <div class="tw-p-4">
-            <CreatePurchaseMinGeneralInfo :purchase="purchase" />
           </div>
-        </UIParentCardV2>
-      </div>
+        </template>
+        <div class="tw-py-4 tw-px-5">
+          <CreatePurchaseMinGeneralInfo :purchase="purchase" />
+        </div>
+      </UIParentCardV2>
     </template>
-    <template #second-form></template>
+    <template #second-form>
+      <UIParentCardV2 class="tw-h-full">
+        <div class="tw-p-4">
+          <ProductSelector />
+        </div>
+      </UIParentCardV2>
+    </template>
   </DoubleFormWrapper>
 </template>
 
