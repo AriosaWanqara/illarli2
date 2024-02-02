@@ -3,6 +3,7 @@ import FormSeccion from "@/modules/dashboard/components/shared/FormSeccion.vue";
 import type { Product } from "@/modules/dashboard/modules/products/models/products/Product";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
+import PurchaseDetails from "../PurchaseDetails.vue";
 
 interface props {
   products: Product[];
@@ -100,6 +101,10 @@ const product = ref<Partial<Product>[]>([
     ],
   },
 ]);
+
+const onItemDelete = (id: string) => {
+  product.value = product.value.filter((x) => x.id != id);
+};
 </script>
 
 <template>
@@ -129,11 +134,12 @@ const product = ref<Partial<Product>[]>([
           <td class="px-0 pr-2">
             <div
               v-ripple
-              class="tw-border-[1px] tw-rounded-lg tw-flex tw-justify-center tw-items-center tw-cursor-pointer"
+              class="tw-border-[1px] tw-rounded-xl tw-flex tw-justify-center tw-items-center tw-cursor-pointer"
+              @click="onItemDelete(item.id!)"
             >
               <Icon
                 icon="material-symbols:close-small-rounded"
-                height="16"
+                height="18"
                 class="tw-text-red-500"
               />
             </div>
@@ -141,6 +147,9 @@ const product = ref<Partial<Product>[]>([
         </tr>
       </tbody>
     </v-table>
+    <div class="tw-flex tw-justify-end tw-w-full">
+      <PurchaseDetails :products="product" />
+    </div>
   </FormSeccion>
 </template>
 

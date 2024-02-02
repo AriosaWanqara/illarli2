@@ -1,4 +1,5 @@
 import type { Dropdown } from "@/models/Dropdown";
+import type { Product } from "@/modules/dashboard/modules/products/models/products/Product";
 
 export enum PriceCalculatorType {
   QUANTITY,
@@ -43,6 +44,43 @@ export const reverseCalculator = (
   summary.unshift({
     label: "P.U",
     value: (price - sum).toFixed(2),
+  });
+  return summary;
+};
+
+export const calculateSummaryFromProducts = (
+  products: Partial<Product>[]
+): Dropdown[] => {
+  let summary: Dropdown[] = [];
+  let subtotal = 0;
+  let total = 0;
+  products.map((x) => {
+    let amount = x.amount ?? 1;
+    subtotal = amount * parseFloat(x.price!) + subtotal;
+    x.taxes!.map((y) => {
+      let taxe = (y.rate / 100) * (parseFloat(x.price!) * amount);
+      total += taxe;
+      let sum = summary.find((z) => z.label == y.name);
+      if (!sum) {
+        summary.push({
+          value: taxe.toFixed(2),
+          label: y.name,
+        });
+      } else {
+        let value = sum.value;
+        let k = taxe + parseFloat(value);
+        sum.value = k.toFixed(2);
+      }
+    });
+  });
+  total += subtotal;
+  summary.unshift({
+    value: subtotal.toFixed(2),
+    label: "subtotal",
+  });
+  summary.push({
+    value: total.toFixed(2),
+    label: "total",
   });
   return summary;
 };
