@@ -9,6 +9,7 @@ import type { PurchaseToSave2 } from "../../models/PurchaseOrder";
 import UIParentCardV2 from "@/modules/dashboard/components/shared/UIParentCardV2.vue";
 import purchaseBanner from "@dashboard/assets/images/purchase_banner.png";
 import DoubleFormWrapper from "@/modules/dashboard/components/shared/DoubleFormWrapper.vue";
+import SelectedProductToPurchTable from "../../components/purchase/list/SelectedProductToPurchTable.vue";
 
 const person = ref<Provider>({} as Provider);
 const purchase = ref<PurchaseToSave2>({} as PurchaseToSave2);
@@ -39,7 +40,8 @@ const purchase = ref<PurchaseToSave2>({} as PurchaseToSave2);
     <template #second-form>
       <UIParentCardV2 class="tw-h-full">
         <div class="tw-p-4">
-          <ProductSelector />
+          <!-- <ProductSelector /> -->
+          <SelectedProductToPurchTable />
         </div>
       </UIParentCardV2>
     </template>
